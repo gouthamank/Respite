@@ -85,10 +85,13 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
     }
 
     public void addSubmissions(Listing<Submission> submissions) {
-        for(Submission s : submissions)
-            this.submissions.add(s);
+        int latestIndex = this.submissions.size();
 
-        notifyDataSetChanged();
+        for(Submission s : submissions) {
+            this.submissions.add(s);
+            notifyItemInserted(latestIndex);
+            latestIndex++;
+        }
     }
 
     public void setEndlessScrollListener(EndlessScrollListener listener) {
