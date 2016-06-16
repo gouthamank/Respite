@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Respite</string>
+
+    <string name="action_bar_title_front_page">Front Page</string>
+    <string name="action_bar_title_subreddit">/r/%1$s</string>
+
+    <string name="placeholder_description">_drool • pics • 1hr</string>
+    <string name="placeholder_title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean neque odio, rhoncus sit amet turpis eleifend, dignissim consequat lectus.</string>
+    <string name="placeholder_comments">10 comments</string>
+    <string name="placeholder_score">10</string>
+
+    <string name="submission_preview_accessibility">Post Thumbnail</string>
+    <plurals name="submission_comments">
+        <item quantity="one">%1$d comment</item>
+        <item quantity="other">%1$d comments</item>
+    </plurals>
+    <string name="submission_score">%1$s</string>
+
 </resources>
