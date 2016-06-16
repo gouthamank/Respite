@@ -1,6 +1,14 @@
 package app.drool.respite.utils;
 
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+
 import java.util.Date;
+
+import app.drool.respite.asyncloaders.AsyncDrawableCache;
+import app.drool.respite.asyncloaders.AsyncDrawableURL;
+import app.drool.respite.asyncloaders.PreviewFromCacheTask;
+import app.drool.respite.asyncloaders.PreviewFromURLTask;
 
 /**
  * Created by drool on 6/16/16.
@@ -36,5 +44,23 @@ public class Utilities {
             return String.valueOf(diffDays) + "d";
 
         return "";
+    }
+
+    public static PreviewFromCacheTask getPreviewFromCacheTask(ImageView preview) {
+        final Drawable drawable = preview.getDrawable();
+        if(drawable instanceof AsyncDrawableCache) {
+            final AsyncDrawableCache asyncDrawableCache = (AsyncDrawableCache) drawable;
+            return asyncDrawableCache.getPreviewFromCacheTask();
+        }
+        return null;
+    }
+
+    public static PreviewFromURLTask getPreviewFromURLTask(ImageView preview) {
+        final Drawable drawable = preview.getDrawable();
+        if(drawable instanceof AsyncDrawableURL) {
+            final AsyncDrawableURL asyncDrawable = (AsyncDrawableURL) drawable;
+            return asyncDrawable.getPreviewFromURLTask();
+        }
+        return null;
     }
 }

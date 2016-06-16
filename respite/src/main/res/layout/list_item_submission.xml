@@ -22,8 +22,8 @@
             android:background="@android:color/holo_orange_dark"
             android:layout_marginRight="4dp"
             android:layout_marginEnd="4dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="75dp"
+            android:layout_height="75dp" />
 
         <TextView
             android:text="@string/placeholder_description"
@@ -33,7 +33,8 @@
             android:layout_toRightOf="@id/list_item_submission_preview"
             android:layout_toEndOf="@id/list_item_submission_preview"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="12sp" />
+            android:textSize="14sp"
+            android:fontFamily="sans-serif" />
 
         <TextView
             android:text="@string/placeholder_title"
@@ -43,7 +44,9 @@
             android:layout_alignStart="@id/list_item_submission_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="16sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -60,7 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:fontFamily="sans-serif" />
         <TextView
             android:id="@+id/list_item_submission_score"
             android:layout_alignParentRight="true"
@@ -69,9 +73,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textStyle="normal|bold"
-            tools:ignore="RelativeOverlap" />
+            tools:ignore="RelativeOverlap"
+            android:fontFamily="sans-serif" />
     </RelativeLayout>
 
     <View
