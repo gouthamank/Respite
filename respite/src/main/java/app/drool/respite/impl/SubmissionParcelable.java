@@ -20,6 +20,7 @@ public class SubmissionParcelable implements Parcelable {
     private String comments;
     private String selfText;
     private String submissionID;
+    private String subreddit;
 
     public SubmissionParcelable(Context mContext, Submission s) {
         this.description = s.getAuthor() +
@@ -27,11 +28,13 @@ public class SubmissionParcelable implements Parcelable {
                 s.getSubredditName() +
                 " • " +
                 Utilities.getReadableCreationTime(s.getCreated());
-        this.title = s.getTitle().replace("&amp;", "&");
+        this.title = s.getTitle().replace("&amp;", "&").replace("&gt;", ">").replace("&lt;", "<");
         this.score = String.valueOf(s.getScore());
         this.comments = mContext.getResources()
                                 .getQuantityString(R.plurals.submission_comments, s.getCommentCount(), s.getCommentCount());
-        this.selfText = s.getSelftext();
+        this.selfText = s.data("selftext_html");
+        this.submissionID = s.getId();
+        this.subreddit = s.getSubredditName();
     }
 
     private SubmissionParcelable(Parcel in) {
@@ -41,6 +44,7 @@ public class SubmissionParcelable implements Parcelable {
         this.comments = in.readString();
         this.selfText = in.readString();
         this.submissionID = in.readString();
+        this.subreddit = in.readString();
     }
 
     public static final Creator<SubmissionParcelable> CREATOR = new Creator<SubmissionParcelable>() {
@@ -68,6 +72,7 @@ public class SubmissionParcelable implements Parcelable {
         dest.writeString(comments);
         dest.writeString(selfText);
         dest.writeString(submissionID);
+        dest.writeString(subreddit);
     }
 
     public String getDescription() {
@@ -93,4 +98,8 @@ public class SubmissionParcelable implements Parcelable {
     public String getSubmissionID() {
          return submissionID;
      }
+
+    public String getSubreddit() {
+        return subreddit;
+    }
 }

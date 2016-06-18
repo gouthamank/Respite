@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
-
-    <View
-        android:id="@+id/list_item_comment_indent"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-
-    <View
-        android:id="@+id/list_item_comment_marker"
-        android:layout_width="5dp"
-        android:layout_height="match_parent"
-        android:background="@android:color/black"/>
-
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/list_item_comment_indent"
+            android:layout_width="10dp"
+            android:background="@color/commentIndent"
+            android:layout_height="match_parent"/>
+
+        <View
+            android:id="@+id/list_item_comment_marker"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_margin="10dp">
 
             <TextView
                 android:id="@+id/list_item_comment_description"
                 android:text="@string/placeholder_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textStyle="bold"
                 android:textSize="12sp"
                 android:textColor="@color/colorPrimary"/>
 
+
+            <com.laurencedawson.activetextview.ActiveTextView
+                android:id="@+id/list_item_comment_body"
+                android:text="@string/placeholder_title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/list_item_comment_body"
-            android:text="@string/placeholder_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/commentSeparator" />
 
 </LinearLayout>

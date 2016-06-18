@@ -28,11 +28,12 @@ public class Respite extends Application {
     private static final UserAgent USERAGENT = UserAgent.of("android", "app.drool.respite", "v0.1", "_drool");
     private static final String sharedPreferencesName = "app.drool.respite.sharedprefs";
     private static final String TAG = "Respite.java";
+    private RedditClient mRedditClient = null;
     private SubredditPaginator subredditPaginator = null;
     @Override
     public void onCreate() {
         super.onCreate();
-        RedditClient mRedditClient = new RedditClient(USERAGENT);
+        mRedditClient = new RedditClient(USERAGENT);
         mRedditClient.setLoggingMode(LoggingMode.ALWAYS);
 
         final SharedPreferences sharedPreferences = getApplicationContext()
@@ -97,7 +98,7 @@ public class Respite extends Application {
         }
     }
 
-    public SubredditPaginator getPaginator(){
-        return subredditPaginator;
-    }
+    public SubredditPaginator getPaginator() { return subredditPaginator; }
+
+    public RedditClient getRedditClient() { return mRedditClient; }
 }

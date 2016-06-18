@@ -1,6 +1,9 @@
 package app.drool.respite.utils;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
+import android.text.Spanned;
 import android.widget.ImageView;
 
 import java.util.Date;
@@ -15,6 +18,8 @@ import app.drool.respite.asyncloaders.PreviewFromURLTask;
  */
 
 public class Utilities {
+    private static final String TAG = "Utilities.java";
+
     public static String getReadableCreationTime(Date createdTime) {
         Date currentTime = new Date();
         long diffMs = currentTime.getTime() - createdTime.getTime();
@@ -62,5 +67,16 @@ public class Utilities {
             return asyncDrawable.getPreviewFromURLTask();
         }
         return null;
+    }
+
+    public static int getPixelsFromDPs(Context mContext, int dps) {
+        final float scale = mContext.getResources().getDisplayMetrics().density;
+        return (int) (dps * scale + 0.5f);
+    }
+
+    public static Spanned getHTMLFromMarkdown(String md) {
+        String one = Html.fromHtml(md).toString();
+        String two = one.substring(16, one.length() - 11).replace("<p>", "").replace("</p>", "<br><br>");
+        return Html.fromHtml(two);
     }
 }
