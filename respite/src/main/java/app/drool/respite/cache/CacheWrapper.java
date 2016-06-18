@@ -21,12 +21,12 @@ public class CacheWrapper {
 
         final String filename = submissionID + "_preview";
         try {
-            File cacheFile = File.createTempFile(filename, null, cacheDir);
+            File cacheFile = new File(cacheDir, filename);
             FileOutputStream outputStream = new FileOutputStream(cacheFile);
             preview.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             outputStream.close();
         } catch (IOException e) {
-            Log.e(TAG, "addPreview: I/O Exception when trying to cache submisison", e);
+            Log.e(TAG, "addPreview: I/O Exception when trying to cache submission", e);
         }
     }
 
@@ -35,24 +35,16 @@ public class CacheWrapper {
         if(cacheDir.list() == null)
             return false;
 
-        for(String file : cacheDir.list()) {
-            if(file.contains(filename + ".tmp"))
-                return true;
-        }
-        return false;
+        File cachedFile = new File(cacheDir, filename);
+        return cachedFile.exists() && cachedFile.isFile();
     }
 
     public static Bitmap getPreview(File cacheDir, String submissionID) {
         final String filename = submissionID + "_preview";
-        try {
-            File cacheFile = File.createTempFile(filename, null, cacheDir);
-            if(cacheFile.exists() && cacheFile.isFile()){
-                return BitmapFactory.decodeFile(cacheFile.getAbsolutePath());
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "getPreview: I/O Exception when trying to retrieve cache", e);
+        File cacheFile = new File(cacheDir, filename);
+        if(hasPreview(cacheDir, submissionID)){
+            return BitmapFactory.decodeFile(cacheFile.getAbsolutePath());
         }
-
         return null;
     }
 

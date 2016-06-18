@@ -21,6 +21,7 @@
         <activity android:name=".activities.LoginActivity"/>
         <activity android:name=".activities.UserInfoActivity"/>
         <activity android:name=".activities.SubmissionsActivity"/>
+        <activity android:name=".activities.CommentsActivity"/>
     </application>
 
 </manifest>

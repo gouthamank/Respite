@@ -40,6 +40,7 @@ public class PreviewFromCacheTask extends AsyncTask<Void, Void, Bitmap> {
             final PreviewFromCacheTask previewFromCacheTask = Utilities.getPreviewFromCacheTask(preview);
             if(this == previewFromCacheTask && preview != null){
                 weakReference.get().setImageBitmap(bitmap);
+                weakReference.get().setBackgroundResource(android.R.color.transparent);
             }
         }
     }

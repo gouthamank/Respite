@@ -1,6 +1,7 @@
 package app.drool.respite.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
@@ -20,11 +21,13 @@ import net.dean.jraw.models.Thumbnails.Image;
 import java.util.LinkedList;
 
 import app.drool.respite.R;
+import app.drool.respite.activities.CommentsActivity;
 import app.drool.respite.asyncloaders.AsyncDrawableCache;
 import app.drool.respite.asyncloaders.AsyncDrawableURL;
 import app.drool.respite.asyncloaders.PreviewFromCacheTask;
 import app.drool.respite.asyncloaders.PreviewFromURLTask;
 import app.drool.respite.cache.CacheWrapper;
+import app.drool.respite.impl.SubmissionParcelable;
 import app.drool.respite.utils.Utilities;
 
 /**
@@ -33,6 +36,8 @@ import app.drool.respite.utils.Utilities;
 
 
 public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAdapter.SubmissionHolder> {
+
+    private static final int ENDLESS_SCROLL_THRESHOLD = 10;
 
     public interface EndlessScrollListener {
         void onLoadMore(int position);
@@ -108,17 +113,12 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
     @Override
     public void onBindViewHolder(SubmissionListAdapter.SubmissionHolder holder, int position) {
         final Submission submission = submissions.get(position);
-        String description = submission.getAuthor() +
-                " • " +
-                submission.getSubredditName() +
-                " • " +
-                Utilities.getReadableCreationTime(submission.getCreated());
+        final SubmissionParcelable submissionParcelable = new SubmissionParcelable(mContext, submission);
 
-        holder.description.setText(description);
-        holder.title.setText(submission.getTitle().replace("&amp;", "&"));
-        holder.score.setText(String.valueOf(submission.getScore()));
-        String commentCount = mContext.getResources().getQuantityString(R.plurals.submission_comments, submission.getCommentCount(), submission.getCommentCount());
-        holder.comments.setText(commentCount);
+        holder.description.setText(submissionParcelable.getDescription());
+        holder.title.setText(submissionParcelable.getTitle());
+        holder.score.setText(submissionParcelable.getScore());
+        holder.comments.setText(submissionParcelable.getComments());
 
         Thumbnails thumbnails = submission.getThumbnails();
         String thumbnailURL = null;
@@ -141,14 +141,18 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
                 Toast.makeText(mContext, submission.getSubredditId(), Toast.LENGTH_SHORT).show();
             }
         });
+
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, submission.getAuthor(), Toast.LENGTH_SHORT).show();
+                Intent commentsInstent = new Intent(mContext, CommentsActivity.class);
+                commentsInstent.putExtra("top", submissionParcelable);
+                mContext.startActivity(commentsInstent);
             }
         });
 
-        if (position == getItemCount() - 10) {
+        if (position == getItemCount() - ENDLESS_SCROLL_THRESHOLD) {
             if (endlessScrollListener != null)
                 endlessScrollListener.onLoadMore(position);
         }
