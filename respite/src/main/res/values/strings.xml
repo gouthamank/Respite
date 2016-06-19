@@ -16,4 +16,8 @@
     </plurals>
     <string name="submission_score">%1$s</string>
 
+
+    <string name="webview.openexternal">Open in browser</string>
+    <string name="webview.back">Back</string>
+    <string name="webview.forward">Forward</string>
 </resources>

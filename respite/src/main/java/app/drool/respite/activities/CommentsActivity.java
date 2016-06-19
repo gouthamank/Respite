@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.common.collect.FluentIterable;
 import com.laurencedawson.activetextview.ActiveTextView;
@@ -20,6 +19,7 @@ import net.dean.jraw.models.Submission;
 
 import app.drool.respite.R;
 import app.drool.respite.Respite;
+import app.drool.respite.handlers.LinkHandler;
 import app.drool.respite.impl.SubmissionParcelable;
 import app.drool.respite.utils.Utilities;
 
@@ -111,28 +111,32 @@ public class CommentsActivity extends AppCompatActivity {
         FluentIterable<CommentNode> iter = comments.walkTree();
         for(CommentNode node : iter) {
             ViewGroup comment = (ViewGroup) getLayoutInflater().inflate(R.layout.list_item_comment, commentList, false);
+
             ((ActiveTextView) comment.findViewById(R.id.list_item_comment_body))
                     .setText(Utilities.getHTMLFromMarkdown(node.getComment().data("body_html")));
             ((ActiveTextView) comment.findViewById(R.id.list_item_comment_body)).setLinkClickedListener(new ActiveTextView.OnLinkClickedListener() {
                 @Override
                 public void onClick(String url) {
-                    Toast.makeText(CommentsActivity.this, url, Toast.LENGTH_SHORT).show();
+                    LinkHandler.analyse(CommentsActivity.this, url);
                 }
             });
+
             String description = node.getComment().getAuthor() +
                     " • " +
                     String.valueOf(node.getComment().getScore()) +
                     " • " +
                     Utilities.getReadableCreationTime(node.getComment().getCreated());
             ((TextView) comment.findViewById(R.id.list_item_comment_description)).setText(description);
+
             int depth = node.getDepth() - 1;
             View indent = comment.findViewById(R.id.list_item_comment_indent);
-
             ViewGroup.LayoutParams params = indent.getLayoutParams();
             params.width = Utilities.getPixelsFromDPs(this, depth * 5);
             comment.findViewById(R.id.list_item_comment_indent)
                     .setLayoutParams(params);
-            commentList.addView(comment);
+
+            if(commentList != null)
+                commentList.addView(comment);
         }
     }
 }
