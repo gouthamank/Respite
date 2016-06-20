@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +73,6 @@ public class CommentsActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Submission submission) {
-                Log.d(TAG, "onPostExecute: " + submission.getComments().toString());
                 updateHeader(submission);
                 addComments(submission.getComments());
             }

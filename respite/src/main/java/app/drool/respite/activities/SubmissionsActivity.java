@@ -29,7 +29,7 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_front_page);
+        setContentView(R.layout.activity_submissions);
         final RecyclerView submissionList = (RecyclerView) findViewById(R.id.submissions_list);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 

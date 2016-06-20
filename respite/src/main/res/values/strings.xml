@@ -10,10 +10,25 @@
     <string name="actionbar.title.subreddit">/r/%1$s</string>
     <string name="actionbar.title.user">/u/%1$s</string>
 
+    <string name="fragment.user.about.name">Username</string>
+    <string name="fragment.user.about.linkkarma">Link Karma</string>
+    <string name="fragment.user.about.commentkarma">Comment Karma</string>
+    <string name="fragment.user.about.age">Created</string>
+    <string name="fragment.user.about.isfriends">Friends?</string>
+    <string name="fragment.user.about.ismod">Mod?</string>
+    <string name="fragment.user.about.true">yes</string>
+    <string name="fragment.user.about.false">no</string>
+
     <string name="placeholder.description">_drool • pics • 1hr</string>
     <string name="placeholder.title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean neque odio, rhoncus sit amet turpis eleifend, dignissim consequat lectus.</string>
     <string name="placeholder.comments">10 comments</string>
     <string name="placeholder.score">10</string>
+    <string name="placeholder.user.name">_drool</string>
+    <string name="placeholder.user.age">2015/11/02</string>
+    <string name="placeholder.user.karma">322</string>
+    <string name="placeholder.user.karma2">1024</string>
+    <string name="placeholder.user.bool">yes</string>
+    <string name="placeholder.user.bool2">no</string>
 
     <string name="submission.preview.accessibility">Post Thumbnail</string>
     <plurals name="submission_comments">
@@ -21,7 +36,6 @@
         <item quantity="other">%1$d comments</item>
     </plurals>
     <string name="submission.score">%1$s</string>
-
 
     <string name="webview.openexternal">Open in browser</string>
     <string name="webview.back">Back</string>

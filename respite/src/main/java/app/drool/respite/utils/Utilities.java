@@ -1,11 +1,13 @@
 package app.drool.respite.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spanned;
 import android.widget.ImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import app.drool.respite.asyncloaders.AsyncDrawableCache;
@@ -19,6 +21,7 @@ import app.drool.respite.asyncloaders.PreviewFromURLTask;
 
 public class Utilities {
     private static final String TAG = "Utilities.java";
+    public static final String[] sCheeseStrings = {"Apricot", "Bechemel", "Sodium"};
 
     public static String getReadableCreationTime(Date createdTime) {
         Date currentTime = new Date();
@@ -49,6 +52,11 @@ public class Utilities {
             return String.valueOf(diffDays) + "d";
 
         return "";
+    }
+
+    public static String getFormattedCreationTime(Date createdTime) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        return format.format(createdTime);
     }
 
     public static PreviewFromCacheTask getPreviewFromCacheTask(ImageView preview) {
