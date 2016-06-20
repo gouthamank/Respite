@@ -88,10 +88,6 @@ public class WebViewActivity extends AppCompatActivity {
                 webView.goBack();
                 break;
 
-            case android.R.id.home:
-                finish();
-                break;
-
             default:
                 return super.onOptionsItemSelected(item);
         }

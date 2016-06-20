@@ -18,12 +18,35 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.LoginActivity"/>
-        <activity android:name=".activities.UserInfoActivity"/>
-        <activity android:name=".activities.SubmissionsActivity"/>
-        <activity android:name=".activities.CommentsActivity"/>
-        <activity android:name=".activities.UserActivity"/>
-        <activity android:name=".activities.WebViewActivity"/>
+        <activity android:name=".activities.LoginActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value=".activities.MainActivity" />
+        </activity>
+        <activity android:name=".activities.UserInfoActivity">
+        <meta-data android:name="android.support.PARENT_ACTIVITY"
+                   android:value=".activities.MainActivity" />
+        </activity>
+
+        <activity android:name=".activities.SubmissionsActivity">
+        <meta-data android:name="android.support.PARENT_ACTIVITY"
+                   android:value=".activities.MainActivity" />
+        </activity>
+
+        <activity android:name=".activities.CommentsActivity">
+        <meta-data android:name="android.support.PARENT_ACTIVITY"
+                   android:value=".activities.MainActivity" />
+        </activity>
+
+        <activity android:name=".activities.UserActivity">
+        <meta-data android:name="android.support.PARENT_ACTIVITY"
+                   android:value=".activities.MainActivity" />
+        </activity>
+
+        <activity android:name=".activities.WebViewActivity">
+        <meta-data android:name="android.support.PARENT_ACTIVITY"
+                   android:value=".activities.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

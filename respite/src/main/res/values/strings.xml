@@ -4,8 +4,11 @@
     <string name="mainactivity.login">Log in</string>
     <string name="mainactivity.loggedin">Logged in</string>
 
+    <string name="useractivity.networkerror">Error retrieving user details</string>
+
     <string name="actionbar.title.frontpage">Front Page</string>
     <string name="actionbar.title.subreddit">/r/%1$s</string>
+    <string name="actionbar.title.user">/u/%1$s</string>
 
     <string name="placeholder.description">_drool • pics • 1hr</string>
     <string name="placeholder.title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean neque odio, rhoncus sit amet turpis eleifend, dignissim consequat lectus.</string>

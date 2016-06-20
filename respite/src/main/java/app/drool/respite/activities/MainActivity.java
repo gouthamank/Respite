@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton(R.string.dialog_customsubreddit_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(input.getText().toString().length() < 1)
+                        if(input.getText().toString().length() < 1 || input.getText().toString().contains(" "))
                             Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.dialog_customsubreddit_retry), Toast.LENGTH_SHORT).show();
                         else {
                             Intent subredditIntent = new Intent(MainActivity.this, SubmissionsActivity.class);
@@ -105,12 +105,12 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton(R.string.dialog_customuser_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(input.getText().toString().length() < 1)
+                        if(input.getText().toString().length() < 1 || input.getText().toString().contains(" "))
                             Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.dialog_customuser_retry), Toast.LENGTH_SHORT).show();
                         else {
-                            Intent subredditIntent = new Intent(MainActivity.this, UserActivity.class);
-                            subredditIntent.putExtra("subreddit", input.getText().toString());
-                            startActivity(subredditIntent);
+                            Intent userIntent = new Intent(MainActivity.this, UserActivity.class);
+                            userIntent.putExtra("username", input.getText().toString());
+                            startActivity(userIntent);
                         }
                     }
                 });

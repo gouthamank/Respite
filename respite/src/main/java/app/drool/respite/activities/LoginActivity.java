@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -41,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         final URL authorizationURL = helper.getAuthorizationUrl(Respite.CREDENTIALS, true, true, scopes);
         final WebView webView = (WebView) findViewById(R.id.webview);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         assert webView != null;
         webView.loadUrl(authorizationURL.toExternalForm());
         webView.setWebViewClient(new WebViewClient(){
@@ -54,6 +58,11 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     private void onUserChallenge(final String url, final Credentials credentials){
