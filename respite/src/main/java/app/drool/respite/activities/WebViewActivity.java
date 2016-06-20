@@ -12,6 +12,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import java.net.URL;
+
 import app.drool.respite.R;
 
 /**
@@ -35,12 +37,11 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                Uri linkURL;
+                URL linkURL;
                 try {
-                    linkURL = Uri.parse(url);
+                    linkURL = new URL(url);
                     getSupportActionBar().setTitle(linkURL.getHost());
                     getSupportActionBar().setSubtitle(linkURL.toString());
-
                 } catch (Exception e) {
                     Toast.makeText(WebViewActivity.this, "Could not parse URL", Toast.LENGTH_LONG).show();
                 } finally {

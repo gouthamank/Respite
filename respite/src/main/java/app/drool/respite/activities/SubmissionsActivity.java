@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import net.dean.jraw.http.NetworkException;
 import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
+import net.dean.jraw.paginators.SubredditPaginator;
 
 import app.drool.respite.R;
 import app.drool.respite.Respite;
@@ -22,7 +24,9 @@ import app.drool.respite.adapters.SubmissionListAdapter;
 public class SubmissionsActivity extends AppCompatActivity implements SubmissionListAdapter.EndlessScrollListener{
     private SubmissionListAdapter mAdapter = null;
     private ProgressBar progressBar = null;
+    private SubredditPaginator paginator = null;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front_page);
@@ -36,10 +40,26 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
         submissionList.setAdapter(mAdapter);
         mAdapter.setEndlessScrollListener(this);
 
+        if(getIntent().getExtras() == null)
+            setUpPaginator(null);
+        else
+            setUpPaginator(getIntent().getExtras().getString("subreddit"));
+
         setUpMenuBar();
 
         progressBar.setVisibility(ProgressBar.VISIBLE);
         loadNextPage();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -48,13 +68,23 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
         ((Respite) getApplication()).refreshCredentials(this);
     }
 
+    private void setUpPaginator(String subreddit) {
+        if(paginator == null){
+            paginator = new SubredditPaginator(((Respite) getApplication()).getRedditClient());
+            if(subreddit != null)
+                paginator.setSubreddit(subreddit);
+        }
+    }
+
     @SuppressWarnings("ConstantConditions")
     private void setUpMenuBar() {
-        String subredditTitle = ((Respite) getApplication()).getPaginator().getSubreddit();
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        String subredditTitle = paginator.getSubreddit();
         if(subredditTitle == null)
-            getSupportActionBar().setTitle(getResources().getString(R.string.action_bar_title_front_page));
+            getSupportActionBar().setTitle(getResources().getString(R.string.actionbar_title_frontpage));
         else
-            getSupportActionBar().setTitle(getResources().getString(R.string.action_bar_title_subreddit, subredditTitle));
+            getSupportActionBar().setTitle(getResources().getString(R.string.actionbar_title_subreddit, subredditTitle));
     }
 
     private void loadNextPage() {
@@ -62,7 +92,7 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
             @Override
             protected Listing<Submission> doInBackground(Void... params) {
                 try {
-                    return ((Respite) getApplication()).getPaginator().next();
+                    return paginator.next();
                 } catch (NetworkException e) {
                     return null;
                 }
@@ -71,8 +101,6 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
             @Override
             protected void onPostExecute(Listing<Submission> submissions) {
                 super.onPostExecute(submissions);
-                // Toast.makeText(SubmissionsActivity.this, String.valueOf(mAdapter.getItemCount()), Toast.LENGTH_SHORT).show();
-
                 if(submissions != null) {
                     if (progressBar.getVisibility() == ProgressBar.VISIBLE)
                         progressBar.setVisibility(ProgressBar.GONE);

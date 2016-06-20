@@ -6,12 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.common.collect.FluentIterable;
 import com.laurencedawson.activetextview.ActiveTextView;
 
 import net.dean.jraw.models.CommentNode;
@@ -51,8 +51,21 @@ public class CommentsActivity extends AppCompatActivity {
         super.onResume ();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void setUpMenuBar(String subreddit) {
-        getSupportActionBar().setTitle(getResources().getString(R.string.action_bar_title_subreddit, subreddit));
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getResources().getString(R.string.actionbar_title_subreddit, subreddit));
     }
 
     private void loadComments(final String submissionID) {
@@ -108,8 +121,7 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private void addComments(CommentNode comments) {
-        FluentIterable<CommentNode> iter = comments.walkTree();
-        for(CommentNode node : iter) {
+        for(CommentNode node : comments.walkTree()) {
             ViewGroup comment = (ViewGroup) getLayoutInflater().inflate(R.layout.list_item_comment, commentList, false);
 
             ((ActiveTextView) comment.findViewById(R.id.list_item_comment_body))

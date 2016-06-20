@@ -1,56 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="app.drool.respite.activities.MainActivity"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="73dp">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="73dp">
 
-    <Button
-        android:text="Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="252dp"
-        tools:layout_editor_absoluteY="76dp"
-        android:id="@+id/button1"
-        app:layout_constraintLeft_toLeftOf="@+id/activity_main"
-        tools:layout_constraintLeft_creator="0"
-        app:layout_constraintTop_toTopOf="@+id/activity_main"
-        android:layout_marginTop="16dp"
-        tools:layout_constraintTop_creator="0"
-        app:layout_constraintRight_toRightOf="@+id/activity_main"
-        tools:layout_constraintRight_creator="0"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_main"
-        android:layout_marginBottom="16dp"
-        tools:layout_constraintBottom_creator="0"
-        app:layout_constraintVertical_bias="0.26" />
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="app.drool.respite.activities.MainActivity"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
-    <Button
-        android:text="VIEW INFO"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="252dp"
-        tools:layout_editor_absoluteY="132dp"
-        android:id="@+id/button2"
-        app:layout_constraintLeft_toLeftOf="@+id/button1"
-        tools:layout_constraintLeft_creator="0"
-        app:layout_constraintTop_toBottomOf="@+id/button1"
-        android:layout_marginTop="8dp"
-        tools:layout_constraintTop_creator="0" />
+        <Button
+            android:text="Login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="148dp"
+            tools:layout_editor_absoluteY="16dp"
+            android:id="@+id/button1"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+            tools:layout_constraintLeft_creator="0"
+            app:layout_constraintTop_toTopOf="@+id/activity_main"
+            android:layout_marginTop="16dp"
+            tools:layout_constraintTop_creator="0"
+            app:layout_constraintRight_toRightOf="@+id/activity_main"
+            tools:layout_constraintRight_creator="0"
+            app:layout_constraintBottom_toBottomOf="@+id/activity_main"
+            android:layout_marginBottom="16dp"
+            tools:layout_constraintBottom_creator="0"
+            app:layout_constraintVertical_bias="0.0"/>
 
-    <Button
-        android:text="FRONT PAGE"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="256dp"
-        tools:layout_editor_absoluteY="188dp"
-        android:id="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
-        android:layout_marginTop="8dp"
-        tools:layout_constraintTop_creator="0"
-        app:layout_constraintRight_toRightOf="@+id/button2"
-        tools:layout_constraintRight_creator="0" />
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:text="View Info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="146dp"
+            tools:layout_editor_absoluteY="72dp"
+            android:id="@+id/button2"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+            tools:layout_constraintLeft_creator="0"
+            app:layout_constraintTop_toBottomOf="@+id/button1"
+            android:layout_marginTop="8dp"
+            tools:layout_constraintTop_creator="0"
+            app:layout_constraintRight_toRightOf="@+id/activity_main"
+            tools:layout_constraintRight_creator="0"/>
+
+        <Button
+            android:text="FRONT PAGE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="138dp"
+            tools:layout_editor_absoluteY="128dp"
+            android:id="@+id/button3"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+            tools:layout_constraintLeft_creator="0"
+            app:layout_constraintTop_toBottomOf="@+id/button2"
+            android:layout_marginTop="8dp"
+            tools:layout_constraintTop_creator="0"
+            app:layout_constraintRight_toRightOf="@+id/activity_main"
+            tools:layout_constraintRight_creator="0"/>
+
+        <Button
+            android:text="Subreddit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="143dp"
+            tools:layout_editor_absoluteY="184dp"
+            android:id="@+id/button4"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+            tools:layout_constraintLeft_creator="0"
+            app:layout_constraintTop_toBottomOf="@+id/button3"
+            android:layout_marginTop="8dp"
+            tools:layout_constraintTop_creator="0"
+            app:layout_constraintRight_toRightOf="@+id/activity_main"
+            tools:layout_constraintRight_creator="0"/>
+
+        <Button
+            android:text="User"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="148dp"
+            tools:layout_editor_absoluteY="240dp"
+            android:id="@+id/button5"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+            tools:layout_constraintLeft_creator="0"
+            app:layout_constraintTop_toBottomOf="@+id/button4"
+            android:layout_marginTop="8dp"
+            tools:layout_constraintTop_creator="0"
+            app:layout_constraintRight_toRightOf="@+id/activity_main"
+            tools:layout_constraintRight_creator="0"/>
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

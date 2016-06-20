@@ -18,7 +18,7 @@
         >
 
         <TextView
-            android:text="@string/placeholder_description"
+            android:text="@string/placeholder.description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -29,7 +29,7 @@
             android:textSize="12sp"/>
 
         <TextView
-            android:text="@string/placeholder_title"
+            android:text="@string/placeholder.title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/comments_header_description"
@@ -52,7 +52,7 @@
             android:id="@+id/relativeLayout">
 
             <TextView
-                android:text="@string/placeholder_comments"
+                android:text="@string/placeholder.comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -62,7 +62,7 @@
                 android:textColor="@color/accent_material_dark"/>
 
             <TextView
-                android:text="@string/placeholder_score"
+                android:text="@string/placeholder.score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -75,7 +75,7 @@
     </RelativeLayout>
 
     <TextView
-        android:text="@string/placeholder_title"
+        android:text="@string/placeholder.title"
         android:id="@+id/comments_header_selftext"
         android:padding="8dp"
         android:layout_width="match_parent"

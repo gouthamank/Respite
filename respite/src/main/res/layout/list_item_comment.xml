@@ -28,7 +28,7 @@
 
             <TextView
                 android:id="@+id/list_item_comment_description"
-                android:text="@string/placeholder_description"
+                android:text="@string/placeholder.description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
@@ -40,7 +40,7 @@
 
             <com.laurencedawson.activetextview.ActiveTextView
                 android:id="@+id/list_item_comment_body"
-                android:text="@string/placeholder_title"
+                android:text="@string/placeholder.title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

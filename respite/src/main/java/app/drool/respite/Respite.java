@@ -17,7 +17,6 @@ import net.dean.jraw.http.LoggingMode;
 import net.dean.jraw.http.UserAgent;
 import net.dean.jraw.http.oauth.Credentials;
 import net.dean.jraw.http.oauth.OAuthException;
-import net.dean.jraw.paginators.SubredditPaginator;
 
 /**
  * Created by drool on 6/15/16.
@@ -29,7 +28,6 @@ public class Respite extends Application {
     private static final String sharedPreferencesName = "app.drool.respite.sharedprefs";
     private static final String TAG = "Respite.java";
     private RedditClient mRedditClient = null;
-    private SubredditPaginator subredditPaginator = null;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -62,7 +60,6 @@ public class Respite extends Application {
         RefreshTokenHandler tokenHandler = new RefreshTokenHandler(tokenStore, mRedditClient);
         AuthenticationManager.get().init(mRedditClient, tokenHandler);
 
-        subredditPaginator = new SubredditPaginator(mRedditClient);
     }
 
 
@@ -97,8 +94,6 @@ public class Respite extends Application {
                 break;
         }
     }
-
-    public SubredditPaginator getPaginator() { return subredditPaginator; }
 
     public RedditClient getRedditClient() { return mRedditClient; }
 }

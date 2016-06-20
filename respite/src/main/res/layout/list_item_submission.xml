@@ -18,7 +18,7 @@
 
         <ImageView
             android:id="@+id/list_item_submission_preview"
-            android:contentDescription="@string/submission_preview_accessibility"
+            android:contentDescription="@string/submission.preview.accessibility"
             android:background="@android:color/holo_orange_dark"
             android:layout_marginRight="4dp"
             android:layout_marginEnd="4dp"
@@ -26,7 +26,7 @@
             android:layout_height="75dp" />
 
         <TextView
-            android:text="@string/placeholder_description"
+            android:text="@string/placeholder.description"
             android:id="@+id/list_item_submission_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:fontFamily="sans-serif" />
 
         <TextView
-            android:text="@string/placeholder_title"
+            android:text="@string/placeholder.title"
             android:id="@+id/list_item_submission_title"
             android:layout_below="@id/list_item_submission_description"
             android:layout_alignLeft="@id/list_item_submission_description"
@@ -59,7 +59,7 @@
             android:id="@+id/list_item_submission_comments"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="@string/placeholder_comments"
+            android:text="@string/placeholder.comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -69,7 +69,7 @@
             android:id="@+id/list_item_submission_score"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:text="@string/placeholder_score"
+            android:text="@string/placeholder.score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
