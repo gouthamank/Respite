@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private Button loginButton ,viewButton, frontPageButton, subredditButton, userButton;
+    private Button loginButton, viewButton, frontPageButton, subredditButton, userButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton(R.string.dialog_customsubreddit_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(input.getText().toString().length() < 1 || input.getText().toString().contains(" "))
+                        if (input.getText().toString().length() < 1 || input.getText().toString().contains(" "))
                             Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.dialog_customsubreddit_retry), Toast.LENGTH_SHORT).show();
                         else {
                             Intent subredditIntent = new Intent(MainActivity.this, SubmissionsActivity.class);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton(R.string.dialog_customuser_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(input.getText().toString().length() < 1 || input.getText().toString().contains(" "))
+                        if (input.getText().toString().length() < 1 || input.getText().toString().contains(" "))
                             Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.dialog_customuser_retry), Toast.LENGTH_SHORT).show();
                         else {
                             Intent userIntent = new Intent(MainActivity.this, UserActivity.class);
@@ -126,19 +126,21 @@ public class MainActivity extends AppCompatActivity {
         checkIsLoggedIn();
     }
 
-    private void checkIsLoggedIn(){
-        if(AuthenticationManager.get().checkAuthState() == AuthenticationState.NONE){
+    private void checkIsLoggedIn() {
+        if (AuthenticationManager.get().checkAuthState() == AuthenticationState.NONE) {
             loginButton.setEnabled(true);
             loginButton.setText(getResources().getString(R.string.mainactivity_login));
             viewButton.setEnabled(false);
             frontPageButton.setEnabled(false);
             subredditButton.setEnabled(false);
+            userButton.setEnabled(false);
         } else {
             loginButton.setEnabled(false);
             loginButton.setText(getResources().getString(R.string.mainactivity_loggedin));
             viewButton.setEnabled(true);
             frontPageButton.setEnabled(true);
             subredditButton.setEnabled(true);
+            userButton.setEnabled(true);
         }
     }
 }

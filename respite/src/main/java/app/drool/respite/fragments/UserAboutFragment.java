@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,12 +39,12 @@ public class UserAboutFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(username == null)
+        if (username == null)
             username = getArguments() == null ? null : getArguments().getString("username");
-        if(mRedditClient == null)
+        if (mRedditClient == null)
             mRedditClient = ((Respite) getActivity().getApplication()).getRedditClient();
 
-        if(mAccount == null)
+        if (mAccount == null)
             startDownloadTask();
     }
 
@@ -53,7 +52,7 @@ public class UserAboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_about, container, false);
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             view.findViewById(R.id.fragment_user_about_progressbar).setVisibility(View.VISIBLE);
             view.findViewById(R.id.fragment_user_about_content).setVisibility(View.INVISIBLE);
         } else {
@@ -77,7 +76,7 @@ public class UserAboutFragment extends Fragment {
     }
 
     private void startDownloadTask() {
-        new AsyncTask<Void, Void, Account>(){
+        new AsyncTask<Void, Void, Account>() {
             @Override
             protected Account doInBackground(Void... params) {
                 try {
@@ -89,11 +88,9 @@ public class UserAboutFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Account account) {
-                if(account != null) {
-                    Log.d(TAG, "onPostExecute: " + account.toString());
+                if (account != null) {
                     refreshWithAccountDetails(account);
-                }
-                else
+                } else
                     Toast.makeText(getContext(), R.string.useractivity_networkerror, Toast.LENGTH_LONG).show();
             }
         }.execute();
@@ -112,11 +109,11 @@ public class UserAboutFragment extends Fragment {
         age.setText(Utilities.getFormattedCreationTime(account.getCreated()));
         linkkarma.setText(String.valueOf(account.getLinkKarma()));
         commentkarma.setText(String.valueOf(account.getCommentKarma()));
-        if(account.isFriend())
+        if (account.isFriend())
             isfriends.setText(R.string.fragment_user_about_true);
         else
             isfriends.setText(R.string.fragment_user_about_false);
-        if(account.isMod())
+        if (account.isMod())
             ismod.setText(R.string.fragment_user_about_true);
         else
             ismod.setText(R.string.fragment_user_about_false);

@@ -5,192 +5,200 @@
 
     <ProgressBar
         android:id="@+id/fragment_user_about_progressbar"
-        android:layout_centerInParent="true"
-        android:indeterminate="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"/>
 
-    <LinearLayout android:id="@+id/fragment_user_about_content"
-                  android:orientation="vertical"
-                  android:padding="8dp"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/fragment_user_about_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
-                android:text="@string/placeholder.user.name"
+                android:id="@+id/fragment_user_about_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:id="@+id/fragment_user_about_name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:text="@string/placeholder.user.name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="1dp"
-            android:background="@color/commentIndent" />
+            android:layout_margin="8dp"
+            android:background="@color/commentIndent"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif-smallcaps"
                 android:text="@string/fragment.user.about.age"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:fontFamily="sans-serif-smallcaps"
                 android:textSize="18sp"/>
 
             <TextView
-                android:text="@string/placeholder.user.age"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/fragment_user_about_age"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="30sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-smallcaps"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:text="@string/placeholder.user.age"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="30sp"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="1dp"
-            android:background="@color/commentIndent" />
+            android:layout_margin="8dp"
+            android:background="@color/commentIndent"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif-smallcaps"
                 android:text="@string/fragment.user.about.linkkarma"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:fontFamily="sans-serif-smallcaps"
                 android:textSize="18sp"/>
 
             <TextView
-                android:text="@string/placeholder.user.karma"
-                android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_height="wrap_content"
                 android:id="@+id/fragment_user_about_linkkarma"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="30sp"
-                android:fontFamily="sans-serif-smallcaps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="@string/placeholder.user.karma"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="30sp"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="1dp"
-            android:background="@color/commentIndent" />
+            android:layout_margin="8dp"
+            android:background="@color/commentIndent"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif-smallcaps"
                 android:text="@string/fragment.user.about.commentkarma"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:fontFamily="sans-serif-smallcaps"
                 android:textSize="18sp"/>
 
             <TextView
-                android:text="@string/placeholder.user.karma2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/fragment_user_about_commentkarma"
-                android:layout_centerVertical="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="30sp"
-                android:fontFamily="sans-serif-smallcaps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="@string/placeholder.user.karma2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="30sp"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="1dp"
-            android:background="@color/commentIndent" />
+            android:layout_margin="8dp"
+            android:background="@color/commentIndent"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif-smallcaps"
                 android:text="@string/fragment.user.about.isfriends"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:fontFamily="sans-serif-smallcaps"
                 android:textSize="18sp"/>
 
             <TextView
-                android:text="@string/placeholder.user.bool"
+                android:id="@+id/fragment_user_about_isfriends"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/fragment_user_about_isfriends"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="30sp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-smallcaps"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:text="@string/placeholder.user.bool"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="30sp"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="1dp"
-            android:background="@color/commentIndent" />
+            android:layout_margin="8dp"
+            android:background="@color/commentIndent"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
-                android:text="@string/fragment.user.about.ismod"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-smallcaps"
+                android:text="@string/fragment.user.about.ismod"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="18sp"/>
 
             <TextView
-                android:text="@string/placeholder.user.bool2"
+                android:id="@+id/fragment_user_about_ismod"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/fragment_user_about_ismod"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="30sp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-smallcaps"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:text="@string/placeholder.user.bool2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="30sp"/>
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

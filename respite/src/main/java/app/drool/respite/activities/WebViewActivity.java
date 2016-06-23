@@ -23,6 +23,7 @@ import app.drool.respite.R;
 public class WebViewActivity extends AppCompatActivity {
     WebView webView;
     String url;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +34,7 @@ public class WebViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         webView = new WebView(this);
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
@@ -62,7 +63,7 @@ public class WebViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if(webView.canGoBack())
+        if (webView.canGoBack())
             menu.findItem(R.id.menu_webview_back).setEnabled(true);
         else
             menu.findItem(R.id.menu_webview_back).setEnabled(false);
@@ -72,7 +73,7 @@ public class WebViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.menu_webview_openexternal:
                 try {
                     final Intent intent = new Intent(Intent.ACTION_VIEW);

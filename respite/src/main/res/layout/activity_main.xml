@@ -16,83 +16,83 @@
         tools:layout_editor_absoluteY="0dp">
 
         <Button
-            android:text="Login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="148dp"
-            tools:layout_editor_absoluteY="16dp"
             android:id="@+id/button1"
-            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
-            tools:layout_constraintLeft_creator="0"
-            app:layout_constraintTop_toTopOf="@+id/activity_main"
-            android:layout_marginTop="16dp"
-            tools:layout_constraintTop_creator="0"
-            app:layout_constraintRight_toRightOf="@+id/activity_main"
-            tools:layout_constraintRight_creator="0"
-            app:layout_constraintBottom_toBottomOf="@+id/activity_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Login"
+            app:layout_constraintBottom_toBottomOf="@+id/activity_main"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+            app:layout_constraintRight_toRightOf="@+id/activity_main"
+            app:layout_constraintTop_toTopOf="@+id/activity_main"
+            app:layout_constraintVertical_bias="0.0"
             tools:layout_constraintBottom_creator="0"
-            app:layout_constraintVertical_bias="0.0"/>
-
-        <Button
-            android:text="View Info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="146dp"
-            tools:layout_editor_absoluteY="72dp"
-            android:id="@+id/button2"
-            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
             tools:layout_constraintLeft_creator="0"
-            app:layout_constraintTop_toBottomOf="@+id/button1"
-            android:layout_marginTop="8dp"
+            tools:layout_constraintRight_creator="0"
             tools:layout_constraintTop_creator="0"
-            app:layout_constraintRight_toRightOf="@+id/activity_main"
-            tools:layout_constraintRight_creator="0"/>
-
-        <Button
-            android:text="FRONT PAGE"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="138dp"
-            tools:layout_editor_absoluteY="128dp"
-            android:id="@+id/button3"
-            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
-            tools:layout_constraintLeft_creator="0"
-            app:layout_constraintTop_toBottomOf="@+id/button2"
-            android:layout_marginTop="8dp"
-            tools:layout_constraintTop_creator="0"
-            app:layout_constraintRight_toRightOf="@+id/activity_main"
-            tools:layout_constraintRight_creator="0"/>
-
-        <Button
-            android:text="Subreddit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="143dp"
-            tools:layout_editor_absoluteY="184dp"
-            android:id="@+id/button4"
-            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
-            tools:layout_constraintLeft_creator="0"
-            app:layout_constraintTop_toBottomOf="@+id/button3"
-            android:layout_marginTop="8dp"
-            tools:layout_constraintTop_creator="0"
-            app:layout_constraintRight_toRightOf="@+id/activity_main"
-            tools:layout_constraintRight_creator="0"/>
-
-        <Button
-            android:text="User"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="148dp"
-            tools:layout_editor_absoluteY="240dp"
-            android:id="@+id/button5"
-            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
-            tools:layout_constraintLeft_creator="0"
-            app:layout_constraintTop_toBottomOf="@+id/button4"
+            tools:layout_editor_absoluteY="16dp"/>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            tools:layout_constraintTop_creator="0"
+            android:text="View Info"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
             app:layout_constraintRight_toRightOf="@+id/activity_main"
-            tools:layout_constraintRight_creator="0"/>
+            app:layout_constraintTop_toBottomOf="@+id/button1"
+            tools:layout_constraintLeft_creator="0"
+            tools:layout_constraintRight_creator="0"
+            tools:layout_constraintTop_creator="0"
+            tools:layout_editor_absoluteX="146dp"
+            tools:layout_editor_absoluteY="72dp"/>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="FRONT PAGE"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+            app:layout_constraintRight_toRightOf="@+id/activity_main"
+            app:layout_constraintTop_toBottomOf="@+id/button2"
+            tools:layout_constraintLeft_creator="0"
+            tools:layout_constraintRight_creator="0"
+            tools:layout_constraintTop_creator="0"
+            tools:layout_editor_absoluteX="138dp"
+            tools:layout_editor_absoluteY="128dp"/>
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Subreddit"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+            app:layout_constraintRight_toRightOf="@+id/activity_main"
+            app:layout_constraintTop_toBottomOf="@+id/button3"
+            tools:layout_constraintLeft_creator="0"
+            tools:layout_constraintRight_creator="0"
+            tools:layout_constraintTop_creator="0"
+            tools:layout_editor_absoluteX="143dp"
+            tools:layout_editor_absoluteY="184dp"/>
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="User"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+            app:layout_constraintRight_toRightOf="@+id/activity_main"
+            app:layout_constraintTop_toBottomOf="@+id/button4"
+            tools:layout_constraintLeft_creator="0"
+            tools:layout_constraintRight_creator="0"
+            tools:layout_constraintTop_creator="0"
+            tools:layout_editor_absoluteX="148dp"
+            tools:layout_editor_absoluteY="240dp"/>
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

@@ -21,34 +21,33 @@ import app.drool.respite.asyncloaders.PreviewFromURLTask;
 
 public class Utilities {
     private static final String TAG = "Utilities.java";
-    public static final String[] sCheeseStrings = {"Apricot", "Bechemel", "Sodium"};
 
     public static String getReadableCreationTime(Date createdTime) {
         Date currentTime = new Date();
         long diffMs = currentTime.getTime() - createdTime.getTime();
 
-        if(diffMs < 0)
+        if (diffMs < 0)
             return "in the future";
 
         long diffMinutes = diffMs / (1000 * 60);
         int diffMinutesInt = (int) diffMinutes;
 
-        if(diffMinutesInt < 2)
+        if (diffMinutesInt < 2)
             return "just now";
 
-        if(diffMinutesInt < 60)
+        if (diffMinutesInt < 60)
             return String.valueOf(diffMinutesInt) + "m";
 
         long diffHours = (long) Math.ceil(diffMinutes / 60);
         int diffHoursInt = (int) diffHours;
 
-        if(diffHoursInt < 24)
+        if (diffHoursInt < 24)
             return String.valueOf(diffHoursInt) + "h";
 
         long diffDays = (long) Math.ceil(diffHours / 24);
         int diffDaysInt = (int) diffDays;
 
-        if(diffDaysInt < 365)
+        if (diffDaysInt < 365)
             return String.valueOf(diffDays) + "d";
 
         return "";
@@ -61,7 +60,7 @@ public class Utilities {
 
     public static PreviewFromCacheTask getPreviewFromCacheTask(ImageView preview) {
         final Drawable drawable = preview.getDrawable();
-        if(drawable instanceof AsyncDrawableCache) {
+        if (drawable instanceof AsyncDrawableCache) {
             final AsyncDrawableCache asyncDrawableCache = (AsyncDrawableCache) drawable;
             return asyncDrawableCache.getPreviewFromCacheTask();
         }
@@ -70,7 +69,7 @@ public class Utilities {
 
     public static PreviewFromURLTask getPreviewFromURLTask(ImageView preview) {
         final Drawable drawable = preview.getDrawable();
-        if(drawable instanceof AsyncDrawableURL) {
+        if (drawable instanceof AsyncDrawableURL) {
             final AsyncDrawableURL asyncDrawable = (AsyncDrawableURL) drawable;
             return asyncDrawable.getPreviewFromURLTask();
         }

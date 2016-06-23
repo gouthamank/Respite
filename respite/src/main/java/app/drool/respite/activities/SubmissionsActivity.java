@@ -21,7 +21,7 @@ import app.drool.respite.adapters.SubmissionListAdapter;
  * Created by drool on 6/15/16.
  */
 
-public class SubmissionsActivity extends AppCompatActivity implements SubmissionListAdapter.EndlessScrollListener{
+public class SubmissionsActivity extends AppCompatActivity implements SubmissionListAdapter.EndlessScrollListener {
     private SubmissionListAdapter mAdapter = null;
     private ProgressBar progressBar = null;
     private SubredditPaginator paginator = null;
@@ -40,7 +40,7 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
         submissionList.setAdapter(mAdapter);
         mAdapter.setEndlessScrollListener(this);
 
-        if(getIntent().getExtras() == null)
+        if (getIntent().getExtras() == null)
             setUpPaginator(null);
         else
             setUpPaginator(getIntent().getExtras().getString("subreddit"));
@@ -53,7 +53,7 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -66,9 +66,9 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
     }
 
     private void setUpPaginator(String subreddit) {
-        if(paginator == null){
+        if (paginator == null) {
             paginator = new SubredditPaginator(((Respite) getApplication()).getRedditClient());
-            if(subreddit != null)
+            if (subreddit != null)
                 paginator.setSubreddit(subreddit);
         }
     }
@@ -78,14 +78,14 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String subredditTitle = paginator.getSubreddit();
-        if(subredditTitle == null)
+        if (subredditTitle == null)
             getSupportActionBar().setTitle(getResources().getString(R.string.actionbar_title_frontpage));
         else
             getSupportActionBar().setTitle(getResources().getString(R.string.actionbar_title_subreddit, subredditTitle));
     }
 
     private void loadNextPage() {
-        new AsyncTask<Void, Void, Listing<Submission>>(){
+        new AsyncTask<Void, Void, Listing<Submission>>() {
             @Override
             protected Listing<Submission> doInBackground(Void... params) {
                 try {
@@ -98,7 +98,7 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
             @Override
             protected void onPostExecute(Listing<Submission> submissions) {
                 super.onPostExecute(submissions);
-                if(submissions != null) {
+                if (submissions != null) {
                     if (progressBar.getVisibility() == ProgressBar.VISIBLE)
                         progressBar.setVisibility(ProgressBar.GONE);
 

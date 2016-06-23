@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_item_submission_view"
-    android:layout_marginLeft="4dp"
-    android:layout_marginStart="4dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginEnd="4dp"
-    android:layout_marginTop="4dp"
-    android:minHeight="50dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/list_item_submission_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:minHeight="50dp">
 
     <RelativeLayout
         android:id="@+id/list_item_submission_top"
@@ -18,72 +18,74 @@
 
         <ImageView
             android:id="@+id/list_item_submission_preview"
-            android:contentDescription="@string/submission.preview.accessibility"
-            android:background="@android:color/holo_orange_dark"
-            android:layout_marginRight="4dp"
-            android:layout_marginEnd="4dp"
             android:layout_width="75dp"
-            android:layout_height="75dp" />
+            android:layout_height="75dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@android:color/holo_orange_dark"
+            android:contentDescription="@string/submission.preview.accessibility"/>
 
         <TextView
-            android:text="@string/placeholder.description"
             android:id="@+id/list_item_submission_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/list_item_submission_preview"
             android:layout_toEndOf="@id/list_item_submission_preview"
+            android:layout_toRightOf="@id/list_item_submission_preview"
+            android:fontFamily="sans-serif"
+            android:text="@string/placeholder.description"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="14sp"
-            android:fontFamily="sans-serif" />
+            android:textSize="14sp"/>
 
         <TextView
-            android:text="@string/placeholder.title"
             android:id="@+id/list_item_submission_title"
-            android:layout_below="@id/list_item_submission_description"
-            android:layout_alignLeft="@id/list_item_submission_description"
-            android:layout_alignStart="@id/list_item_submission_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:layout_alignLeft="@id/list_item_submission_description"
+            android:layout_alignStart="@id/list_item_submission_description"
+            android:layout_below="@id/list_item_submission_description"
             android:fontFamily="sans-serif-condensed"
-            android:textSize="16sp" />
+            android:text="@string/placeholder.title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="16sp"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/list_item_submission_bottom"
-        android:layout_below="@id/list_item_submission_top"
-        android:layout_marginTop="4dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list_item_submission_top"
+        android:layout_marginTop="4dp">
+
         <TextView
             android:id="@+id/list_item_submission_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:fontFamily="sans-serif"
             android:text="@string/placeholder.comments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="12sp"
-            android:fontFamily="sans-serif" />
+            android:textSize="12sp"/>
+
         <TextView
             android:id="@+id/list_item_submission_score"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:text="@string/placeholder.score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:fontFamily="sans-serif"
+            android:text="@string/placeholder.score"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textSize="14sp"
             android:textStyle="normal|bold"
-            tools:ignore="RelativeOverlap"
-            android:fontFamily="sans-serif" />
+            tools:ignore="RelativeOverlap"/>
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="4dp"
         android:layout_below="@id/list_item_submission_bottom"
-        android:background="@android:color/darker_gray" />
+        android:layout_marginTop="4dp"
+        android:background="@android:color/darker_gray"/>
 
 </RelativeLayout>

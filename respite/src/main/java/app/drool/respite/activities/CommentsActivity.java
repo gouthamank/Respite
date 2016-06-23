@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.laurencedawson.activetextview.ActiveTextView;
 
@@ -28,31 +29,46 @@ import app.drool.respite.utils.Utilities;
 
 public class CommentsActivity extends AppCompatActivity {
 
-    private TextView headerDescription, headerTitle, headerComments, headerScore, headerSelfText;
     private static final String TAG = "CommentsActivity.java";
+    private TextView headerDescription, headerTitle, headerComments, headerScore, headerSelfText;
     private LinearLayout commentList = null;
     private SubmissionParcelable submissionParcelable = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate (savedInstanceState);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-        submissionParcelable = getIntent().getParcelableExtra("top");
         commentList = (LinearLayout) findViewById(R.id.comments_list);
+
+        submissionParcelable = getIntent().getParcelableExtra("top");
+
+        if (submissionParcelable == null) {
+            submissionParcelable = SubmissionParcelable.newDummyInstance();
+
+            String submissionID = getIntent().getStringExtra("submissionID");
+            String commentID = getIntent().getStringExtra("commentID");
+            submissionParcelable.setSubmissionID(submissionID);
+            submissionParcelable.setCommentID(commentID);
+        } else
+            submissionParcelable.setCommentID(null);
 
         setUpMenuBar(submissionParcelable.getSubreddit());
         updateHeader(submissionParcelable);
-        loadComments(submissionParcelable.getSubmissionID());
+
+        if (submissionParcelable.getCommentID() == null)
+            loadComments(submissionParcelable.getSubmissionID());
+        else
+            loadComments(submissionParcelable.getSubmissionID(), submissionParcelable.getCommentID());
     }
 
     @Override
     protected void onResume() {
-        super.onResume ();
+        super.onResume();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -79,6 +95,39 @@ public class CommentsActivity extends AppCompatActivity {
         }.execute();
     }
 
+    private void loadComments(final String submissionID, final String commentID) {
+        new AsyncTask<Void, Void, Submission>() {
+            @Override
+            protected Submission doInBackground(Void... params) {
+                return ((Respite) getApplication()).getRedditClient().getSubmission(submissionID);
+            }
+
+            @Override
+            protected void onPostExecute(Submission submission) {
+                updateHeader(submission);
+                setUpMenuBar(submission.getSubredditName());
+                CommentNode rootComments = submission.getComments();
+                if (rootComments.findChild("t1_" + commentID).isPresent()) {
+                    addSingleCommentThreadAlert();
+                    addComments(rootComments.findChild("t1_" + commentID).get());
+                } else
+                    addComments(rootComments);
+            }
+        }.execute();
+    }
+
+    private void addSingleCommentThreadAlert() {
+        ViewGroup alert = (ViewGroup) getLayoutInflater().inflate(R.layout.list_item_single_thread_alert, commentList, false);
+
+        LinearLayout alertLayout = (LinearLayout) alert.findViewById(R.id.comments_single_thread_alert);
+        alertLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void updateHeader(SubmissionParcelable submissionOld) {
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_comments_header, commentList, false);
 
@@ -92,13 +141,14 @@ public class CommentsActivity extends AppCompatActivity {
         headerComments.setText(submissionOld.getComments());
         headerScore.setText(submissionOld.getScore());
         headerTitle.setText(submissionOld.getTitle());
-        if(submissionOld.getSelfText() != null)
+        if (submissionOld.getSelfText() != null)
             headerSelfText.setText(Html.fromHtml(submissionOld.getSelfText()));
         else
             headerSelfText.setVisibility(View.GONE);
 
         commentList.addView(headerView);
     }
+
     private void updateHeader(Submission submission) {
         SubmissionParcelable submissionNew = new SubmissionParcelable(this, submission);
 
@@ -107,16 +157,15 @@ public class CommentsActivity extends AppCompatActivity {
         headerScore.setText(submissionNew.getScore());
         headerTitle.setText(submissionNew.getTitle());
 
-        if(submissionNew.getSelfText() != null) {
+        if (submissionNew.getSelfText() != null) {
             headerSelfText.setText(Html.fromHtml(submissionNew.getSelfText()));
             headerSelfText.setVisibility(View.VISIBLE);
-        }
-        else
+        } else
             headerSelfText.setVisibility(View.GONE);
     }
 
     private void addComments(CommentNode comments) {
-        for(CommentNode node : comments.walkTree()) {
+        for (CommentNode node : comments.walkTree()) {
             ViewGroup comment = (ViewGroup) getLayoutInflater().inflate(R.layout.list_item_comment, commentList, false);
 
             ((ActiveTextView) comment.findViewById(R.id.list_item_comment_body))
@@ -142,7 +191,7 @@ public class CommentsActivity extends AppCompatActivity {
             comment.findViewById(R.id.list_item_comment_indent)
                     .setLayoutParams(params);
 
-            if(commentList != null)
+            if (commentList != null)
                 commentList.addView(comment);
         }
     }

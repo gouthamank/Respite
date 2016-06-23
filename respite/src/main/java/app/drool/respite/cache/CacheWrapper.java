@@ -16,7 +16,7 @@ public class CacheWrapper {
     private static final String TAG = "CacheWrapper.java";
 
     public static void addPreview(File cacheDir, String submissionID, Bitmap preview) {
-        if(hasPreview(cacheDir, submissionID))
+        if (hasPreview(cacheDir, submissionID))
             return;
 
         final String filename = submissionID + "_preview";
@@ -32,7 +32,7 @@ public class CacheWrapper {
 
     public static boolean hasPreview(File cacheDir, String submissionID) {
         final String filename = submissionID + "_preview";
-        if(cacheDir.list() == null)
+        if (cacheDir.list() == null)
             return false;
 
         File cachedFile = new File(cacheDir, filename);
@@ -42,16 +42,16 @@ public class CacheWrapper {
     public static Bitmap getPreview(File cacheDir, String submissionID) {
         final String filename = submissionID + "_preview";
         File cacheFile = new File(cacheDir, filename);
-        if(hasPreview(cacheDir, submissionID)){
+        if (hasPreview(cacheDir, submissionID)) {
             return BitmapFactory.decodeFile(cacheFile.getAbsolutePath());
         }
         return null;
     }
 
     public static void clearPreviewCache(File cacheDir) {
-        if(cacheDir.exists() && cacheDir.isDirectory()){
-            for(File f: cacheDir.listFiles()){
-                if(f.isDirectory())
+        if (cacheDir.exists() && cacheDir.isDirectory()) {
+            for (File f : cacheDir.listFiles()) {
+                if (f.isDirectory())
                     deleteDir(f);
                 else
                     //noinspection ResultOfMethodCallIgnored
@@ -61,9 +61,9 @@ public class CacheWrapper {
     }
 
     private static void deleteDir(File dir) {
-        if(dir.exists() && dir.isDirectory()) {
-            for(File f : dir.listFiles()) {
-                if(f.isDirectory())
+        if (dir.exists() && dir.isDirectory()) {
+            for (File f : dir.listFiles()) {
+                if (f.isDirectory())
                     deleteDir(f);
                 else
                     //noinspection ResultOfMethodCallIgnored

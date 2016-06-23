@@ -38,37 +38,10 @@ import app.drool.respite.utils.Utilities;
 public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAdapter.SubmissionHolder> {
 
     private static final int ENDLESS_SCROLL_THRESHOLD = 10;
-
-    public interface EndlessScrollListener {
-        void onLoadMore(int position);
-    }
-
     private LinkedList<Submission> submissions = null;
     private Context mContext = null;
     private EndlessScrollListener endlessScrollListener;
-
-    static class SubmissionHolder extends RecyclerView.ViewHolder {
-        TextView description;
-        TextView title;
-        TextView comments;
-        TextView score;
-        ImageView preview;
-
-        RelativeLayout view;
-
-        SubmissionHolder(RelativeLayout v){
-            super(v);
-            this.description = (TextView) v.findViewById(R.id.list_item_submission_description);
-            this.title = (TextView) v.findViewById(R.id.list_item_submission_title);
-            this.comments = (TextView) v.findViewById(R.id.list_item_submission_comments);
-            this.score = (TextView) v.findViewById(R.id.list_item_submission_score);
-            this.preview = (ImageView) v.findViewById(R.id.list_item_submission_preview);
-
-            this.view = v;
-        }
-    }
-
-    public SubmissionListAdapter(Context mContext){
+    public SubmissionListAdapter(Context mContext) {
         this.mContext = mContext;
         this.submissions = new LinkedList<>();
     }
@@ -80,8 +53,38 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
 
     public SubmissionListAdapter(Context mContext, Listing<Submission> submissions) {
         this.mContext = mContext;
-        for(Submission s : submissions)
+        for (Submission s : submissions)
             this.submissions.add(s);
+    }
+
+    private static boolean cancelPotentialWorkFromCache(String submissionID, ImageView preview) {
+        final PreviewFromCacheTask previewFromCacheTask = Utilities.getPreviewFromCacheTask(preview);
+
+        if (previewFromCacheTask != null) {
+            final String id = previewFromCacheTask.submissionID;
+            if (id == null || !id.equals(submissionID)) {
+                previewFromCacheTask.cancel(true);
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean cancelPotentialWorkFromURL(String submissionID, ImageView preview) {
+        final PreviewFromURLTask previewFromURLTask = Utilities.getPreviewFromURLTask(preview);
+
+        if (previewFromURLTask != null) {
+            final String id = previewFromURLTask.submissionID;
+            if (id == null || !id.equals(submissionID)) {
+                previewFromURLTask.cancel(true);
+            } else {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void addSubmissions(Submission s) {
@@ -92,7 +95,7 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
     public void addSubmissions(Listing<Submission> submissions) {
         int latestIndex = this.submissions.size();
 
-        for(Submission s : submissions) {
+        for (Submission s : submissions) {
             this.submissions.add(s);
             notifyItemInserted(latestIndex);
             latestIndex++;
@@ -122,13 +125,13 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
 
         Thumbnails thumbnails = submission.getThumbnails();
         String thumbnailURL = null;
-        if(thumbnails != null) {
+        if (thumbnails != null) {
             Image[] variations = thumbnails.getVariations();
-            if(variations.length > 1)
+            if (variations.length > 1)
                 thumbnailURL = variations[0].getUrl();
         }
 
-        if(thumbnailURL == null)
+        if (thumbnailURL == null)
             holder.preview.setVisibility(ImageView.GONE);
         else {
             holder.preview.setVisibility(ImageView.VISIBLE);
@@ -165,8 +168,8 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
     }
 
     private void loadPreview(final String submissionID, ImageView preview, final String thumbnailURL) {
-        if(CacheWrapper.hasPreview(mContext.getCacheDir(), submissionID)){
-            if(cancelPotentialWorkFromCache(submissionID, preview)){
+        if (CacheWrapper.hasPreview(mContext.getCacheDir(), submissionID)) {
+            if (cancelPotentialWorkFromCache(submissionID, preview)) {
                 final PreviewFromCacheTask task = new PreviewFromCacheTask(mContext.getCacheDir(), submissionID, preview);
                 Bitmap placeholder = BitmapFactory.decodeResource(mContext.getResources(), R.color.colorAccent);
                 final AsyncDrawableCache asyncDrawableCache = new AsyncDrawableCache(mContext.getResources(), placeholder, task);
@@ -174,7 +177,7 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
                 task.execute();
             }
         } else {
-            if(cancelPotentialWorkFromURL(submissionID, preview)) {
+            if (cancelPotentialWorkFromURL(submissionID, preview)) {
                 final PreviewFromURLTask task = new PreviewFromURLTask(mContext.getCacheDir(), submissionID, preview, thumbnailURL);
                 Bitmap placeholder = BitmapFactory.decodeResource(mContext.getResources(), R.color.colorAccent);
                 final AsyncDrawableURL asyncDrawableURL = new AsyncDrawableURL(mContext.getResources(), placeholder, task);
@@ -184,34 +187,29 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         }
     }
 
-    private static boolean cancelPotentialWorkFromCache(String submissionID, ImageView preview) {
-        final PreviewFromCacheTask previewFromCacheTask = Utilities.getPreviewFromCacheTask(preview);
-
-        if(previewFromCacheTask != null) {
-            final String id = previewFromCacheTask.submissionID;
-            if(id == null || !id.equals(submissionID)) {
-                previewFromCacheTask.cancel(true);
-            } else {
-                return false;
-            }
-        }
-
-        return true;
+    public interface EndlessScrollListener {
+        void onLoadMore(int position);
     }
 
-    private static boolean cancelPotentialWorkFromURL(String submissionID, ImageView preview) {
-        final PreviewFromURLTask previewFromURLTask = Utilities.getPreviewFromURLTask(preview);
+    static class SubmissionHolder extends RecyclerView.ViewHolder {
+        TextView description;
+        TextView title;
+        TextView comments;
+        TextView score;
+        ImageView preview;
 
-        if(previewFromURLTask != null) {
-            final String id = previewFromURLTask.submissionID;
-            if(id == null || !id.equals(submissionID)) {
-                previewFromURLTask.cancel(true);
-            } else {
-                return false;
-            }
+        RelativeLayout view;
+
+        SubmissionHolder(RelativeLayout v) {
+            super(v);
+            this.description = (TextView) v.findViewById(R.id.list_item_submission_description);
+            this.title = (TextView) v.findViewById(R.id.list_item_submission_title);
+            this.comments = (TextView) v.findViewById(R.id.list_item_submission_comments);
+            this.score = (TextView) v.findViewById(R.id.list_item_submission_score);
+            this.preview = (ImageView) v.findViewById(R.id.list_item_submission_preview);
+
+            this.view = v;
         }
-
-        return true;
     }
 }
 

@@ -18,12 +18,12 @@ import app.drool.respite.utils.Utilities;
  */
 
 public class PreviewFromURLTask extends AsyncTask<Void, Void, Bitmap> {
+    public final String submissionID;
     private final WeakReference<ImageView> weakReference;
     private final File cacheDir;
-    public final String submissionID;
     private final String thumbnailLocation;
 
-    public PreviewFromURLTask(File cacheDir, String submissionID, ImageView preview, String thumbnailLocation){
+    public PreviewFromURLTask(File cacheDir, String submissionID, ImageView preview, String thumbnailLocation) {
         this.cacheDir = cacheDir;
         this.submissionID = submissionID;
         this.weakReference = new WeakReference<>(preview);
@@ -42,13 +42,13 @@ public class PreviewFromURLTask extends AsyncTask<Void, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
-        if(isCancelled())
+        if (isCancelled())
             bitmap = null;
 
-        if(weakReference != null && bitmap != null){
+        if (weakReference != null && bitmap != null) {
             final ImageView preview = weakReference.get();
             final PreviewFromURLTask previewFromURLTask = Utilities.getPreviewFromURLTask(preview);
-            if(this == previewFromURLTask && preview != null){
+            if (this == previewFromURLTask && preview != null) {
                 weakReference.get().setImageBitmap(bitmap);
                 weakReference.get().setBackgroundResource(android.R.color.transparent);
                 CacheWrapper.addPreview(cacheDir, submissionID, bitmap);

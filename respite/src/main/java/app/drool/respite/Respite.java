@@ -28,6 +28,7 @@ public class Respite extends Application {
     private static final String sharedPreferencesName = "app.drool.respite.sharedprefs";
     private static final String TAG = "Respite.java";
     private RedditClient mRedditClient = null;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -35,7 +36,7 @@ public class Respite extends Application {
         mRedditClient.setLoggingMode(LoggingMode.ALWAYS);
 
         final SharedPreferences sharedPreferences = getApplicationContext()
-                                                .getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
+                .getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
 
         TokenStore tokenStore = new TokenStore() {
             @Override
@@ -45,7 +46,7 @@ public class Respite extends Application {
 
             @Override
             public String readToken(String key) throws NoSuchTokenException {
-                if(isStored(key))
+                if (isStored(key))
                     return sharedPreferences.getString(key, null);
                 else
                     throw new NoSuchTokenException("Token " + key + " not found in store");
@@ -63,10 +64,10 @@ public class Respite extends Application {
     }
 
 
-    public void refreshCredentials(Context mcContext){
+    public void refreshCredentials(Context mcContext) {
         AuthenticationState state = AuthenticationManager.get().checkAuthState();
 
-        switch(state) {
+        switch (state) {
             case READY:
                 break;
             case NONE:
@@ -95,5 +96,7 @@ public class Respite extends Application {
         }
     }
 
-    public RedditClient getRedditClient() { return mRedditClient; }
+    public RedditClient getRedditClient() {
+        return mRedditClient;
+    }
 }

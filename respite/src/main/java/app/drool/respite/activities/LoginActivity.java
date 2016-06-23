@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final OAuthHelper helper = AuthenticationManager.get().getRedditClient().getOAuthHelper();
 
-        String[] scopes = {"identity", "read"};
+        String[] scopes = {"identity", "read", "history"};
 
         final URL authorizationURL = helper.getAuthorizationUrl(Respite.CREDENTIALS, true, true, scopes);
         final WebView webView = (WebView) findViewById(R.id.webview);
@@ -47,12 +47,12 @@ public class LoginActivity extends AppCompatActivity {
 
         assert webView != null;
         webView.loadUrl(authorizationURL.toExternalForm());
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                if(url.contains("code=")){
+                if (url.contains("code=")) {
                     onUserChallenge(url, Respite.CREDENTIALS);
-                } else if (url.contains("error=")){
+                } else if (url.contains("error=")) {
                     Toast.makeText(LoginActivity.this, "You must allow to continue", Toast.LENGTH_LONG).show();
                     webView.loadUrl(authorizationURL.toExternalForm());
                 }
@@ -65,8 +65,8 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void onUserChallenge(final String url, final Credentials credentials){
-        new AsyncTask<String, Void, String>(){
+    private void onUserChallenge(final String url, final Credentials credentials) {
+        new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
                 try {

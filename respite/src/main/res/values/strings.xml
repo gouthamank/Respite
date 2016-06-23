@@ -6,6 +6,8 @@
 
     <string name="useractivity.networkerror">Error retrieving user details</string>
 
+    <string name="commentsactivity.singlecommentthread.alert">Viewing single comment thread</string>
+    <string name="commentsactivity.singlecommentthread.link">Tap to view all comments</string>
     <string name="actionbar.title.frontpage">Front Page</string>
     <string name="actionbar.title.subreddit">/r/%1$s</string>
     <string name="actionbar.title.user">/u/%1$s</string>

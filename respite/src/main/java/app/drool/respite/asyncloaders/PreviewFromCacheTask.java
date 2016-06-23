@@ -15,11 +15,11 @@ import app.drool.respite.utils.Utilities;
  */
 
 public class PreviewFromCacheTask extends AsyncTask<Void, Void, Bitmap> {
+    public final String submissionID;
     private final WeakReference<ImageView> weakReference;
     private final File cacheDir;
-    public final String submissionID;
 
-    public PreviewFromCacheTask(File cacheDir, String submissionID, ImageView preview){
+    public PreviewFromCacheTask(File cacheDir, String submissionID, ImageView preview) {
         this.cacheDir = cacheDir;
         this.submissionID = submissionID;
         this.weakReference = new WeakReference<>(preview);
@@ -32,13 +32,13 @@ public class PreviewFromCacheTask extends AsyncTask<Void, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
-        if(isCancelled())
+        if (isCancelled())
             bitmap = null;
 
-        if(weakReference != null && bitmap != null){
+        if (weakReference != null && bitmap != null) {
             final ImageView preview = weakReference.get();
             final PreviewFromCacheTask previewFromCacheTask = Utilities.getPreviewFromCacheTask(preview);
-            if(this == previewFromCacheTask && preview != null){
+            if (this == previewFromCacheTask && preview != null) {
                 weakReference.get().setImageBitmap(bitmap);
                 weakReference.get().setBackgroundResource(android.R.color.transparent);
             }

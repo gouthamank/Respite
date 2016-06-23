@@ -25,7 +25,7 @@ public class UserInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
-        new AsyncTask<Void, Void, LoggedInAccount>(){
+        new AsyncTask<Void, Void, LoggedInAccount>() {
             @Override
             protected LoggedInAccount doInBackground(Void... params) {
                 RedditClient mRedditClient = AuthenticationManager.get().getRedditClient();
