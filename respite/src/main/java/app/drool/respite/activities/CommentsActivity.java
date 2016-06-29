@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,34 +35,47 @@ public class CommentsActivity extends AppCompatActivity {
 
     private static final String TAG = "CommentsActivity.java";
     private TextView headerDescription, headerTitle, headerComments, headerScore, headerSelfText;
+
+    ;
+    private ProgressBar progressBar;
     private LinearLayout commentList = null;
     private SubmissionParcelable submissionParcelable = null;
+    private ACTIVITY_MODES currentMode = null;
+    private String submissionID = null;
+    private String commentID = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
         commentList = (LinearLayout) findViewById(R.id.comments_list);
+        addEmptyHeader();
 
         submissionParcelable = getIntent().getParcelableExtra("top");
+        submissionID = getIntent().getStringExtra("submissionID");
+        commentID = getIntent().getStringExtra("commentID");
 
-        if (submissionParcelable == null) {
-            submissionParcelable = SubmissionParcelable.newDummyInstance();
-
-            String submissionID = getIntent().getStringExtra("submissionID");
-            String commentID = getIntent().getStringExtra("commentID");
-            submissionParcelable.setSubmissionID(submissionID);
-            submissionParcelable.setCommentID(commentID);
-        } else
-            submissionParcelable.setCommentID(null);
-
-        setUpMenuBar(submissionParcelable.getSubreddit());
-        updateHeader(submissionParcelable);
-
-        if (submissionParcelable.getCommentID() == null)
-            loadComments(submissionParcelable.getSubmissionID());
+        if (submissionParcelable != null)
+            currentMode = ACTIVITY_MODES.ALL_COMMENTS_WITH_BUNDLE;
+        else if (commentID == null)
+            currentMode = ACTIVITY_MODES.ALL_COMMENTS_NO_BUNDLE;
         else
-            loadComments(submissionParcelable.getSubmissionID(), submissionParcelable.getCommentID());
+            currentMode = ACTIVITY_MODES.SINGLE_COMMENT;
+
+        if (currentMode != ACTIVITY_MODES.ALL_COMMENTS_WITH_BUNDLE) {
+            setUpMenuBar("");
+
+            if (currentMode == ACTIVITY_MODES.SINGLE_COMMENT)
+                loadComments(submissionID, commentID);
+            else
+                loadComments(submissionID);
+        } else {
+            setUpMenuBar(submissionParcelable.getSubreddit());
+            updateHeader(submissionParcelable);
+
+            submissionID = submissionParcelable.getSubmissionID();
+            loadComments(submissionID);
+        }
     }
 
     @Override
@@ -69,6 +86,9 @@ public class CommentsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_comments_refresh:
+                refreshPage();
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -80,6 +100,13 @@ public class CommentsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.actionbar_title_subreddit, subreddit));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_comments, menu);
+        return true;
+    }
+
     private void loadComments(final String submissionID) {
         new AsyncTask<Void, Void, Submission>() {
             @Override
@@ -89,7 +116,10 @@ public class CommentsActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Submission submission) {
+                progressBar.setVisibility(ProgressBar.GONE);
+
                 updateHeader(submission);
+                setUpMenuBar(submission.getSubredditName());
                 addComments(submission.getComments());
             }
         }.execute();
@@ -104,6 +134,9 @@ public class CommentsActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Submission submission) {
+                progressBar.setVisibility(ProgressBar.GONE);
+
+
                 updateHeader(submission);
                 setUpMenuBar(submission.getSubredditName());
                 CommentNode rootComments = submission.getComments();
@@ -116,19 +149,40 @@ public class CommentsActivity extends AppCompatActivity {
         }.execute();
     }
 
+    private void refreshPage() {
+        refreshPage(false);
+    }
+
+    private void refreshPage(boolean shouldIgnoreCurrentMode) {
+        Toast.makeText(getApplicationContext(), "Should refresh here.", Toast.LENGTH_SHORT).show();
+        commentList.removeAllViews();
+        progressBar.setVisibility(View.VISIBLE);
+
+        addEmptyHeader();
+
+        if (!shouldIgnoreCurrentMode && currentMode == ACTIVITY_MODES.SINGLE_COMMENT) {
+            loadComments(submissionID, commentID);
+        } else if (shouldIgnoreCurrentMode) {
+            currentMode = ACTIVITY_MODES.ALL_COMMENTS_NO_BUNDLE;
+            loadComments(submissionID);
+        } else
+            loadComments(submissionID);
+    }
+
     private void addSingleCommentThreadAlert() {
         ViewGroup alert = (ViewGroup) getLayoutInflater().inflate(R.layout.list_item_single_thread_alert, commentList, false);
-
         LinearLayout alertLayout = (LinearLayout) alert.findViewById(R.id.comments_single_thread_alert);
         alertLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "clicked", Toast.LENGTH_SHORT).show();
+                refreshPage(true);
             }
         });
+
+        commentList.addView(alert);
     }
 
-    private void updateHeader(SubmissionParcelable submissionOld) {
+    private void addEmptyHeader() {
         ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_comments_header, commentList, false);
 
         headerDescription = (TextView) headerView.findViewById(R.id.comments_header_description);
@@ -136,36 +190,41 @@ public class CommentsActivity extends AppCompatActivity {
         headerComments = (TextView) headerView.findViewById(R.id.comments_header_comments);
         headerScore = (TextView) headerView.findViewById(R.id.comments_header_score);
         headerSelfText = (TextView) headerView.findViewById(R.id.comments_header_selftext);
+        progressBar = (ProgressBar) findViewById(R.id.activity_comments_progressbar);
 
-        headerDescription.setText(submissionOld.getDescription());
-        headerComments.setText(submissionOld.getComments());
-        headerScore.setText(submissionOld.getScore());
-        headerTitle.setText(submissionOld.getTitle());
-        if (submissionOld.getSelfText() != null)
-            headerSelfText.setText(Html.fromHtml(submissionOld.getSelfText()));
+        SubmissionParcelable submission = SubmissionParcelable.newDummyInstance();
+        headerDescription.setText(submission.getDescription());
+        headerComments.setText(submission.getComments());
+        headerScore.setText(submission.getScore());
+        headerTitle.setText(submission.getTitle());
+        if (submission.getSelfText() != null)
+            headerSelfText.setText(Html.fromHtml(submission.getSelfText()));
         else
             headerSelfText.setVisibility(View.GONE);
 
         commentList.addView(headerView);
     }
 
-    private void updateHeader(Submission submission) {
-        SubmissionParcelable submissionNew = new SubmissionParcelable(this, submission);
-
-        headerDescription.setText(submissionNew.getDescription());
-        headerComments.setText(submissionNew.getComments());
-        headerScore.setText(submissionNew.getScore());
-        headerTitle.setText(submissionNew.getTitle());
-
-        if (submissionNew.getSelfText() != null) {
-            headerSelfText.setText(Html.fromHtml(submissionNew.getSelfText()));
+    private void updateHeader(SubmissionParcelable submission) {
+        headerDescription.setText(submission.getDescription());
+        headerComments.setText(submission.getComments());
+        headerScore.setText(submission.getScore());
+        headerTitle.setText(submission.getTitle());
+        if (submission.getSelfText() != null) {
             headerSelfText.setVisibility(View.VISIBLE);
+            headerSelfText.setText(Html.fromHtml(submission.getSelfText()));
         } else
             headerSelfText.setVisibility(View.GONE);
     }
 
+    private void updateHeader(Submission submission) {
+        updateHeader(new SubmissionParcelable(this, submission));
+    }
+
     private void addComments(CommentNode comments) {
         for (CommentNode node : comments.walkTree()) {
+            Log.d(TAG, "addComments: " + node.toString());
+
             ViewGroup comment = (ViewGroup) getLayoutInflater().inflate(R.layout.list_item_comment, commentList, false);
 
             ((ActiveTextView) comment.findViewById(R.id.list_item_comment_body))
@@ -194,5 +253,11 @@ public class CommentsActivity extends AppCompatActivity {
             if (commentList != null)
                 commentList.addView(comment);
         }
+    }
+
+    private enum ACTIVITY_MODES {
+        SINGLE_COMMENT,
+        ALL_COMMENTS_WITH_BUNDLE,
+        ALL_COMMENTS_NO_BUNDLE
     }
 }

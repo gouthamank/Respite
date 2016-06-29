@@ -87,6 +87,10 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         return true;
     }
 
+    public void clearSubmissions() {
+        this.submissions.clear();
+        notifyDataSetChanged();
+    }
     public void addSubmissions(Submission s) {
         this.submissions.add(s);
         notifyDataSetChanged();

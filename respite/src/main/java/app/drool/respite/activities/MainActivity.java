@@ -15,12 +15,15 @@ import net.dean.jraw.auth.AuthenticationState;
 
 import app.drool.respite.R;
 import app.drool.respite.Respite;
+import app.drool.respite.handlers.LinkHandler;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
     private Button loginButton, viewButton, frontPageButton, subredditButton, userButton;
+
+    private Button lhTest1, lhTest2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         frontPageButton = (Button) findViewById(R.id.button3);
         subredditButton = (Button) findViewById(R.id.button4);
         userButton = (Button) findViewById(R.id.button5);
+
+        lhTest1 = (Button) findViewById(R.id.button6);
+        lhTest2 = (Button) findViewById(R.id.button7);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +123,20 @@ public class MainActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
+
+        lhTest1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinkHandler.analyse(MainActivity.this, "https://www.reddit.com/r/unixporn/comments/37csyp/osx_heres_my_custom_iterm2_without_borders_and/");
+            }
+        });
+
+        lhTest2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinkHandler.analyse(MainActivity.this, "https://www.reddit.com/r/unixporn/comments/37csyp/osx_heres_my_custom_iterm2_without_borders_and/crm2p4m");
+            }
+        });
     }
 
     @Override
@@ -134,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
             frontPageButton.setEnabled(false);
             subredditButton.setEnabled(false);
             userButton.setEnabled(false);
+            lhTest1.setEnabled(false);
+            lhTest2.setEnabled(false);
         } else {
             loginButton.setEnabled(false);
             loginButton.setText(getResources().getString(R.string.mainactivity_loggedin));
@@ -141,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
             frontPageButton.setEnabled(true);
             subredditButton.setEnabled(true);
             userButton.setEnabled(true);
+            lhTest1.setEnabled(true);
+            lhTest2.setEnabled(true);
         }
     }
 }

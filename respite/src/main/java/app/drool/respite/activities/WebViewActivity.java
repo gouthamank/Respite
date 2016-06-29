@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -21,8 +22,8 @@ import app.drool.respite.R;
  */
 
 public class WebViewActivity extends AppCompatActivity {
-    WebView webView;
-    String url;
+    private WebView webView;
+    private String url;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class WebViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         webView = new WebView(this);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -51,6 +53,7 @@ public class WebViewActivity extends AppCompatActivity {
             }
 
         });
+
         webView.loadUrl(url);
         setContentView(webView);
     }
@@ -59,6 +62,17 @@ public class WebViewActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_webview, menu);
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+            webView.goBack();
+            invalidateOptionsMenu();
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 
     @Override
@@ -87,6 +101,7 @@ public class WebViewActivity extends AppCompatActivity {
 
             case R.id.menu_webview_back:
                 webView.goBack();
+                invalidateOptionsMenu();
                 break;
 
             default:

@@ -50,7 +50,9 @@ public class Utilities {
         if (diffDaysInt < 365)
             return String.valueOf(diffDays) + "d";
 
-        return "";
+        long diffYears = (long) Math.ceil(diffDays / 365);
+
+        return String.valueOf(diffYears) + "y";
     }
 
     public static String getFormattedCreationTime(Date createdTime) {

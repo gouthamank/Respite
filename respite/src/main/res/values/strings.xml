@@ -39,9 +39,26 @@
     </plurals>
     <string name="submission.score">%1$s</string>
 
-    <string name="webview.openexternal">Open in browser</string>
-    <string name="webview.back">Back</string>
-    <string name="webview.forward">Forward</string>
+    <string name="menu.webview.openexternal">Open in browser</string>
+    <string name="menu.webview.back">Back</string>
+    <string name="menu.webview.forward">Forward</string>
+
+    <string name="menu.comments.refresh">Refresh</string>
+
+    <string name="menu.submissions.refresh">Refresh</string>
+
+    <string name="menu.submissions.sort">Sort</string>
+    <string name="menu.submissions.sort.hot">Hot</string>
+    <string name="menu.submissions.sort.top">Top</string>
+    <string name="menu.submissions.sort.controversial">Controversial</string>
+    <string name="menu.submissions.sort.new">New</string>
+    <string name="menu.submissions.sort.rising">Rising</string>
+    <string name="menu.submissions.sort.time.hour">Hour</string>
+    <string name="menu.submissions.sort.time.day">Day</string>
+    <string name="menu.submissions.sort.time.week">Week</string>
+    <string name="menu.submissions.sort.time.month">Month</string>
+    <string name="menu.submissions.sort.time.year">Year</string>
+    <string name="menu.submissions.sort.time.all">All</string>
 
     <string name="dialog.customsubreddit.hint">subreddit</string>
     <string name="dialog.customsubreddit.prefix">/r/</string>

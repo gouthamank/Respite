@@ -6,9 +6,11 @@
         android:id="@+id/menu_webview_back"
         android:enabled="true"
         android:icon="@drawable/abc_ic_ab_back_mtrl_am_alpha"
-        android:title="@string/webview.back"
+        android:title="@string/menu.webview.back"
         app:showAsAction="always"/>
     <item
         android:id="@+id/menu_webview_openexternal"
-        android:title="@string/webview.openexternal"/>
+        android:icon="@drawable/ic_open_browser"
+        app:showAsAction="always"
+        android:title="@string/menu.webview.openexternal"/>
 </menu>

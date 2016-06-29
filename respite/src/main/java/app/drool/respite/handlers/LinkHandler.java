@@ -29,9 +29,19 @@ public final class LinkHandler {
         Log.d(TAG, "analyse: " + url);
 
         if (isSubredditShort(url)) {
+
             Toast.makeText(mContext, "SUBREDDIT: " + url.substring(3), Toast.LENGTH_SHORT).show();
+            Intent subredditIntent = new Intent(mContext, SubmissionsActivity.class);
+            subredditIntent.putExtra("subreddit", url.substring(3));
+            mContext.startActivity(subredditIntent);
+
         } else if (isUserShort(url)) {
+
             Toast.makeText(mContext, "USER: " + url.substring(3), Toast.LENGTH_SHORT).show();
+            Intent userIntent = new Intent(mContext, UserActivity.class);
+            userIntent.putExtra("username", url.substring(3));
+            mContext.startActivity(userIntent);
+
         } else if (isRedditLink(url)) {
             if (isSubreddit(url) != null) {
 
@@ -64,6 +74,13 @@ public final class LinkHandler {
                 submissionIntent.putExtra("submissionID", isSubmission(url));
                 mContext.startActivity(submissionIntent);
 
+            } else if (isWiki(url)) {
+
+                Toast.makeText(mContext, "REDDITWIKI: " + url, Toast.LENGTH_SHORT).show();
+                Intent wikiIntent = new Intent(mContext, WebViewActivity.class);
+                wikiIntent.putExtra("url", url);
+                mContext.startActivity(wikiIntent);
+
             } else {
                 Toast.makeText(mContext, "REDDIT: " + url, Toast.LENGTH_SHORT).show();
             }
@@ -76,9 +93,7 @@ public final class LinkHandler {
             Intent webViewIntent = new Intent(mContext, WebViewActivity.class);
             webViewIntent.putExtra("url", url);
             mContext.startActivity(webViewIntent);
-
         }
-
     }
 
     private static boolean isSubredditShort(String url) {
@@ -96,7 +111,8 @@ public final class LinkHandler {
                     uri.getHost().startsWith("redd.it") ||
                     uri.getHost().startsWith("www.reddit.com") ||
                     uri.getHost().startsWith("www.redd.it") ||
-                    uri.getHost().startsWith("np.reddit.com") ||
+                    uri.getHost().startsWith("np.reddit.com") || // TODO Handle this better
+                    uri.getHost().startsWith("www.np.reddit.com") || // TODO Handle this better
                     uri.getHost().startsWith("pay.reddit.com");
         } catch (MalformedURLException e) {
             return false;
@@ -177,6 +193,27 @@ public final class LinkHandler {
         }
 
         return null;
+    }
+
+    public static boolean isWiki(String url) {
+        try {
+            URL uri = new URL(url);
+            String[] pieces = uri.getPath().split("/");
+            LinkedList<String> piecesList = new LinkedList<>();
+            for (String piece : pieces) {
+                if (piece.length() > 0) {
+                    piecesList.add(piece);
+                }
+            }
+            if (piecesList.size() >= 3
+                    && piecesList.getFirst().contentEquals("r")
+                    && piecesList.get(2).contentEquals("wiki"))
+                return true;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "isSubmission: " + e.getMessage(), e);
+        }
+
+        return false;
     }
 
     private static boolean isPicture(String url) {
