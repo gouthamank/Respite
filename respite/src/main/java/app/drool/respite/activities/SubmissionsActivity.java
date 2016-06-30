@@ -36,7 +36,7 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submissions);
-        
+
         final RecyclerView submissionList = (RecyclerView) findViewById(R.id.submissions_list);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
@@ -77,12 +77,12 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
                 updatePaginator(Sorting.RISING);
                 refreshPage();
                 return true;
-            
+
             case R.id.menu_submissions_sort_new:
                 updatePaginator(Sorting.NEW);
                 refreshPage();
                 return true;
-            
+
             case R.id.menu_submissions_sort_controversial_time_all:
                 updatePaginator(Sorting.CONTROVERSIAL, TimePeriod.ALL);
                 refreshPage();
@@ -92,7 +92,7 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
                 updatePaginator(Sorting.CONTROVERSIAL, TimePeriod.DAY);
                 refreshPage();
                 return true;
-            
+
             case R.id.menu_submissions_sort_controversial_time_hour:
                 updatePaginator(Sorting.CONTROVERSIAL, TimePeriod.HOUR);
                 refreshPage();
@@ -102,12 +102,12 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
                 updatePaginator(Sorting.CONTROVERSIAL, TimePeriod.MONTH);
                 refreshPage();
                 return true;
-            
+
             case R.id.menu_submissions_sort_controversial_time_week:
                 updatePaginator(Sorting.CONTROVERSIAL, TimePeriod.WEEK);
                 refreshPage();
                 return true;
-            
+
             case R.id.menu_submissions_sort_controversial_time_year:
                 updatePaginator(Sorting.CONTROVERSIAL, TimePeriod.YEAR);
                 refreshPage();
@@ -179,15 +179,16 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
         updatePaginator(sort, null);
     }
 
-    private void updatePaginator(Sorting sort, TimePeriod time){
+    private void updatePaginator(Sorting sort, TimePeriod time) {
         if (paginator != null) {
-            paginator.reset();
             paginator.setSorting(sort);
-            if(time != null)
+            if (time != null)
                 paginator.setTimePeriod(time);
+
+            paginator.reset();
         }
     }
-    
+
     @SuppressWarnings("ConstantConditions")
     private void setUpMenuBar() {
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -197,7 +198,7 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
             getSupportActionBar().setTitle(getResources().getString(R.string.actionbar_title_frontpage));
         else
             getSupportActionBar().setTitle(getResources().getString(R.string.actionbar_title_subreddit, subredditTitle));
-        if(paginator.getSorting().requiresTimePeriod())
+        if (paginator.getSorting().requiresTimePeriod())
             getSupportActionBar().setSubtitle(paginator.getSorting().name() + ": " + paginator.getTimePeriod().name());
         else
             getSupportActionBar().setSubtitle(paginator.getSorting().name());

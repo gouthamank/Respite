@@ -14,11 +14,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.laurencedawson.activetextview.ActiveTextView;
 
+import net.dean.jraw.RedditClient;
+import net.dean.jraw.http.SubmissionRequest;
 import net.dean.jraw.models.CommentNode;
+import net.dean.jraw.models.CommentSort;
 import net.dean.jraw.models.Submission;
 
 import app.drool.respite.R;
@@ -36,13 +38,13 @@ public class CommentsActivity extends AppCompatActivity {
     private static final String TAG = "CommentsActivity.java";
     private TextView headerDescription, headerTitle, headerComments, headerScore, headerSelfText;
 
-    ;
+    private RedditClient mRedditClient = null;
     private ProgressBar progressBar;
     private LinearLayout commentList = null;
-    private SubmissionParcelable submissionParcelable = null;
     private ACTIVITY_MODES currentMode = null;
     private String submissionID = null;
     private String commentID = null;
+    private CommentSort currentSort = CommentSort.HOT;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,9 +53,11 @@ public class CommentsActivity extends AppCompatActivity {
         commentList = (LinearLayout) findViewById(R.id.comments_list);
         addEmptyHeader();
 
-        submissionParcelable = getIntent().getParcelableExtra("top");
+        SubmissionParcelable submissionParcelable = getIntent().getParcelableExtra("top");
         submissionID = getIntent().getStringExtra("submissionID");
         commentID = getIntent().getStringExtra("commentID");
+
+        mRedditClient = ((Respite) getApplication()).getRedditClient();
 
         if (submissionParcelable != null)
             currentMode = ACTIVITY_MODES.ALL_COMMENTS_WITH_BUNDLE;
@@ -86,8 +90,39 @@ public class CommentsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_comments_sort_hot:
+                updatePaginator(CommentSort.HOT);
+                refreshPage();
+                return true;
+
+            case R.id.menu_comments_sort_new:
+                updatePaginator(CommentSort.NEW);
+                refreshPage();
+                return true;
+
+            case R.id.menu_comments_sort_confidence:
+                updatePaginator(CommentSort.CONFIDENCE);
+                refreshPage();
+                return true;
+
+            case R.id.menu_comments_sort_old:
+                updatePaginator(CommentSort.OLD);
+                refreshPage();
+                return true;
+
+            case R.id.menu_comments_sort_controversial:
+                updatePaginator(CommentSort.CONTROVERSIAL);
+                refreshPage();
+                return true;
+
+            case R.id.menu_comments_sort_top:
+                updatePaginator(CommentSort.TOP);
+                refreshPage();
+                return true;
+
             case R.id.menu_comments_refresh:
                 refreshPage();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -98,6 +133,7 @@ public class CommentsActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.actionbar_title_subreddit, subreddit));
+        getSupportActionBar().setSubtitle(currentSort.name());
     }
 
     @Override
@@ -108,39 +144,26 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private void loadComments(final String submissionID) {
-        new AsyncTask<Void, Void, Submission>() {
-            @Override
-            protected Submission doInBackground(Void... params) {
-                return ((Respite) getApplication()).getRedditClient().getSubmission(submissionID);
-            }
-
-            @Override
-            protected void onPostExecute(Submission submission) {
-                progressBar.setVisibility(ProgressBar.GONE);
-
-                updateHeader(submission);
-                setUpMenuBar(submission.getSubredditName());
-                addComments(submission.getComments());
-            }
-        }.execute();
+        loadComments(submissionID, null);
     }
 
     private void loadComments(final String submissionID, final String commentID) {
         new AsyncTask<Void, Void, Submission>() {
             @Override
             protected Submission doInBackground(Void... params) {
-                return ((Respite) getApplication()).getRedditClient().getSubmission(submissionID);
+                SubmissionRequest.Builder request = new SubmissionRequest.Builder(submissionID);
+                request.sort(currentSort);
+                return mRedditClient.getSubmission(request.build());
             }
 
             @Override
             protected void onPostExecute(Submission submission) {
                 progressBar.setVisibility(ProgressBar.GONE);
 
-
                 updateHeader(submission);
                 setUpMenuBar(submission.getSubredditName());
                 CommentNode rootComments = submission.getComments();
-                if (rootComments.findChild("t1_" + commentID).isPresent()) {
+                if (commentID != null && rootComments.findChild("t1_" + commentID).isPresent()) {
                     addSingleCommentThreadAlert();
                     addComments(rootComments.findChild("t1_" + commentID).get());
                 } else
@@ -149,12 +172,15 @@ public class CommentsActivity extends AppCompatActivity {
         }.execute();
     }
 
+    private void updatePaginator(CommentSort sort) {
+        currentSort = sort;
+    }
+
     private void refreshPage() {
         refreshPage(false);
     }
 
     private void refreshPage(boolean shouldIgnoreCurrentMode) {
-        Toast.makeText(getApplicationContext(), "Should refresh here.", Toast.LENGTH_SHORT).show();
         commentList.removeAllViews();
         progressBar.setVisibility(View.VISIBLE);
 

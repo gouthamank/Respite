@@ -3,8 +3,54 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:icon="@drawable/ic_navigation_sort"
+        android:title="@string/menu.sort"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group
+                android:id="@+id/menu_comments_sort_group">
+                <item
+                    android:id="@+id/menu_comments_sort_hot"
+                    android:title="@string/menu.sort.hot"
+                    app:showAsAction="ifRoom"
+                    />
+                <item
+                    android:id="@+id/menu_comments_sort_top"
+                    android:title="@string/menu.sort.top"
+                    app:showAsAction="never">
+                </item>
+                <item
+                    android:id="@+id/menu_comments_sort_controversial"
+                    android:title="@string/menu.sort.controversial"
+                    app:showAsAction="never">
+                </item>
+                <item
+                    android:id="@+id/menu_comments_sort_new"
+                    android:title="@string/menu.sort.new"
+                    app:showAsAction="never"
+                    />
+                <item
+                    android:id="@+id/menu_comments_sort_confidence"
+                    android:title="@string/menu.sort.confidence"
+                    app:showAsAction="never"
+                    />
+                <item
+                    android:id="@+id/menu_comments_sort_old"
+                    android:title="@string/menu.sort.old"
+                    app:showAsAction="never"
+                    />
+                <item
+                    android:id="@+id/menu_comments_sort_qa"
+                    android:title="@string/menu.sort.qa"
+                    app:showAsAction="never"
+                    />
+            </group>
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/menu_comments_refresh"
         android:icon="@drawable/ic_navigation_refresh"
-        android:title="@string/menu.comments.refresh"
+        android:title="@string/menu.refresh"
         app:showAsAction="ifRoom"/>
 </menu>

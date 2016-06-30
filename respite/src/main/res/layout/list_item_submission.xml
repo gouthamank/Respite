@@ -4,11 +4,11 @@
                 android:id="@+id/list_item_submission_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:minHeight="50dp">
 
     <RelativeLayout
@@ -20,9 +20,9 @@
             android:id="@+id/list_item_submission_preview"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
-            android:background="@android:color/holo_orange_dark"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/commentIndent"
             android:contentDescription="@string/submission.preview.accessibility"/>
 
         <TextView
@@ -34,7 +34,7 @@
             android:fontFamily="sans-serif"
             android:text="@string/placeholder.description"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="14sp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/list_item_submission_title"
@@ -43,10 +43,10 @@
             android:layout_alignLeft="@id/list_item_submission_description"
             android:layout_alignStart="@id/list_item_submission_description"
             android:layout_below="@id/list_item_submission_description"
-            android:fontFamily="sans-serif-condensed"
             android:text="@string/placeholder.title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="16sp"/>
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:fontFamily="sans-serif"
+            android:textSize="14sp"/>
     </RelativeLayout>
 
     <RelativeLayout

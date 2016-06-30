@@ -6,4 +6,9 @@
 
     <color name="commentIndent">#EEEEEE</color>
     <color name="commentSeparator">#999999</color>
+
+    <color name="m_material_blue_grey_800">#ff37474f</color>
+    <color name="m_accent_material_dark">#ff80cbc4</color>
+    <color name="m_text_material_dark">#ffffffff</color>
+
 </resources>

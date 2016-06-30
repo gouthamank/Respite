@@ -4,50 +4,50 @@
 
     <item
         android:icon="@drawable/ic_navigation_sort"
-        android:title="@string/menu.submissions.sort"
+        android:title="@string/menu.sort"
         app:showAsAction="ifRoom">
         <menu>
             <group
                 android:id="@+id/menu_submissions_sort_group">
                 <item
                     android:id="@+id/menu_submissions_sort_hot"
-                    android:title="@string/menu.submissions.sort.hot"
+                    android:title="@string/menu.sort.hot"
                     app:showAsAction="ifRoom"
                     />
                 <item
                     android:id="@+id/menu_submissions_sort_top"
-                    android:title="@string/menu.submissions.sort.top"
+                    android:title="@string/menu.sort.top"
                     app:showAsAction="never">
                     <menu>
                         <group>
                             <item
                                 android:id="@+id/menu_submissions_sort_top_time_hour"
-                                android:title="@string/menu.submissions.sort.time.hour"
+                                android:title="@string/menu.sort.time.hour"
                                 app:showAsAction="never"
                                 />
                             <item
                                 android:id="@+id/menu_submissions_sort_top_time_day"
-                                android:title="@string/menu.submissions.sort.time.day"
+                                android:title="@string/menu.sort.time.day"
                                 app:showAsAction="never"
                                 />
                             <item
                                 android:id="@+id/menu_submissions_sort_top_time_week"
-                                android:title="@string/menu.submissions.sort.time.week"
+                                android:title="@string/menu.sort.time.week"
                                 app:showAsAction="never"
                                 />
                             <item
                                 android:id="@+id/menu_submissions_sort_top_time_month"
-                                android:title="@string/menu.submissions.sort.time.month"
+                                android:title="@string/menu.sort.time.month"
                                 app:showAsAction="never"
                                 />
                             <item
                                 android:id="@+id/menu_submissions_sort_top_time_year"
-                                android:title="@string/menu.submissions.sort.time.year"
+                                android:title="@string/menu.sort.time.year"
                                 app:showAsAction="never"
                                 />
                             <item
                                 android:id="@+id/menu_submissions_sort_top_time_all"
-                                android:title="@string/menu.submissions.sort.time.all"
+                                android:title="@string/menu.sort.time.all"
                                 app:showAsAction="never"
                                 />
                         </group>
@@ -55,39 +55,39 @@
                 </item>
                 <item
                     android:id="@+id/menu_submissions_sort_controversial"
-                    android:title="@string/menu.submissions.sort.controversial"
+                    android:title="@string/menu.sort.controversial"
                     app:showAsAction="never">
                     <menu>
                         <group
                             android:id="@+id/menu_submissions_sort_controversial_time_group">
                             <item
                                 android:id="@+id/menu_submissions_sort_controversial_time_hour"
-                                android:title="@string/menu.submissions.sort.time.hour"
+                                android:title="@string/menu.sort.time.hour"
                                 app:showAsAction="never"
                                 />
                             <item
                                 android:id="@+id/menu_submissions_sort_controversial_time_day"
-                                android:title="@string/menu.submissions.sort.time.day"
+                                android:title="@string/menu.sort.time.day"
                                 app:showAsAction="never"
                                 />
                             <item
                                 android:id="@+id/menu_submissions_sort_controversial_time_week"
-                                android:title="@string/menu.submissions.sort.time.week"
+                                android:title="@string/menu.sort.time.week"
                                 app:showAsAction="never"
                                 />
                             <item
                                 android:id="@+id/menu_submissions_sort_controversial_time_month"
-                                android:title="@string/menu.submissions.sort.time.month"
+                                android:title="@string/menu.sort.time.month"
                                 app:showAsAction="never"
                                 />
                             <item
                                 android:id="@+id/menu_submissions_sort_controversial_time_year"
-                                android:title="@string/menu.submissions.sort.time.year"
+                                android:title="@string/menu.sort.time.year"
                                 app:showAsAction="never"
                                 />
                             <item
                                 android:id="@+id/menu_submissions_sort_controversial_time_all"
-                                android:title="@string/menu.submissions.sort.time.all"
+                                android:title="@string/menu.sort.time.all"
                                 app:showAsAction="never"
                                 />
                         </group>
@@ -95,22 +95,21 @@
                 </item>
                 <item
                     android:id="@+id/menu_submissions_sort_new"
-                    android:title="@string/menu.submissions.sort.new"
+                    android:title="@string/menu.sort.new"
                     app:showAsAction="never"
                     />
                 <item
                     android:id="@+id/menu_submissions_sort_rising"
-                    android:title="@string/menu.submissions.sort.rising"
+                    android:title="@string/menu.sort.rising"
                     app:showAsAction="never"
                     />
             </group>
-
         </menu>
     </item>
     <item
         android:id="@+id/menu_submissions_refresh"
         android:icon="@drawable/ic_navigation_refresh"
-        android:title="@string/menu.submissions.refresh"
+        android:title="@string/menu.refresh"
         app:showAsAction="ifRoom"/>
 
 </menu>
