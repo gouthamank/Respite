@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/list_item_comment_contribution_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <com.wefika.flowlayout.FlowLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/list_item_comment_contribution_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.author"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/list_item_comment_contribution_flair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:background="@color/cardview_dark_background"
+                android:paddingEnd="2dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingStart="2dp"
+                android:text="@string/placeholder.link.flair"
+                android:textAppearance="@style/RespiteLinkFlair.Inverse"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.separator"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/list_item_comment_contribution_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.score"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.separator"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/list_item_comment_contribution_timecreated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.timecreated"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/list_item_comment_contribution_gilded_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:background="@color/gildedCountText"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingEnd="2dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingStart="2dp"
+                android:text="@string/placeholder.gilded"
+                android:textAppearance="@style/RespiteLinkFlair.Inverse"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/list_item_comment_contribution_timeedited"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.timeedited"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+        </com.wefika.flowlayout.FlowLayout>
+
+        <com.laurencedawson.activetextview.ActiveTextView
+            android:id="@+id/list_item_comment_contribution_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder.title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/list_item_comment_contribution_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:textStyle="bold"
+        android:text="@string/placeholder.contribution.title"
+        android:textAppearance="@style/RespiteSmallText"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/commentSeparator"/>
+
+</LinearLayout>

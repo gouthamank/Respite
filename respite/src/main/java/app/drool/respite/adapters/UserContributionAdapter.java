@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import app.drool.respite.fragments.UserAboutFragment;
+import app.drool.respite.fragments.UserCommentsFragment;
 import app.drool.respite.fragments.UserSubmittedFragment;
 
 /**
@@ -14,13 +15,13 @@ import app.drool.respite.fragments.UserSubmittedFragment;
 public class UserContributionAdapter extends FragmentPagerAdapter {
     private static final String[] TITLES = {"ABOUT", "COMMENTS", "SUBMITTED"};
     private UserAboutFragment fragment1 = null;
-    private UserAboutFragment fragment2 = null;
+    private UserCommentsFragment fragment2 = null;
     private UserSubmittedFragment fragment3 = null;
 
     public UserContributionAdapter(FragmentManager fm, String username) {
         super(fm);
         fragment1 = UserAboutFragment.newInstance(username);
-        fragment2 = UserAboutFragment.newInstance(username);
+        fragment2 = UserCommentsFragment.newInstance(username);
         fragment3 = UserSubmittedFragment.newInstance(username);
     }
 

@@ -33,6 +33,7 @@
     <string name="placeholder.gilded">x1</string>
     <string name="placeholder.link">http://www.imgur.com/i/aaaaa.jpg</string>
     <string name="placeholder.title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean neque odio, rhoncus sit amet turpis eleifend, dignissim consequat lectus.</string>
+    <string name="placeholder.contribution.title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean neque odio, rhoncus sit amet turpis eleifend, dignissim consequat lectus. • /r/askReddit</string>
     <string name="placeholder.comments">10 comments</string>
     <string name="placeholder.score">10</string>
     <string name="placeholder.user.name">_drool</string>
