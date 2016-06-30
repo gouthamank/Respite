@@ -28,6 +28,7 @@ import app.drool.respite.asyncloaders.AsyncDrawableURL;
 import app.drool.respite.asyncloaders.PreviewFromCacheTask;
 import app.drool.respite.asyncloaders.PreviewFromURLTask;
 import app.drool.respite.cache.CacheWrapper;
+import app.drool.respite.handlers.LinkHandler;
 import app.drool.respite.impl.SubmissionParcelable;
 import app.drool.respite.utils.Utilities;
 
@@ -173,6 +174,19 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
             }
         });
 
+        holder.author.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinkHandler.analyse(mContext, "/u/" + submissionParcelable.getAuthor());
+            }
+        });
+
+        holder.subreddit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinkHandler.analyse(mContext, "/r/" + submissionParcelable.getSubreddit());
+            }
+        });
         if (position == getItemCount() - ENDLESS_SCROLL_THRESHOLD) {
             if (endlessScrollListener != null)
                 endlessScrollListener.onLoadMore(position);

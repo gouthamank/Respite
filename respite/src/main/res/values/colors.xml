@@ -18,4 +18,8 @@
     <color name="linkFlairBackground.Light">#ffffffff</color>
     <color name="linkText">@color/m_material_blue_grey_800</color>
     <color name="gildedCountText">#ffe100</color>
+
+    <color name="distinguishedAdmin">#ff5252</color>
+    <color name="distinguishedMod">#00c853</color>
+    <color name="distinguishedOP">@color/colorPrimaryDark</color>
 </resources>

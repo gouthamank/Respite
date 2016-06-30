@@ -20,6 +20,7 @@ import net.dean.jraw.RedditClient;
 import net.dean.jraw.http.SubmissionRequest;
 import net.dean.jraw.models.CommentNode;
 import net.dean.jraw.models.CommentSort;
+import net.dean.jraw.models.DistinguishedStatus;
 import net.dean.jraw.models.Submission;
 
 import app.drool.respite.R;
@@ -46,6 +47,7 @@ public class CommentsActivity extends AppCompatActivity {
     private ACTIVITY_MODES currentMode = null;
     private String submissionID = null;
     private String commentID = null;
+    private String threadOP = null;
     private CommentSort currentSort = CommentSort.HOT;
 
     @Override
@@ -242,6 +244,8 @@ public class CommentsActivity extends AppCompatActivity {
     private void updateHeader(final SubmissionParcelable submission) {
 
         headerAuthor.setText(submission.getAuthor());
+        threadOP = submission.getAuthor();
+
         if (submission.getAuthor() != null) {
             final String authorURL = "/u/" + submission.getAuthor();
             headerAuthor.setOnClickListener(new View.OnClickListener() {
@@ -331,6 +335,15 @@ public class CommentsActivity extends AppCompatActivity {
                     LinkHandler.analyse(CommentsActivity.this, url);
                 }
             });
+
+            if(node.getComment().getAuthor().contentEquals(threadOP))
+                author.setTextColor(ContextCompat.getColor(this, R.color.distinguishedOP));
+
+            if(node.getComment().getDistinguishedStatus() == DistinguishedStatus.MODERATOR)
+                author.setTextColor(ContextCompat.getColor(this, R.color.distinguishedMod));
+
+            if(node.getComment().getDistinguishedStatus() == DistinguishedStatus.ADMIN)
+                author.setTextColor(ContextCompat.getColor(this, R.color.distinguishedAdmin));
 
             author.setText(node.getComment().getAuthor());
             final String authorURL = "/u/" + node.getComment().getAuthor();
