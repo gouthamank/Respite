@@ -38,7 +38,7 @@ public class UserContributionAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return TITLES.length;
     }
 
     @Override

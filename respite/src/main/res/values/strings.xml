@@ -57,6 +57,8 @@
 
     <string name="menu.refresh">Refresh</string>
 
+    <string name="menu.search">Search</string>
+
     <string name="menu.sort">Sort</string>
     <string name="menu.sort.hot">Hot</string>
     <string name="menu.sort.top">Top</string>

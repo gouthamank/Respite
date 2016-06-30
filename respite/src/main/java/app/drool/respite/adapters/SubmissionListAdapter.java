@@ -94,7 +94,7 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
     }
     public void addSubmissions(Submission s) {
         this.submissions.add(s);
-        notifyDataSetChanged();
+        notifyItemInserted(this.submissions.size() - 1);
     }
 
     public void addSubmissions(Listing<Submission> submissions) {

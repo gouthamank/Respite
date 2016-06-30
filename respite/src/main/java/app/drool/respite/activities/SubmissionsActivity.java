@@ -147,6 +147,9 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
                 refreshPage();
                 return true;
 
+            case R.id.menu_submissions_search:
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

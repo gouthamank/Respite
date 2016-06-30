@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import net.dean.jraw.models.Submission;
 
 import app.drool.respite.R;
@@ -38,6 +40,9 @@ public class SubmissionParcelable implements Parcelable {
     private String author, timeCreated, domain, linkFlair;
     private int isNSFW, isStickied, isSelfPost;
 
+    public SubmissionParcelable(Context mContext, JsonNode node) {
+        this(mContext, new Submission(node));
+    }
     public SubmissionParcelable(Context mContext, Submission s) {
         this.title = s.getTitle().replace("&amp;", "&").replace("&gt;", ">").replace("&lt;", "<");
         this.score = String.valueOf(s.getScore());
