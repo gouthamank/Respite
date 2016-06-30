@@ -24,20 +24,96 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:padding="8dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/list_item_comment_description"
+            <com.wefika.flowlayout.FlowLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="@string/placeholder.description"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp"
-                android:textStyle="bold"/>
+                android:layout_height="wrap_content">
 
+                <TextView
+                    android:id="@+id/list_item_comment_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:text="@string/placeholder.author"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/list_item_comment_flair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:background="@color/cardview_dark_background"
+                    android:paddingEnd="2dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingStart="2dp"
+                    android:text="@string/placeholder.link.flair"
+                    android:textAppearance="@style/RespiteLinkFlair.Inverse"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:text="@string/placeholder.separator"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/list_item_comment_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:text="@string/placeholder.score"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:text="@string/placeholder.separator"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/list_item_comment_timecreated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:text="@string/placeholder.timecreated"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/list_item_comment_gilded_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:background="@color/gildedCountText"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingEnd="2dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingStart="2dp"
+                    android:text="@string/placeholder.gilded"
+                    android:textAppearance="@style/RespiteLinkFlair.Inverse"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/list_item_comment_timeedited"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:text="@string/placeholder.timeedited"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="12sp"/>
+            </com.wefika.flowlayout.FlowLayout>
 
             <com.laurencedawson.activetextview.ActiveTextView
                 android:id="@+id/list_item_comment_body"

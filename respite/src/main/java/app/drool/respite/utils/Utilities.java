@@ -83,9 +83,12 @@ public class Utilities {
         return (int) (dps * scale + 0.5f);
     }
 
-    public static Spanned getHTMLFromMarkdown(String md) {
-        String one = Html.fromHtml(md).toString();
+    public static Spanned getHTMLFromMarkdown(String md) {  // Shitty. Absolutely shitty.
+        String one = Html.fromHtml(md).toString().trim();
+        if(one.startsWith("<!-- SC_OFF -->"))
+            one = one.substring(15).trim();
         String two = one.substring(16, one.length() - 11).replace("<p>", "").replace("</p>", "<br><br>");
-        return Html.fromHtml(two);
+        Spanned three = Html.fromHtml(two);
+        return three;
     }
 }

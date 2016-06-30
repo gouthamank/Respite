@@ -22,6 +22,16 @@
     <string name="fragment.user.about.false">no</string>
 
     <string name="placeholder.description">_drool • pics • 1hr</string>
+    <string name="placeholder.separator">•</string>
+    <string name="placeholder.author">_drool</string>
+    <string name="placeholder.link.flair">Spoilers All</string>
+    <string name="placeholder.link.domain">self.android</string>
+    <string name="placeholder.author.flair">Nexus 4</string>
+    <string name="placeholder.subreddit">pics</string>
+    <string name="placeholder.timecreated">1hr</string>
+    <string name="placeholder.timeedited">(edited 30m ago)</string>
+    <string name="placeholder.gilded">x1</string>
+    <string name="placeholder.link">http://www.imgur.com/i/aaaaa.jpg</string>
     <string name="placeholder.title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean neque odio, rhoncus sit amet turpis eleifend, dignissim consequat lectus.</string>
     <string name="placeholder.comments">10 comments</string>
     <string name="placeholder.score">10</string>
@@ -38,6 +48,8 @@
         <item quantity="other">%1$d comments</item>
     </plurals>
     <string name="submission.score">%1$s</string>
+    <string name="comment.gilded.count">x%1$d</string>
+    <string name="comment.edited">(edited %1$s ago)</string>
 
     <string name="menu.webview.openexternal">Open in browser</string>
     <string name="menu.webview.back">Back</string>

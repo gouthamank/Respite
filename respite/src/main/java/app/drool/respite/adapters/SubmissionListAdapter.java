@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,10 +123,23 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         final Submission submission = submissions.get(position);
         final SubmissionParcelable submissionParcelable = new SubmissionParcelable(mContext, submission);
 
-        holder.description.setText(submissionParcelable.getDescription());
+        holder.author.setText(submissionParcelable.getAuthor());
+        holder.subreddit.setText(submissionParcelable.getSubreddit());
+        holder.timeCreated.setText(submissionParcelable.getTimeCreated());
+        holder.domain.setText(submissionParcelable.getDomain());
+        if(submissionParcelable.getLinkFlair() != null)
+            holder.linkFlair.setText(submissionParcelable.getLinkFlair());
+        else
+            holder.linkFlair.setVisibility(TextView.GONE);
+        holder.author.setText(submissionParcelable.getAuthor());
         holder.title.setText(submissionParcelable.getTitle());
         holder.score.setText(submissionParcelable.getScore());
         holder.comments.setText(submissionParcelable.getComments());
+
+        if (submissionParcelable.isNSFW())
+            holder.title.setTextColor(ContextCompat.getColor(mContext, R.color.textTitleNSFW));
+        if (submissionParcelable.isStickied())
+            holder.title.setTextColor(ContextCompat.getColor(mContext, R.color.textTitleStickied));
 
         Thumbnails thumbnails = submission.getThumbnails();
         String thumbnailURL = null;
@@ -196,7 +210,7 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
     }
 
     static class SubmissionHolder extends RecyclerView.ViewHolder {
-        TextView description;
+        TextView author, subreddit, timeCreated, domain, linkFlair;
         TextView title;
         TextView comments;
         TextView score;
@@ -206,7 +220,12 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
 
         SubmissionHolder(RelativeLayout v) {
             super(v);
-            this.description = (TextView) v.findViewById(R.id.list_item_submission_description);
+            this.author = (TextView) v.findViewById(R.id.list_item_submission_author);
+            this.subreddit = (TextView) v.findViewById(R.id.list_item_submission_subreddit);
+            this.timeCreated = (TextView) v.findViewById(R.id.list_item_submission_timecreated);
+            this.domain = (TextView) v.findViewById(R.id.list_item_submission_domain);
+            this.linkFlair = (TextView) v.findViewById(R.id.list_item_submission_link_flair);
+
             this.title = (TextView) v.findViewById(R.id.list_item_submission_title);
             this.comments = (TextView) v.findViewById(R.id.list_item_submission_comments);
             this.score = (TextView) v.findViewById(R.id.list_item_submission_score);

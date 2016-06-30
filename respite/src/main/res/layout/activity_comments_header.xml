@@ -17,16 +17,82 @@
         android:paddingTop="8dp"
         >
 
-        <TextView
+        <com.wefika.flowlayout.FlowLayout
             android:id="@+id/comments_header_description"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/placeholder.description"
-            android:textColor="@color/m_accent_material_dark"
-            android:textSize="12sp"/>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/comments_header_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:textStyle="bold"
+                android:text="@string/placeholder.author"
+                android:textAppearance="@style/RespiteSmallText.Inverse"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.separator"
+                android:textAppearance="@style/RespiteSmallText.Inverse"/>
+
+            <TextView
+                android:id="@+id/comments_header_subreddit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.subreddit"
+                android:textAppearance="@style/RespiteSmallText.Inverse"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.separator"
+                android:textAppearance="@style/RespiteSmallText.Inverse"
+                />
+
+            <TextView
+                android:id="@+id/comments_header_timecreated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.timecreated"
+                android:textAppearance="@style/RespiteSmallText.Inverse"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.separator"
+                android:textAppearance="@style/RespiteSmallText.Inverse"
+                />
+
+            <TextView
+                android:id="@+id/comments_header_domain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.link.domain"
+                android:textAppearance="@style/RespiteSmallText.Inverse"
+                />
+
+            <TextView
+                android:id="@+id/comments_header_link_flair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:background="@color/linkFlairBackground.Dark"
+                android:paddingEnd="2dp"
+                android:paddingStart="2dp"
+                android:text="@string/placeholder.link.flair"
+                android:textAppearance="@style/RespiteLinkFlair.Inverse"
+                />
+        </com.wefika.flowlayout.FlowLayout>
 
         <TextView
             android:id="@+id/comments_header_title"
@@ -36,7 +102,6 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/comments_header_description"
             android:layout_marginTop="4dp"
-            android:fontFamily="sans-serif-condensed"
             android:text="@string/placeholder.title"
             android:textAllCaps="false"
             android:textColor="@color/m_text_material_dark"
@@ -58,8 +123,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:text="@string/placeholder.comments"
-                android:textColor="@color/m_accent_material_dark"
-                android:textSize="12sp"/>
+                android:textAppearance="@style/RespiteSmallText.Inverse"/>
 
             <TextView
                 android:id="@+id/comments_header_score"
@@ -68,19 +132,47 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:text="@string/placeholder.score"
-                android:textColor="@color/m_accent_material_dark"
-                android:textSize="12sp"/>
+                android:textAppearance="@style/RespiteSmallText.Inverse"/>
         </RelativeLayout>
 
     </RelativeLayout>
 
-    <TextView
+    <com.laurencedawson.activetextview.ActiveTextView
         android:id="@+id/comments_header_selftext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="@string/placeholder.title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+    <LinearLayout
+        android:id="@+id/comments_header_link_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/submission.preview.accessibility"
+            android:padding="8dp"
+            android:src="@drawable/ic_open_browser_light"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:background="@color/commentIndent"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/comments_header_link"
+            android:padding="8dp"
+            android:layout_gravity="center"
+            android:text="@string/placeholder.link"
+            android:textAppearance="@style/RespiteLinkText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -6,6 +6,27 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="RespiteSmallText" parent ="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="RespiteSmallText.Inverse" parent="TextAppearance.AppCompat.Small.Inverse">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/m_accent_material_dark</item>
+    </style>
+
+    <style name="RespiteLinkFlair.Inverse" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textColor">@color/linkFlairBackground.Light</item>
+    </style>
+
+    <style name="RespiteLinkText" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/linkText</item>
     </style>
 
 </resources>

@@ -4,26 +4,16 @@ import org.junit.Test;
 
 import app.drool.respite.handlers.LinkHandler;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ExampleUnitTest {
+public class LinkHandlerUnitTest {
     String url1 = "https://www.reddit.com/r/todayilearned/comments/4opcx2/til_that_in_1911_a_lone_man_emerged_from_the/";
     String url2 = "https://www.reddit.com/r/todayilearned/comments/4opcx2/til_that_in_1911_a_lone_man_emerged_from_the/d4es73e";
     String url3 = "https://www.reddit.com/r/todayilearned/";
     String url4 = "https://www.reddit.com/user/Zantazi";
     String url5 = "http://np.reddit.com/r/autotldr/comments/31bfht/theory_autotldr_concept/";
 
-    @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
-    }
 
     @Test
     public void isSubreddit_isCorrect() throws Exception {

@@ -4,12 +4,8 @@
                 android:id="@+id/list_item_submission_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:minHeight="50dp">
+                android:minHeight="50dp"
+                android:padding="8dp">
 
     <RelativeLayout
         android:id="@+id/list_item_submission_top"
@@ -25,16 +21,92 @@
             android:background="@color/commentIndent"
             android:contentDescription="@string/submission.preview.accessibility"/>
 
-        <TextView
+        <com.wefika.flowlayout.FlowLayout
             android:id="@+id/list_item_submission_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/list_item_submission_preview"
-            android:layout_toRightOf="@id/list_item_submission_preview"
-            android:fontFamily="sans-serif"
-            android:text="@string/placeholder.description"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="12sp"/>
+            android:layout_toRightOf="@id/list_item_submission_preview">
+
+            <TextView
+                android:id="@+id/list_item_submission_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.author"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/list_item_submission_separator1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.separator"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/list_item_submission_subreddit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.subreddit"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/list_item_submission_separator2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.separator"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/list_item_submission_timecreated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.timecreated"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/list_item_submission_separator3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.separator"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/list_item_submission_domain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:text="@string/placeholder.link.domain"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/list_item_submission_link_flair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:background="@color/cardview_dark_background"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingEnd="2dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingStart="2dp"
+                android:text="@string/placeholder.link.flair"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                android:textSize="12sp"/>
+        </com.wefika.flowlayout.FlowLayout>
 
         <TextView
             android:id="@+id/list_item_submission_title"
@@ -43,10 +115,11 @@
             android:layout_alignLeft="@id/list_item_submission_description"
             android:layout_alignStart="@id/list_item_submission_description"
             android:layout_below="@id/list_item_submission_description"
+            android:fontFamily="sans-serif"
             android:text="@string/placeholder.title"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            android:fontFamily="sans-serif"
             android:textSize="14sp"/>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -82,10 +155,11 @@
     </RelativeLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:id="@+id/view"
+        android:layout_marginTop="8dp"
         android:layout_below="@id/list_item_submission_bottom"
-        android:layout_marginTop="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
         android:background="@android:color/darker_gray"/>
 
 </RelativeLayout>
