@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.util.Pair;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,14 +29,12 @@ public final class LinkHandler {
 
         if (isSubredditShort(url)) {
 
-            Toast.makeText(mContext, "SUBREDDIT: " + url.substring(3), Toast.LENGTH_SHORT).show();
             Intent subredditIntent = new Intent(mContext, SubmissionsActivity.class);
             subredditIntent.putExtra("subreddit", url.substring(3));
             mContext.startActivity(subredditIntent);
 
         } else if (isUserShort(url)) {
 
-            Toast.makeText(mContext, "USER: " + url.substring(3), Toast.LENGTH_SHORT).show();
             Intent userIntent = new Intent(mContext, UserActivity.class);
             userIntent.putExtra("username", url.substring(3));
             mContext.startActivity(userIntent);
@@ -45,14 +42,12 @@ public final class LinkHandler {
         } else if (isRedditLink(url)) {
             if (isSubreddit(url) != null) {
 
-                Toast.makeText(mContext, "SUBREDDIT: " + isSubreddit(url), Toast.LENGTH_SHORT).show();
                 Intent subredditIntent = new Intent(mContext, SubmissionsActivity.class);
                 subredditIntent.putExtra("subreddit", isSubreddit(url));
                 mContext.startActivity(subredditIntent);
 
             } else if (isUser(url) != null) {
 
-                Toast.makeText(mContext, "USER: " + isUser(url), Toast.LENGTH_SHORT).show();
                 Intent userIntent = new Intent(mContext, UserActivity.class);
                 userIntent.putExtra("username", isUser(url));
                 mContext.startActivity(userIntent);
@@ -61,7 +56,6 @@ public final class LinkHandler {
 
                 Pair<String, String> comment = isComment(url);
                 assert comment != null;
-                Toast.makeText(mContext, "COMMENT: " + comment.first + ", " + comment.second, Toast.LENGTH_SHORT).show();
                 Intent commentIntent = new Intent(mContext, CommentsActivity.class);
                 commentIntent.putExtra("submissionID", comment.first);
                 commentIntent.putExtra("commentID", comment.second);
@@ -69,20 +63,16 @@ public final class LinkHandler {
 
             } else if (isSubmission(url) != null) {
 
-                Toast.makeText(mContext, "SUBMISSION: " + isSubmission(url), Toast.LENGTH_SHORT).show();
                 Intent submissionIntent = new Intent(mContext, CommentsActivity.class);
                 submissionIntent.putExtra("submissionID", isSubmission(url));
                 mContext.startActivity(submissionIntent);
 
             } else if (isWiki(url)) {
 
-                Toast.makeText(mContext, "REDDITWIKI: " + url, Toast.LENGTH_SHORT).show();
                 Intent wikiIntent = new Intent(mContext, WebViewActivity.class);
                 wikiIntent.putExtra("url", url);
                 mContext.startActivity(wikiIntent);
 
-            } else {
-                Toast.makeText(mContext, "REDDIT: " + url, Toast.LENGTH_SHORT).show();
             }
         } /* else if (isPicture(url)){
             Toast.makeText(mContext, "PICTURE: " + url, Toast.LENGTH_SHORT).show();

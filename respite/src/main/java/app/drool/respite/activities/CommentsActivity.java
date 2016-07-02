@@ -78,7 +78,7 @@ public class CommentsActivity extends AppCompatActivity {
             else
                 loadComments(submissionID);
         } else {
-            setUpMenuBar(submissionParcelable.getSubreddit());
+            setUpMenuBar(submissionParcelable.getTitle());
             updateHeader(submissionParcelable);
 
             submissionID = submissionParcelable.getSubmissionID();
@@ -89,6 +89,7 @@ public class CommentsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ((Respite) getApplication()).refreshCredentials(this);
     }
 
     @Override
@@ -96,47 +97,43 @@ public class CommentsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_comments_sort_hot:
                 updatePaginator(CommentSort.HOT);
-                refreshPage();
-                return true;
+                break;
 
             case R.id.menu_comments_sort_new:
                 updatePaginator(CommentSort.NEW);
-                refreshPage();
-                return true;
+                break;
 
             case R.id.menu_comments_sort_confidence:
                 updatePaginator(CommentSort.CONFIDENCE);
-                refreshPage();
-                return true;
+                break;
 
             case R.id.menu_comments_sort_old:
                 updatePaginator(CommentSort.OLD);
-                refreshPage();
-                return true;
+                break;
 
             case R.id.menu_comments_sort_controversial:
                 updatePaginator(CommentSort.CONTROVERSIAL);
-                refreshPage();
-                return true;
+                break;
 
             case R.id.menu_comments_sort_top:
                 updatePaginator(CommentSort.TOP);
-                refreshPage();
-                return true;
+                break;
 
             case R.id.menu_comments_refresh:
                 refreshPage();
-                return true;
+                break;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+        return true;
     }
 
-    private void setUpMenuBar(String subreddit) {
+    private void setUpMenuBar(String title) {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getResources().getString(R.string.actionbar_title_subreddit, subreddit));
+        getSupportActionBar().setTitle(title);
         getSupportActionBar().setSubtitle(currentSort.name());
     }
 
@@ -165,7 +162,7 @@ public class CommentsActivity extends AppCompatActivity {
                 progressBar.setVisibility(ProgressBar.GONE);
 
                 updateHeader(submission);
-                setUpMenuBar(submission.getSubredditName());
+                setUpMenuBar(submission.getTitle());
                 CommentNode rootComments = submission.getComments();
                 if (commentID != null && rootComments.findChild("t1_" + commentID).isPresent()) {
                     addSingleCommentThreadAlert();
@@ -177,7 +174,9 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private void updatePaginator(CommentSort sort) {
+        if(currentSort == sort) return;
         currentSort = sort;
+        refreshPage();
     }
 
     private void refreshPage() {

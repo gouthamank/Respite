@@ -167,7 +167,6 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, submission.getAuthor(), Toast.LENGTH_SHORT).show();
                 Intent commentsInstent = new Intent(mContext, CommentsActivity.class);
                 commentsInstent.putExtra("top", submissionParcelable);
                 mContext.startActivity(commentsInstent);

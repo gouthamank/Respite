@@ -1,14 +1,20 @@
 package app.drool.respite.activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import net.dean.jraw.http.NetworkException;
 import net.dean.jraw.models.Listing;
@@ -29,8 +35,6 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
     private SubmissionListAdapter mAdapter = null;
     private ProgressBar progressBar = null;
     private SubredditPaginator paginator = null;
-    private Sorting currentSort = null;
-    private TimePeriod currentSortTime = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +152,7 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
                 return true;
 
             case R.id.menu_submissions_search:
+                openSearchDialog();
                 return true;
 
             default:
@@ -229,6 +234,37 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
                 }
             }
         }.execute();
+    }
+
+    private void openSearchDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View inflatedView = getLayoutInflater().inflate(R.layout.dialog_search, null);
+        final EditText query = (EditText) inflatedView.findViewById(R.id.dialog_search_query);
+        final EditText scope = (EditText) inflatedView.findViewById(R.id.dialog_search_scope);
+        builder.setTitle(R.string.dialog_search_title);
+        builder.setView(inflatedView);
+
+        builder.setNegativeButton(R.string.dialog_search_negative, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setPositiveButton(R.string.dialog_search_positive, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (query.getText().toString().length() < 1)
+                    Toast.makeText(getApplicationContext(), R.string.dialog_search_retry, Toast.LENGTH_SHORT).show();
+                else {
+                    Intent searchIntent = new Intent(SubmissionsActivity.this, SearchActivity.class);
+                    searchIntent.putExtra("query", query.getText().toString());
+                    searchIntent.putExtra("scope", scope.getText().toString().length() < 1 ? null : scope.getText().toString());
+                    startActivity(searchIntent);
+                }
+            }
+        });
+        builder.create().show();
     }
 
     @Override

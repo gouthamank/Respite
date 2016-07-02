@@ -8,7 +8,7 @@
         android:id="@+id/comments_header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/m_material_blue_grey_800"
+        android:background="@color/colorPrimaryLight"
         android:paddingBottom="8dp"
         android:paddingEnd="8dp"
         android:paddingLeft="8dp"
@@ -104,7 +104,7 @@
             android:layout_marginTop="4dp"
             android:text="@string/placeholder.title"
             android:textAllCaps="false"
-            android:textColor="@color/m_text_material_dark"
+            android:textColor="@color/primaryText"
             android:textSize="16sp"/>
 
         <RelativeLayout

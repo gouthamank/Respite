@@ -14,7 +14,7 @@
 
     <style name="RespiteSmallText.Inverse" parent="TextAppearance.AppCompat.Small.Inverse">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/m_accent_material_dark</item>
+        <item name="android:textColor">@color/secondaryText</item>
     </style>
 
     <style name="RespiteLinkFlair.Inverse" parent="TextAppearance.AppCompat.Small">

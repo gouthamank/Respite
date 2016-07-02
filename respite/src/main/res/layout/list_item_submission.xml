@@ -39,7 +39,6 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/list_item_submission_separator1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
@@ -57,7 +56,6 @@
                 android:textSize="12sp"/>
 
             <TextView
-                android:id="@+id/list_item_submission_separator2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
@@ -75,7 +73,6 @@
                 android:textSize="12sp"/>
 
             <TextView
-                android:id="@+id/list_item_submission_separator3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
