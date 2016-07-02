@@ -2,6 +2,7 @@ package app.drool.respite.handlers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.util.Pair;
 import android.util.Log;
 
@@ -78,7 +79,9 @@ public final class LinkHandler {
             Toast.makeText(mContext, "PICTURE: " + url, Toast.LENGTH_SHORT).show();
         } else if (isGIF(url)){
             Toast.makeText(mContext, "GIF: " + url, Toast.LENGTH_SHORT).show();
-        } */ else {
+        } */ else if (isPotentialYoutube(url)) {
+            mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } else {
 
             Intent webViewIntent = new Intent(mContext, WebViewActivity.class);
             webViewIntent.putExtra("url", url);
@@ -232,5 +235,10 @@ public final class LinkHandler {
         } catch (MalformedURLException e) {
             return false;
         }
+    }
+
+    private static boolean isPotentialYoutube(String url) { // Ech. Disgusting.
+        return url.contains("/youtube.") || url.contains("youtu.be") || url.contains("www.youtube.")
+                || url.contains("m.youtube.");
     }
 }
