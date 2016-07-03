@@ -71,7 +71,7 @@ public class Respite extends Application {
             case READY:
                 break;
             case NONE:
-                Toast.makeText(mcContext, "Need to log in first", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mcContext, "Please log in to Reddit", Toast.LENGTH_SHORT).show();
                 break;
             case NEED_REFRESH:
                 new AsyncTask<Credentials, Void, Void>() {

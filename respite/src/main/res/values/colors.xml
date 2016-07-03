@@ -5,7 +5,7 @@
     <color name="colorPrimaryLight">#B3E5FC</color>
     <color name="colorAccent">#FF5722</color>
 
-    <color name="commentIndent">#EEEEEE</color>
+    <color name="commentIndent">#d9d9d9</color>
     <color name="commentSeparator">#B6B6B6</color>
 
     <color name="primaryText">#212121</color>

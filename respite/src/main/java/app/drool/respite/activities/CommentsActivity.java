@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.laurencedawson.activetextview.ActiveTextView;
 
 import net.dean.jraw.RedditClient;
+import net.dean.jraw.http.NetworkException;
 import net.dean.jraw.http.SubmissionRequest;
 import net.dean.jraw.models.CommentNode;
 import net.dean.jraw.models.CommentSort;
@@ -53,6 +55,7 @@ public class CommentsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_comments);
         commentList = (LinearLayout) findViewById(R.id.comments_list);
         addEmptyHeader();
@@ -154,21 +157,29 @@ public class CommentsActivity extends AppCompatActivity {
             protected Submission doInBackground(Void... params) {
                 SubmissionRequest.Builder request = new SubmissionRequest.Builder(submissionID);
                 request.sort(currentSort);
-                return mRedditClient.getSubmission(request.build());
+                try {
+                    return mRedditClient.getSubmission(request.build());
+                } catch (NetworkException e) {
+                    return null;
+                }
             }
 
             @Override
             protected void onPostExecute(Submission submission) {
                 progressBar.setVisibility(ProgressBar.GONE);
 
-                updateHeader(submission);
-                setUpMenuBar(submission.getTitle());
-                CommentNode rootComments = submission.getComments();
-                if (commentID != null && rootComments.findChild("t1_" + commentID).isPresent()) {
-                    addSingleCommentThreadAlert();
-                    addComments(rootComments.findChild("t1_" + commentID).get());
-                } else
-                    addComments(rootComments);
+                if(submission == null) {
+                    Toast.makeText(getApplicationContext(), R.string.commentsactivity_networkerror, Toast.LENGTH_LONG).show();
+                } else {
+                    updateHeader(submission);
+                    setUpMenuBar(submission.getTitle());
+                    CommentNode rootComments = submission.getComments();
+                    if (commentID != null && rootComments.findChild("t1_" + commentID).isPresent()) {
+                        addSingleCommentThreadAlert();
+                        addComments(rootComments.findChild("t1_" + commentID).get());
+                    } else
+                        addComments(rootComments);
+                }
             }
         }.execute();
     }

@@ -231,6 +231,8 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
                         progressBar.setVisibility(ProgressBar.GONE);
 
                     mAdapter.addSubmissions(submissions);
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.submissionsactivity_networkerror, Toast.LENGTH_LONG).show();
                 }
             }
         }.execute();

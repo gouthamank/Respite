@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (url.contains("code=")) {
                     onUserChallenge(url, Respite.CREDENTIALS);
                 } else if (url.contains("error=")) {
-                    Toast.makeText(LoginActivity.this, "You must allow to continue", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Respite cannot work without user permissions", Toast.LENGTH_LONG).show();
                     webView.loadUrl(authorizationURL.toExternalForm());
                 }
             }
@@ -61,8 +61,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void onUserChallenge(final String url, final Credentials credentials) {
