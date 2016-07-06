@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.LinkedList;
 
 import app.drool.respite.activities.CommentsActivity;
+import app.drool.respite.activities.ImageViewActivity;
 import app.drool.respite.activities.SubmissionsActivity;
 import app.drool.respite.activities.UserActivity;
 import app.drool.respite.activities.WebViewActivity;
@@ -75,9 +76,13 @@ public final class LinkHandler {
                 mContext.startActivity(wikiIntent);
 
             }
-        } /* else if (isPicture(url)){
-            Toast.makeText(mContext, "PICTURE: " + url, Toast.LENGTH_SHORT).show();
-        } else if (isGIF(url)){
+        } else if (isPicture(url)) {
+
+            Intent pictureIntent = new Intent(mContext, ImageViewActivity.class);
+            pictureIntent.putExtra("url", url);
+            mContext.startActivity(pictureIntent);
+
+        } /* else if (isGIF(url)){
             Toast.makeText(mContext, "GIF: " + url, Toast.LENGTH_SHORT).show();
         } */ else if (isPotentialYoutube(url)) {
             mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
@@ -212,7 +217,7 @@ public final class LinkHandler {
     private static boolean isPicture(String url) {
         try {
             URL uri = new URL(url);
-            String[] fileTypes = {".jpeg", ".jpg", ".png", ".bmp"};
+            String[] fileTypes = {".jpeg", ".jpg", ".png"};
             for (String fileType : fileTypes) {
                 if (uri.getPath().endsWith(fileType))
                     return true;

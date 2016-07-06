@@ -2,8 +2,6 @@ package app.drool.respite.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.managers.AccountManager;
@@ -27,11 +29,8 @@ import java.util.LinkedList;
 
 import app.drool.respite.R;
 import app.drool.respite.activities.CommentsActivity;
-import app.drool.respite.asyncloaders.AsyncDrawableCache;
-import app.drool.respite.asyncloaders.AsyncDrawableURL;
 import app.drool.respite.asyncloaders.PreviewFromCacheTask;
 import app.drool.respite.asyncloaders.PreviewFromURLTask;
-import app.drool.respite.cache.CacheWrapper;
 import app.drool.respite.handlers.LinkHandler;
 import app.drool.respite.impl.SubmissionParcelable;
 import app.drool.respite.utils.Utilities;
@@ -173,7 +172,7 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         holder.preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, submission.getSubredditId(), Toast.LENGTH_SHORT).show();
+                LinkHandler.analyse(mContext, submission.getUrl());
             }
         });
 
@@ -243,7 +242,22 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         return submissions.size();
     }
 
-    private void loadPreview(final String submissionID, ImageView preview, final String thumbnailURL) {
+    private void loadPreview(final String submissionID, final ImageView preview, final String thumbnailURL) {
+        preview.setBackgroundResource(android.R.color.transparent);
+        Picasso.with(mContext).load(thumbnailURL).networkPolicy(NetworkPolicy.OFFLINE)  //Trying Picasso
+                .into(preview, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError() {
+                                Picasso.with(mContext).load(thumbnailURL).into(preview);
+                            }
+                        });
+
+        /*
         if (CacheWrapper.hasPreview(mContext.getCacheDir(), submissionID)) {
             if (cancelPotentialWorkFromCache(submissionID, preview)) {
                 final PreviewFromCacheTask task = new PreviewFromCacheTask(mContext.getCacheDir(), submissionID, preview);
@@ -260,7 +274,7 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
                 preview.setImageDrawable(asyncDrawableURL);
                 task.execute();
             }
-        }
+        } */
     }
 
     private void upvoteSubmission(Submission s) {
