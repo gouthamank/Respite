@@ -2,6 +2,7 @@ package app.drool.respite.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -9,27 +10,44 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import net.dean.jraw.RedditClient;
 import net.dean.jraw.auth.AuthenticationManager;
 import net.dean.jraw.auth.AuthenticationState;
+import net.dean.jraw.http.NetworkException;
+import net.dean.jraw.models.Subreddit;
+import net.dean.jraw.paginators.UserSubredditsPaginator;
+
+import java.text.NumberFormat;
+import java.util.List;
 
 import app.drool.respite.R;
 import app.drool.respite.Respite;
+import app.drool.respite.handlers.LinkHandler;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
     private TextView frontPageButton, subredditButton, userButton, allButton;
+    private ProgressBar progressBar;
+    private LinearLayout mLayout;
+    private RedditClient mRedditClient;
 
     @Override
     protected void onResume() {
         super.onResume();
         ((Respite) getApplication()).refreshCredentials(this);
 
-        if(AuthenticationManager.get().checkAuthState() == AuthenticationState.NONE) {
+        if (AuthenticationManager.get().checkAuthState() == AuthenticationState.NONE) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        } else {
+            loadSubscriptions();
         }
     }
 
@@ -38,12 +56,62 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mLayout = (LinearLayout) findViewById(R.id.activity_main_layout);
+        progressBar = (ProgressBar) findViewById(R.id.activity_main_progressbar);
         frontPageButton = (TextView) findViewById(R.id.activity_main_frontpage);
         subredditButton = (TextView) findViewById(R.id.activity_main_customsubreddit);
         allButton = (TextView) findViewById(R.id.activity_main_all);
         userButton = (TextView) findViewById(R.id.activity_main_customuser);
+        mLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+        mRedditClient = ((Respite) getApplication()).getRedditClient();
 
         setUpClickListeners();
+    }
+
+    private void loadSubscriptions() {
+        new AsyncTask<Void, Void, List<Subreddit>>() {
+            @Override
+            protected List<Subreddit> doInBackground(Void... params) {
+                try {
+                    return (new UserSubredditsPaginator(mRedditClient, "subscriber")).accumulateMergedAll();
+                } catch (NetworkException e) {
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(List<Subreddit> subreddits) {
+                if (subreddits == null)
+                    Toast.makeText(getApplicationContext(), R.string.mainactivity_networkerror, Toast.LENGTH_LONG).show();
+                else {
+                    progressBar.setVisibility(View.GONE);
+                    boolean shouldSkipDivider = true;
+                    for (Subreddit s : subreddits) {
+                        RelativeLayout v = (RelativeLayout) getLayoutInflater().inflate(R.layout.list_item_subscription, null, false);
+                        final TextView title = (TextView) v.findViewById(R.id.list_item_subscription_title);
+                        final TextView count = (TextView) v.findViewById(R.id.list_item_subscription_count);
+                        LinearLayout innerLayout = (LinearLayout) v.findViewById(R.id.list_item_subscription_layout);
+                        title.setText(s.getDisplayName());
+                        count.setText(getString(R.string.mainactivity_subscribers, NumberFormat.getIntegerInstance().format(s.getSubscriberCount())));
+                        innerLayout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                LinkHandler.analyse(MainActivity.this, "/r/" + title.getText().toString().toLowerCase());
+                            }
+                        });
+
+                        if (shouldSkipDivider)
+                            shouldSkipDivider = false;
+                        else {
+                            RelativeLayout v2 = (RelativeLayout) getLayoutInflater().inflate(R.layout.list_item_divider, null, false);
+                            mLayout.addView(v2);
+                        }
+
+                        mLayout.addView(v);
+                    }
+                }
+            }
+        }.execute();
     }
 
     private void setUpClickListeners() {

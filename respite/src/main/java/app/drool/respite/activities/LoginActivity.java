@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final OAuthHelper helper = AuthenticationManager.get().getRedditClient().getOAuthHelper();
 
-        String[] scopes = {"identity", "read", "history"};
+        String[] scopes = {"identity", "read", "history", "mysubreddits"};
 
         final URL authorizationURL = helper.getAuthorizationUrl(Respite.CREDENTIALS, true, true, scopes);
         final WebView webView = (WebView) findViewById(R.id.webview);

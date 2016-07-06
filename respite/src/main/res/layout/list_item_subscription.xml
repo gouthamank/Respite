@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/list_item_subscription_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/list_item_subscription_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder.subreddit"
+            android:textAppearance="?android:attr/textAppearanceListItem"/>
+
+        <TextView
+            android:id="@+id/list_item_subscription_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder.score"
+            android:textAppearance="@style/RespiteSmallText"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+</RelativeLayout>

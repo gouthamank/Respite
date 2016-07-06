@@ -8,6 +8,8 @@
     <string name="mainactivity.customsubreddit">View a specific subreddit</string>
     <string name="mainactivity.customuser">View a user page</string>
     <string name="mainactivity.subscriptions">Subscriptions</string>
+    <string name="mainactivity.networkerror">Could not load subscriptions</string>
+    <string name="mainactivity.subscribers">%1$s subscribers</string>
 
     <string name="useractivity.networkerror">Error retrieving user details</string>
 

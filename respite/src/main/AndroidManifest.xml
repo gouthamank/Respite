@@ -52,12 +52,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity"/>
-        </activity>
-        <activity
-            android:name=".activities.asdasdActivity"
-            android:label="@string/title_activity_asdasd"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        </activity> 
     </application>
 
 </manifest>
