@@ -132,6 +132,54 @@
                     android:textAppearance="@style/TextAppearance.AppCompat"
                     android:textSize="14sp"/>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:id="@+id/list_item_submission_upvote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
+                        android:src="@drawable/ic_vote_up"/>
+
+
+                    <TextView
+                        android:id="@+id/list_item_submission_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingEnd="@dimen/activity_vertical_margin"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:paddingStart="@dimen/activity_vertical_margin"
+                        android:text="@string/placeholder.score"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textSize="16sp"
+                        android:textStyle="normal|bold"
+                        tools:ignore="RelativeOverlap"/>
+
+                    <ImageView
+                        android:id="@+id/list_item_submission_downvote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/list_item_submission_score"
+                        android:layout_toStartOf="@id/list_item_submission_score"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
+                        android:src="@drawable/ic_vote_down"/>
+                </LinearLayout>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -152,47 +200,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textSize="12sp"/>
 
-                <TextView
-                    android:id="@+id/list_item_submission_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="sans-serif"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingStart="@dimen/activity_horizontal_margin"
-                    android:paddingEnd="@dimen/activity_horizontal_margin"
-                    android:text="@string/placeholder.score"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textSize="14sp"
-                    android:textStyle="normal|bold"
-                    tools:ignore="RelativeOverlap"/>
 
-                <ImageView
-                    android:id="@+id/list_item_submission_downvote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/list_item_submission_score"
-                    android:layout_toStartOf="@id/list_item_submission_score"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:scaleX="0.8"
-                    android:scaleY="0.8"
-                    android:src="@drawable/ic_vote_down"/>
-
-                <ImageView
-                    android:id="@+id/list_item_submission_upvote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/list_item_submission_downvote"
-                    android:layout_toStartOf="@id/list_item_submission_downvote"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:scaleX="0.8"
-                    android:scaleY="0.8"
-                    android:src="@drawable/ic_vote_up"/>
             </RelativeLayout>
 
         </LinearLayout>

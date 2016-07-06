@@ -55,7 +55,7 @@ public class UserSubmittedFragment extends Fragment implements SubmissionListAda
         if (mPaginator == null)
             mPaginator = new UserContributionPaginator(mRedditClient, "submitted", username);
         if (mAdapter == null)
-            mAdapter = new SubmissionListAdapter(getContext());
+            mAdapter = new SubmissionListAdapter(getContext(), mRedditClient);
 
         startDownloadTask();
     }

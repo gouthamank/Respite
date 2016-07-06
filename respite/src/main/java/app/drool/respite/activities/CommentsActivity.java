@@ -168,7 +168,7 @@ public class CommentsActivity extends AppCompatActivity {
             protected void onPostExecute(Submission submission) {
                 progressBar.setVisibility(ProgressBar.GONE);
 
-                if(submission == null) {
+                if (submission == null) {
                     Toast.makeText(getApplicationContext(), R.string.commentsactivity_networkerror, Toast.LENGTH_LONG).show();
                 } else {
                     updateHeader(submission);
@@ -185,7 +185,7 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private void updatePaginator(CommentSort sort) {
-        if(currentSort == sort) return;
+        if (currentSort == sort) return;
         currentSort = sort;
         refreshPage();
     }
@@ -261,7 +261,7 @@ public class CommentsActivity extends AppCompatActivity {
             headerAuthor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!authorURL.contentEquals("/u/[deleted]"))
+                    if (!authorURL.contentEquals("/u/[deleted]"))
                         LinkHandler.analyse(CommentsActivity.this, authorURL);
                 }
             });
@@ -346,13 +346,13 @@ public class CommentsActivity extends AppCompatActivity {
                 }
             });
 
-            if(node.getComment().getAuthor().contentEquals(threadOP))
+            if (node.getComment().getAuthor().contentEquals(threadOP))
                 author.setTextColor(ContextCompat.getColor(this, R.color.distinguishedOP));
 
-            if(node.getComment().getDistinguishedStatus() == DistinguishedStatus.MODERATOR)
+            if (node.getComment().getDistinguishedStatus() == DistinguishedStatus.MODERATOR)
                 author.setTextColor(ContextCompat.getColor(this, R.color.distinguishedMod));
 
-            if(node.getComment().getDistinguishedStatus() == DistinguishedStatus.ADMIN)
+            if (node.getComment().getDistinguishedStatus() == DistinguishedStatus.ADMIN)
                 author.setTextColor(ContextCompat.getColor(this, R.color.distinguishedAdmin));
 
             author.setText(node.getComment().getAuthor());
@@ -360,7 +360,7 @@ public class CommentsActivity extends AppCompatActivity {
             author.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!authorURL.contentEquals("/u/[deleted]"))
+                    if (!authorURL.contentEquals("/u/[deleted]"))
                         LinkHandler.analyse(CommentsActivity.this, authorURL);
                 }
             });
@@ -368,9 +368,10 @@ public class CommentsActivity extends AppCompatActivity {
 
             if (node.getComment().getAuthorFlair() != null
                     && node.getComment().getAuthorFlair().getText() != null
-                    && node.getComment().getAuthorFlair().getText().length() > 0)
+                    && node.getComment().getAuthorFlair().getText().length() > 0) {
                 flair.setText(node.getComment().getAuthorFlair().getText());
-            else
+                flair.setVisibility(View.VISIBLE);
+            } else
                 flair.setVisibility(View.GONE);
 
             if (node.getComment().isScoreHidden())
@@ -378,14 +379,16 @@ public class CommentsActivity extends AppCompatActivity {
             else
                 score.setText(String.valueOf(node.getComment().getScore()));
 
-            if (node.getComment().getTimesGilded() > 0)
+            if (node.getComment().getTimesGilded() > 0) {
                 gildedCount.setText(getString(R.string.comment_gilded_count, node.getComment().getTimesGilded()));
-            else
+                gildedCount.setVisibility(View.VISIBLE);
+            } else
                 gildedCount.setVisibility(View.GONE);
 
-            if (node.getComment().hasBeenEdited())
+            if (node.getComment().hasBeenEdited()) {
                 timeEdited.setText(getString(R.string.comment_edited, Utilities.getReadableCreationTime(node.getComment().getEditDate())));
-            else
+                timeEdited.setVisibility(View.VISIBLE);
+            } else
                 timeEdited.setVisibility(View.GONE);
 
             int depth = node.getDepth() - 1;

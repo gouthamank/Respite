@@ -17,7 +17,12 @@
     <color name="textTitleNSFW">#b71c1c</color>
     <color name="textTitleNSFW.Dark">#ff5252</color>
 
+    <color name="textUpvoted">#ff8a65</color>
+    <color name="textDownvoted">#8c9eff</color>
+    <color name="textNotvoted">#c6c6c6</color>
+
     <color name="textTitleStickied">#388e3c</color>
+    <color name="textTitleRegular">#000000</color>
     <color name="linkFlairBackground.Dark">#788c96</color>
     <color name="linkFlairBackground.Light">#ffffffff</color>
     <color name="linkText">@color/m_material_blue_grey_800</color>

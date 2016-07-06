@@ -17,6 +17,7 @@
     <string name="searchactivity.menubar.title">\"%1$s\"</string>
 
     <string name="submissionsactivity.networkerror">Error retrieving posts</string>
+    <string name="submissionsactivity.voteerror">Could not cast vote</string>
 
     <string name="commentsactivity.networkerror">Error retrieving comments</string>
     <string name="commentsactivity.singlecommentthread.alert">Viewing single comment thread</string>

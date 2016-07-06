@@ -49,7 +49,7 @@ public class SearchActivity extends AppCompatActivity implements SubmissionListA
         currentTimePeriod = TimePeriod.ALL;
         query = getIntent().getStringExtra("query");
         String subreddit = getIntent().getStringExtra("scope");
-        mAdapter = new SubmissionListAdapter(this);
+        mAdapter = new SubmissionListAdapter(this, mRedditClient);
         mPaginator = new SubmissionSearchPaginator(mRedditClient, query);
         if (subreddit != null && subreddit.length() > 0)
             mPaginator.setSubreddit(subreddit);

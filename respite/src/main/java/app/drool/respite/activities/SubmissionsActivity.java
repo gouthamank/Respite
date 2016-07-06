@@ -47,7 +47,7 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
         final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         assert submissionList != null;
         submissionList.setLayoutManager(mLayoutManager);
-        mAdapter = new SubmissionListAdapter(this);
+        mAdapter = new SubmissionListAdapter(this, ((Respite) getApplication()).getRedditClient());
         submissionList.setAdapter(mAdapter);
         mAdapter.setEndlessScrollListener(this);
 

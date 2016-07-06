@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -92,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
                         final TextView count = (TextView) v.findViewById(R.id.list_item_subscription_count);
                         LinearLayout innerLayout = (LinearLayout) v.findViewById(R.id.list_item_subscription_layout);
                         title.setText(s.getDisplayName());
+                        if(s.isNsfw())
+                            title.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.textTitleNSFW));
                         count.setText(getString(R.string.mainactivity_subscribers, NumberFormat.getIntegerInstance().format(s.getSubscriberCount())));
                         innerLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -103,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
                         if (shouldSkipDivider)
                             shouldSkipDivider = false;
                         else {
-                            RelativeLayout v2 = (RelativeLayout) getLayoutInflater().inflate(R.layout.list_item_divider, null, false);
-                            mLayout.addView(v2);
+                            RelativeLayout divider = (RelativeLayout) getLayoutInflater().inflate(R.layout.list_item_divider, null, false);
+                            mLayout.addView(divider);
                         }
 
                         mLayout.addView(v);
