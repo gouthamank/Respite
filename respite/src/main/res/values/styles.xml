@@ -29,4 +29,5 @@
         <item name="android:textColor">@color/linkText</item>
     </style>
 
+
 </resources>

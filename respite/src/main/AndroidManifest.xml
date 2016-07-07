@@ -53,8 +53,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity"/>
         </activity>
-        <activity android:name=".activities.ImageViewActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".activities.ImageViewActivity"/>
     </application>
 
 </manifest>
