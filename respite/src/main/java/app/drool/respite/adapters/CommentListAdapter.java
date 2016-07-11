@@ -1,21 +1,31 @@
 package app.drool.respite.adapters;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.laurencedawson.activetextview.ActiveTextView;
 
+import net.dean.jraw.RedditClient;
+import net.dean.jraw.managers.AccountManager;
 import net.dean.jraw.models.Comment;
 import net.dean.jraw.models.CommentNode;
 import net.dean.jraw.models.DistinguishedStatus;
 import net.dean.jraw.models.Submission;
+import net.dean.jraw.models.VoteDirection;
 
 import java.util.ArrayList;
 
@@ -35,13 +45,18 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private LoadAllCommentsListener loadAllCommentsListener = null;
     private ArrayList<CommentNode> commentNodes = null;
+    private ArrayList<VoteDirection> votes = null;
     private SubmissionParcelable submission = null;
+    private RedditClient mRedditClient = null;
     private String threadOP = null;
     private Context mContext = null;
+    private boolean isShown = false; // single comment notice
 
-    public CommentListAdapter(Context c) {
+    public CommentListAdapter(Context c, RedditClient mRedditClient) {
         mContext = c;
         commentNodes = new ArrayList<>();
+        votes = new ArrayList<>();
+        this.mRedditClient = mRedditClient;
     }
 
     public void addSubmission(SubmissionParcelable s) {
@@ -56,6 +71,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void addComments(CommentNode c) {
         for (CommentNode n : c.walkTree()) {
+            votes.add(n.getComment().getVote());
             commentNodes.add(n);
         }
 
@@ -74,10 +90,13 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
+    public void setShouldShowSingleCommentNotice(boolean shouldShow) {
+        isShown = shouldShow;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
-
             View v = LayoutInflater.from(mContext).inflate(R.layout.activity_comments_header, parent, false);
             LinearLayout view = (LinearLayout) v;
             return new HeaderHolder(view);
@@ -93,9 +112,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             View v = LayoutInflater.from(mContext).inflate(R.layout.list_item_comment, parent, false);
             LinearLayout view = (LinearLayout) v;
             return new CommentHolder(view);
-
         }
-
         return null;
     }
 
@@ -180,7 +197,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     headerHolder.selfText.setVisibility(View.GONE);
                 }
 
-                if(this.commentNodes.size() == 0)
+                if (this.commentNodes.size() == 0)
                     headerHolder.progressBar.setVisibility(View.VISIBLE);
                 else
                     headerHolder.progressBar.setVisibility(View.GONE);
@@ -199,9 +216,76 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             });
 
         } else if (holder instanceof CommentHolder) {
-            CommentHolder commentHolder = (CommentHolder) holder;
-            final CommentNode node = commentNodes.get(position - 1);
+            final CommentHolder commentHolder = (CommentHolder) holder;
+            final CommentNode node = isShown ? commentNodes.get(position - 2) : commentNodes.get(position - 1);
+            final int currentVotePosition = isShown ? position - 2 : position - 1;
             final Comment comment = node.getComment();
+
+            commentHolder.view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    String[] options = mContext.getResources().getStringArray(R.array.comment_context_menu);
+                    if (votes.get(currentVotePosition) == VoteDirection.UPVOTE)
+                        options[0] = "Remove Vote";
+                    else if (votes.get(currentVotePosition) == VoteDirection.DOWNVOTE)
+                        options[1] = "Remove Vote";
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setAdapter(new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, options), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) { // Up, Down, CopyContent, CopyPerma
+                            switch (which) {
+                                case 0:
+
+                                    if (votes.get(currentVotePosition) == VoteDirection.UPVOTE) {
+                                        votes.remove(currentVotePosition);
+                                        voteComment(comment, VoteDirection.NO_VOTE);
+                                        votes.add(currentVotePosition, VoteDirection.NO_VOTE);
+                                    } else {
+                                        votes.remove(currentVotePosition);
+                                        voteComment(comment, VoteDirection.UPVOTE);
+                                        votes.add(currentVotePosition, VoteDirection.UPVOTE);
+                                    }
+                                    notifyItemChanged(commentHolder.getAdapterPosition());
+                                    break;
+
+                                case 1:
+
+                                    if (votes.get(currentVotePosition) == VoteDirection.DOWNVOTE) {
+                                        votes.remove(currentVotePosition);
+                                        voteComment(comment, VoteDirection.NO_VOTE);
+                                        votes.add(currentVotePosition, VoteDirection.NO_VOTE);
+                                    } else {
+                                        votes.remove(currentVotePosition);
+                                        voteComment(comment, VoteDirection.DOWNVOTE);
+                                        votes.add(currentVotePosition, VoteDirection.DOWNVOTE);
+                                    }
+                                    notifyItemChanged(commentHolder.getAdapterPosition());
+                                    break;
+
+                                case 2:
+
+                                    String commentBody = Utilities.getHTMLFromMarkdown(comment.data("body_html")).toString();
+                                    ClipData bodyData = ClipData.newPlainText("commentBody", commentBody);
+                                    ((ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(bodyData);
+                                    Toast.makeText(mContext, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+                                    break;
+
+                                case 3:
+
+                                    String permalink = "https://www.reddit.com" + Utilities.replaceHTMLTags(submission.getPermalink() + comment.getId());
+                                    ClipData linkData = ClipData.newPlainText("commentPermalink", permalink);
+                                    ((ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(linkData);
+                                    Toast.makeText(mContext, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+                                    break;
+
+                            }
+                        }
+                    });
+                    builder.create().show();
+                    return false;
+                }
+            });
 
             commentHolder.body.setText(Utilities.getHTMLFromMarkdown(comment.data("body_html")));
             commentHolder.body.setOnLongClickListener(new View.OnLongClickListener() {
@@ -249,6 +333,13 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             else
                 commentHolder.score.setText(String.valueOf(comment.getScore()));
 
+            if (votes.get(currentVotePosition) == VoteDirection.UPVOTE)
+                commentHolder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textUpvoted));
+            else if (votes.get(currentVotePosition) == VoteDirection.DOWNVOTE)
+                commentHolder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textDownvoted));
+            else
+                commentHolder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textNotvoted));
+
             if (comment.getTimesGilded() > 0) {
                 commentHolder.gildedCount.setText(mContext.getString(R.string.comment_gilded_count, comment.getTimesGilded()));
                 commentHolder.gildedCount.setVisibility(View.VISIBLE);
@@ -270,7 +361,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             else
                 commentHolder.commentIndent.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override
@@ -282,12 +372,36 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemViewType(int position) {
         if (position == 0)
             return TYPE_HEADER;
-
+        else if (isShown) {
+            if (position == 1) return TYPE_NOTICE;
+            return TYPE_COMMENT;
+        }
         return TYPE_COMMENT;
     }
 
     public void setLoadAllCommentsListener(LoadAllCommentsListener l) {
         this.loadAllCommentsListener = l;
+    }
+
+    private void voteComment(Comment c, final VoteDirection direction) {
+        new AsyncTask<Comment, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Comment... params) {
+                Comment c = params[0];
+                try {
+                    (new AccountManager(mRedditClient)).vote(c, direction);
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                if (!success)
+                    Toast.makeText(mContext, R.string.submissionsactivity_voteerror, Toast.LENGTH_LONG).show();
+            }
+        }.execute(c);
     }
 
     public interface LoadAllCommentsListener {

@@ -9,9 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import net.dean.jraw.RedditClient;
@@ -47,10 +44,11 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
         commentList = (RecyclerView) findViewById(R.id.activity_comments_commentlist);
-        mAdapter = new CommentListAdapter(CommentsActivity.this);
+        mAdapter = new CommentListAdapter(CommentsActivity.this, ((Respite) getApplication()).getRedditClient());
         LinearLayoutManager layoutManager = new LinearLayoutManager(CommentsActivity.this);
         commentList.setLayoutManager(layoutManager);
         commentList.setAdapter(mAdapter);
+        mAdapter.setLoadAllCommentsListener(this);
 
         SubmissionParcelable submissionParcelable = getIntent().getParcelableExtra("top");
         submissionID = getIntent().getStringExtra("submissionID");
@@ -67,9 +65,9 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
 
         if (currentMode != ACTIVITY_MODES.ALL_COMMENTS_WITH_BUNDLE) {
             setUpMenuBar("");
-            if (currentMode == ACTIVITY_MODES.SINGLE_COMMENT)
+            if (currentMode == ACTIVITY_MODES.SINGLE_COMMENT) {
                 loadComments(submissionID, commentID);
-            else
+            } else
                 loadComments(submissionID);
         } else {
             setUpMenuBar(submissionParcelable.getTitle());
@@ -163,7 +161,7 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
                     setUpMenuBar(submission.getTitle());
                     CommentNode rootComments = submission.getComments();
                     if (commentID != null && rootComments.findChild("t1_" + commentID).isPresent()) {
-//                         addSingleCommentThreadAlert();
+                        mAdapter.setShouldShowSingleCommentNotice(true);
                         mAdapter.addComments(rootComments.findChild("t1_" + commentID).get());
                     } else {
                         mAdapter.addComments(rootComments);
@@ -186,32 +184,22 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
 
     private void refreshPage(boolean shouldIgnoreCurrentMode) {
         mAdapter.clearComments();
-        // show PB
 
         if (!shouldIgnoreCurrentMode && currentMode == ACTIVITY_MODES.SINGLE_COMMENT) {
             loadComments(submissionID, commentID);
         } else if (shouldIgnoreCurrentMode) {
             currentMode = ACTIVITY_MODES.ALL_COMMENTS_NO_BUNDLE;
+            commentID = null;
+            mAdapter.setShouldShowSingleCommentNotice(false);
             loadComments(submissionID);
         } else
             loadComments(submissionID);
     }
 
-    private void addSingleCommentThreadAlert() {
-        ViewGroup alert = (ViewGroup) getLayoutInflater().inflate(R.layout.list_item_single_thread_alert, commentList, false);
-        LinearLayout alertLayout = (LinearLayout) alert.findViewById(R.id.comments_single_thread_alert);
-        alertLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshPage(true);
-            }
-        });
-
-        commentList.addView(alert);
-    }
-
     @Override
-    public void onLoadAllComments() { refreshPage(true); }
+    public void onLoadAllComments() {
+        refreshPage(true);
+    }
 
     private enum ACTIVITY_MODES {
         SINGLE_COMMENT,

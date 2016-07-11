@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="comment_context_menu">
+        <item>Upvote</item>
+        <item>Downvote</item>
+        <item>Copy to clipboard</item>
+        <item>Copy permalink</item>
+    </string-array>
+</resources>

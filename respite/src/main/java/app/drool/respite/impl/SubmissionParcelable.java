@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import net.dean.jraw.models.Submission;
 
 import app.drool.respite.R;
@@ -27,6 +25,7 @@ public class SubmissionParcelable implements Parcelable {
             return new SubmissionParcelable[size];
         }
     };
+
     private String title;
     private String score;
     private String comments;
@@ -34,13 +33,9 @@ public class SubmissionParcelable implements Parcelable {
     private String submissionID;
     private String subreddit;
     private String link;
-
+    private String permalink;
     private String author, timeCreated, domain, linkFlair;
     private int isNSFW, isStickied, isSelfPost;
-
-    public SubmissionParcelable(Context mContext, JsonNode node) {
-        this(mContext, new Submission(node));
-    }
 
     public SubmissionParcelable(Context mContext, Submission s) {
         this.title = s.getTitle().replace("&amp;", "&").replace("&gt;", ">").replace("&lt;", "<");
@@ -52,6 +47,7 @@ public class SubmissionParcelable implements Parcelable {
         this.author = s.getAuthor();
         this.subreddit = s.getSubredditName();
         this.link = s.getUrl();
+        this.permalink = s.getPermalink();
 
         this.timeCreated = Utilities.getReadableCreationTime(s.getCreated());
         this.domain = s.getDomain();
@@ -59,10 +55,6 @@ public class SubmissionParcelable implements Parcelable {
         this.isNSFW = s.isNsfw() ? 1 : 0;
         this.isStickied = s.isStickied() ? 1 : 0;
         this.isSelfPost = s.isSelfPost() ? 1 : 0;
-    }
-
-    private SubmissionParcelable() {
-        // nothing. used for newDummyInstance()
     }
 
     private SubmissionParcelable(Parcel in) {
@@ -77,6 +69,7 @@ public class SubmissionParcelable implements Parcelable {
         this.linkFlair = in.readString();
         this.link = in.readString();
         this.author = in.readString();
+        this.permalink = in.readString();
         this.isNSFW = in.readInt();
         this.isStickied = in.readInt();
         this.isSelfPost = in.readInt();
@@ -100,6 +93,7 @@ public class SubmissionParcelable implements Parcelable {
         dest.writeString(linkFlair);
         dest.writeString(link);
         dest.writeString(author);
+        dest.writeString(permalink);
 
         dest.writeInt(isNSFW);
         dest.writeInt(isStickied);
@@ -149,6 +143,11 @@ public class SubmissionParcelable implements Parcelable {
     public String getLinkFlair() {
         return linkFlair;
     }
+
+    public String getPermalink() {
+        return permalink;
+    }
+
 
     public boolean isNSFW() {
         return isNSFW == 1;
