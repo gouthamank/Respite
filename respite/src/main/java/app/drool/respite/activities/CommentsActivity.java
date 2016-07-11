@@ -3,62 +3,54 @@ package app.drool.respite.activities;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.laurencedawson.activetextview.ActiveTextView;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.http.NetworkException;
 import net.dean.jraw.http.SubmissionRequest;
 import net.dean.jraw.models.CommentNode;
 import net.dean.jraw.models.CommentSort;
-import net.dean.jraw.models.DistinguishedStatus;
 import net.dean.jraw.models.Submission;
 
 import app.drool.respite.R;
 import app.drool.respite.Respite;
-import app.drool.respite.handlers.LinkHandler;
+import app.drool.respite.adapters.CommentListAdapter;
 import app.drool.respite.impl.SubmissionParcelable;
-import app.drool.respite.utils.Utilities;
 
 /**
  * Created by drool on 6/18/16.
  */
 
-public class CommentsActivity extends AppCompatActivity {
+public class CommentsActivity extends AppCompatActivity implements CommentListAdapter.LoadAllCommentsListener {
 
     private static final String TAG = "CommentsActivity.java";
-    private TextView headerTitle, headerComments, headerScore;
-    private ActiveTextView headerSelfText;
-    private TextView headerAuthor, headerSubreddit, headerTimeCreated, headerLinkFlair, headerDomain, headerLink;
-    private View headerDescriptionBlock, headerLinkLayout;
+    private CommentListAdapter mAdapter = null;
 
     private RedditClient mRedditClient = null;
-    private ProgressBar progressBar;
-    private LinearLayout commentList = null;
+    private RecyclerView commentList = null;
     private ACTIVITY_MODES currentMode = null;
     private String submissionID = null;
     private String commentID = null;
-    private String threadOP = null;
     private CommentSort currentSort = CommentSort.HOT;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_comments);
-        commentList = (LinearLayout) findViewById(R.id.comments_list);
-        addEmptyHeader();
+        commentList = (RecyclerView) findViewById(R.id.activity_comments_commentlist);
+        mAdapter = new CommentListAdapter(CommentsActivity.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(CommentsActivity.this);
+        commentList.setLayoutManager(layoutManager);
+        commentList.setAdapter(mAdapter);
 
         SubmissionParcelable submissionParcelable = getIntent().getParcelableExtra("top");
         submissionID = getIntent().getStringExtra("submissionID");
@@ -75,15 +67,13 @@ public class CommentsActivity extends AppCompatActivity {
 
         if (currentMode != ACTIVITY_MODES.ALL_COMMENTS_WITH_BUNDLE) {
             setUpMenuBar("");
-
             if (currentMode == ACTIVITY_MODES.SINGLE_COMMENT)
                 loadComments(submissionID, commentID);
             else
                 loadComments(submissionID);
         } else {
             setUpMenuBar(submissionParcelable.getTitle());
-            updateHeader(submissionParcelable);
-
+            mAdapter.addSubmission(submissionParcelable);
             submissionID = submissionParcelable.getSubmissionID();
             loadComments(submissionID);
         }
@@ -166,19 +156,18 @@ public class CommentsActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Submission submission) {
-                progressBar.setVisibility(ProgressBar.GONE);
-
                 if (submission == null) {
                     Toast.makeText(getApplicationContext(), R.string.commentsactivity_networkerror, Toast.LENGTH_LONG).show();
                 } else {
-                    updateHeader(submission);
+                    mAdapter.addSubmission(submission);
                     setUpMenuBar(submission.getTitle());
                     CommentNode rootComments = submission.getComments();
                     if (commentID != null && rootComments.findChild("t1_" + commentID).isPresent()) {
-                        addSingleCommentThreadAlert();
-                        addComments(rootComments.findChild("t1_" + commentID).get());
-                    } else
-                        addComments(rootComments);
+//                         addSingleCommentThreadAlert();
+                        mAdapter.addComments(rootComments.findChild("t1_" + commentID).get());
+                    } else {
+                        mAdapter.addComments(rootComments);
+                    }
                 }
             }
         }.execute();
@@ -187,6 +176,7 @@ public class CommentsActivity extends AppCompatActivity {
     private void updatePaginator(CommentSort sort) {
         if (currentSort == sort) return;
         currentSort = sort;
+        getSupportActionBar().setSubtitle(currentSort.name());
         refreshPage();
     }
 
@@ -195,10 +185,8 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private void refreshPage(boolean shouldIgnoreCurrentMode) {
-        commentList.removeAllViews();
-        progressBar.setVisibility(View.VISIBLE);
-
-        addEmptyHeader();
+        mAdapter.clearComments();
+        // show PB
 
         if (!shouldIgnoreCurrentMode && currentMode == ACTIVITY_MODES.SINGLE_COMMENT) {
             loadComments(submissionID, commentID);
@@ -222,188 +210,8 @@ public class CommentsActivity extends AppCompatActivity {
         commentList.addView(alert);
     }
 
-    private void addEmptyHeader() {
-        ViewGroup headerView = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_comments_header, commentList, false);
-
-        headerAuthor = (TextView) headerView.findViewById(R.id.comments_header_author);
-        headerSubreddit = (TextView) headerView.findViewById(R.id.comments_header_subreddit);
-        headerTimeCreated = (TextView) headerView.findViewById(R.id.comments_header_timecreated);
-        headerLinkFlair = (TextView) headerView.findViewById(R.id.comments_header_link_flair);
-        headerDomain = (TextView) headerView.findViewById(R.id.comments_header_domain);
-        headerLink = (TextView) headerView.findViewById(R.id.comments_header_link);
-        headerDescriptionBlock = headerView.findViewById(R.id.comments_header_description);
-        headerLinkLayout = headerView.findViewById(R.id.comments_header_link_layout);
-
-        headerTitle = (TextView) headerView.findViewById(R.id.comments_header_title);
-        headerComments = (TextView) headerView.findViewById(R.id.comments_header_comments);
-        headerScore = (TextView) headerView.findViewById(R.id.comments_header_score);
-        headerSelfText = (ActiveTextView) headerView.findViewById(R.id.comments_header_selftext);
-        progressBar = (ProgressBar) findViewById(R.id.activity_comments_progressbar);
-
-        SubmissionParcelable submission = SubmissionParcelable.newDummyInstance();
-        headerDescriptionBlock.setVisibility(View.INVISIBLE);
-        headerComments.setText(submission.getComments());
-        headerScore.setText(submission.getScore());
-        headerTitle.setText(submission.getTitle());
-        headerSelfText.setVisibility(View.GONE);
-        headerLinkLayout.setVisibility(View.GONE);
-
-        commentList.addView(headerView);
-    }
-
-    private void updateHeader(final SubmissionParcelable submission) {
-
-        headerAuthor.setText(submission.getAuthor());
-        threadOP = submission.getAuthor();
-
-        if (submission.getAuthor() != null) {
-            final String authorURL = "/u/" + submission.getAuthor();
-            headerAuthor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!authorURL.contentEquals("/u/[deleted]"))
-                        LinkHandler.analyse(CommentsActivity.this, authorURL);
-                }
-            });
-        }
-        headerSubreddit.setText(submission.getSubreddit());
-        if (submission.getSubreddit() != null) {
-            final String subredditURL = "/r/" + submission.getSubreddit();
-            headerSubreddit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LinkHandler.analyse(CommentsActivity.this, subredditURL);
-                }
-            });
-        }
-        headerTimeCreated.setText(submission.getTimeCreated());
-        headerDomain.setText(submission.getDomain());
-        headerLinkFlair.setText(submission.getLinkFlair());
-        headerDescriptionBlock.setVisibility(View.VISIBLE);
-
-        headerComments.setText(submission.getComments());
-        headerScore.setText(submission.getScore());
-        headerTitle.setText(submission.getTitle());
-        if (submission.getLinkFlair() == null)
-            headerLinkFlair.setVisibility(View.GONE);
-
-        if (submission.isNSFW())
-            headerTitle.setTextColor(ContextCompat.getColor(this, R.color.textTitleNSFW_Dark));
-        if (submission.isStickied())
-            headerTitle.setTextColor(ContextCompat.getColor(this, R.color.textTitleStickied));
-
-        if (submission.getSelfText() != null) {
-            headerLinkLayout.setVisibility(View.GONE);
-            headerSelfText.setVisibility(View.VISIBLE);
-            headerSelfText.setText(Utilities.getHTMLFromMarkdown(submission.getSelfText()));
-            headerSelfText.setLinkClickedListener(new ActiveTextView.OnLinkClickedListener() {
-                @Override
-                public void onClick(String url) {
-                    LinkHandler.analyse(CommentsActivity.this, url);
-                }
-            });
-        } else if (!submission.isSelfPost()) {
-            headerLinkLayout.setVisibility(View.VISIBLE);
-            headerSelfText.setVisibility(View.GONE);
-            headerSelfText.setText(submission.getLink());
-            headerLinkLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LinkHandler.analyse(CommentsActivity.this, submission.getLink());
-                }
-            });
-            headerLink.setText(submission.getLink());
-        } else {
-            headerSelfText.setVisibility(View.GONE);
-            headerLinkLayout.setVisibility(View.GONE);
-        }
-    }
-
-    private void updateHeader(Submission submission) {
-        updateHeader(new SubmissionParcelable(this, submission));
-    }
-
-    private void addComments(CommentNode comments) {
-        for (CommentNode node : comments.walkTree()) {
-            ViewGroup comment = (ViewGroup) getLayoutInflater().inflate(R.layout.list_item_comment, commentList, false);
-            View commentMarker = comment.findViewById(R.id.list_item_comment_marker);
-            TextView author, flair, score, timeCreated, gildedCount, timeEdited;
-            ActiveTextView body;
-
-            author = (TextView) comment.findViewById(R.id.list_item_comment_author);
-            flair = (TextView) comment.findViewById(R.id.list_item_comment_flair);
-            score = (TextView) comment.findViewById(R.id.list_item_comment_score);
-            timeCreated = (TextView) comment.findViewById(R.id.list_item_comment_timecreated);
-            gildedCount = (TextView) comment.findViewById(R.id.list_item_comment_gilded_count);
-            timeEdited = (TextView) comment.findViewById(R.id.list_item_comment_timeedited);
-            body = (ActiveTextView) comment.findViewById(R.id.list_item_comment_body);
-
-            body.setText(Utilities.getHTMLFromMarkdown(node.getComment().data("body_html")));
-            body.setLinkClickedListener(new ActiveTextView.OnLinkClickedListener() {
-                @Override
-                public void onClick(String url) {
-                    LinkHandler.analyse(CommentsActivity.this, url);
-                }
-            });
-
-            if (node.getComment().getAuthor().contentEquals(threadOP))
-                author.setTextColor(ContextCompat.getColor(this, R.color.distinguishedOP));
-
-            if (node.getComment().getDistinguishedStatus() == DistinguishedStatus.MODERATOR)
-                author.setTextColor(ContextCompat.getColor(this, R.color.distinguishedMod));
-
-            if (node.getComment().getDistinguishedStatus() == DistinguishedStatus.ADMIN)
-                author.setTextColor(ContextCompat.getColor(this, R.color.distinguishedAdmin));
-
-            author.setText(node.getComment().getAuthor());
-            final String authorURL = "/u/" + node.getComment().getAuthor();
-            author.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!authorURL.contentEquals("/u/[deleted]"))
-                        LinkHandler.analyse(CommentsActivity.this, authorURL);
-                }
-            });
-            timeCreated.setText(Utilities.getReadableCreationTime(node.getComment().getCreated()));
-
-            if (node.getComment().getAuthorFlair() != null
-                    && node.getComment().getAuthorFlair().getText() != null
-                    && node.getComment().getAuthorFlair().getText().length() > 0) {
-                flair.setText(node.getComment().getAuthorFlair().getText());
-                flair.setVisibility(View.VISIBLE);
-            } else
-                flair.setVisibility(View.GONE);
-
-            if (node.getComment().isScoreHidden())
-                score.setText("??");
-            else
-                score.setText(String.valueOf(node.getComment().getScore()));
-
-            if (node.getComment().getTimesGilded() > 0) {
-                gildedCount.setText(getString(R.string.comment_gilded_count, node.getComment().getTimesGilded()));
-                gildedCount.setVisibility(View.VISIBLE);
-            } else
-                gildedCount.setVisibility(View.GONE);
-
-            if (node.getComment().hasBeenEdited()) {
-                timeEdited.setText(getString(R.string.comment_edited, Utilities.getReadableCreationTime(node.getComment().getEditDate())));
-                timeEdited.setVisibility(View.VISIBLE);
-            } else
-                timeEdited.setVisibility(View.GONE);
-
-            int depth = node.getDepth() - 1;
-            View indent = comment.findViewById(R.id.list_item_comment_indent);
-            ViewGroup.LayoutParams params = indent.getLayoutParams();
-            params.width = Utilities.getPixelsFromDPs(this, depth * 5);
-            comment.findViewById(R.id.list_item_comment_indent)
-                    .setLayoutParams(params);
-            if (depth == 0)
-                commentMarker.setVisibility(View.GONE);
-
-            if (commentList != null)
-                commentList.addView(comment);
-        }
-    }
+    @Override
+    public void onLoadAllComments() { refreshPage(true); }
 
     private enum ACTIVITY_MODES {
         SINGLE_COMMENT,

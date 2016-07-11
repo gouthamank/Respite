@@ -50,10 +50,11 @@ public class ImageViewActivity extends AppCompatActivity {
 
         client = new OkHttpClient();
         picasso = new Picasso.Builder(ImageViewActivity.this).downloader(new OkHttp3Downloader(client)).build();
-        progressBar = (ProgressBar) findViewById(R.id.activity_imageview_progressbar); // Current am not doing anything with this.
+        progressBar = (ProgressBar) findViewById(R.id.activity_imageview_progressbar); // Currently am not doing anything with this.
         scaleImageView = (SubsamplingScaleImageView) findViewById(R.id.activity_imageview_image);
         scaleImageView.setBackgroundResource(android.R.color.transparent);
-
+        scaleImageView.setMinScale(1.0f);
+        scaleImageView.setMaxScale(10.0f);
         scaleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

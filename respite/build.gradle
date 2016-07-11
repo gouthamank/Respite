@@ -37,6 +37,11 @@ dependencies {
     compile dependencies.create ('com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2') {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
+    compile 'au.com.gridstone.rxstore:rxstore:5.0.2'
+    compile dependencies.create ('au.com.gridstone.rxstore:converter-jackson:5.0.2') {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+    }
+
 
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'

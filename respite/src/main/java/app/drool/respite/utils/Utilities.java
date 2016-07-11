@@ -83,6 +83,14 @@ public class Utilities {
         return (int) (dps * scale + 0.5f);
     }
 
+    public static String getEscapedHTML(String unescaped) {
+        return Html.fromHtml(unescaped).toString();
+    }
+
+    public static String replaceHTMLTags(String stringWithTags) {
+        return stringWithTags.replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&");
+    }
+
     public static Spanned getHTMLFromMarkdown(String md) {  // Shitty. Absolutely shitty.
         String one = Html.fromHtml(md).toString().trim();
         if(one.startsWith("<!-- SC_OFF -->"))

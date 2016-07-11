@@ -166,13 +166,13 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
             holder.preview.setVisibility(ImageView.GONE);
         else {
             holder.preview.setVisibility(ImageView.VISIBLE);
-            loadPreview(submission.getId(), holder.preview, thumbnailURL.replace("&amp;", "&"));
+            loadPreview(submission.getId(), holder.preview, Utilities.replaceHTMLTags(thumbnailURL));
         }
 
         holder.preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinkHandler.analyse(mContext, submission.getUrl());
+                LinkHandler.analyse(mContext, Utilities.replaceHTMLTags(submission.getUrl()));
             }
         });
 

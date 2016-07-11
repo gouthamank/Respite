@@ -222,7 +222,7 @@ public final class LinkHandler {
                 if (uri.getPath().endsWith(fileType))
                     return true;
             }
-            return false;
+            return uri.getHost().contentEquals("i.reddituploads.com");
         } catch (MalformedURLException e) {
             return false;
         }

@@ -15,7 +15,6 @@ import app.drool.respite.utils.Utilities;
  * Created by drool on 6/18/16.
  */
 
-@SuppressWarnings("WeakerAccess")
 public class SubmissionParcelable implements Parcelable {
     public static final Creator<SubmissionParcelable> CREATOR = new Creator<SubmissionParcelable>() {
         @Override
@@ -33,7 +32,6 @@ public class SubmissionParcelable implements Parcelable {
     private String comments;
     private String selfText;
     private String submissionID;
-    private String commentID;
     private String subreddit;
     private String link;
 
@@ -43,6 +41,7 @@ public class SubmissionParcelable implements Parcelable {
     public SubmissionParcelable(Context mContext, JsonNode node) {
         this(mContext, new Submission(node));
     }
+
     public SubmissionParcelable(Context mContext, Submission s) {
         this.title = s.getTitle().replace("&amp;", "&").replace("&gt;", ">").replace("&lt;", "<");
         this.score = String.valueOf(s.getScore());
@@ -77,70 +76,15 @@ public class SubmissionParcelable implements Parcelable {
         this.domain = in.readString();
         this.linkFlair = in.readString();
         this.link = in.readString();
+        this.author = in.readString();
         this.isNSFW = in.readInt();
         this.isStickied = in.readInt();
         this.isSelfPost = in.readInt();
     }
 
-    public static SubmissionParcelable newDummyInstance() {
-        return new SubmissionParcelable() {{
-            setTitle(" ");
-            setComments(" ");
-            setSelfText(null);
-            setSubmissionID(" ");
-            setSubreddit(" ");
-            setScore(" ");
-            setAuthor(" ");
-            setTimeCreated(" ");
-            setDomain(" ");
-            setLinkFlair(" ");
-            setIsSelfPost(1);
-        }};
-    }
-
-    public int getIsSelfPost() {
-        return isSelfPost;
-    }
-
-    public void setIsSelfPost(int isSelfPost) {
-        this.isSelfPost = isSelfPost;
-    }
-
-    public int getIsNSFW() {
-        return isNSFW;
-    }
-
-    public void setIsNSFW(int isNSFW) {
-        this.isNSFW = isNSFW;
-    }
-
-    public int getIsStickied() {
-        return isStickied;
-    }
-
-    public void setIsStickied(int isStickied) {
-        this.isStickied = isStickied;
-    }
-
-    public String getCommentID() {
-        return commentID;
-    }
-
-    public void setCommentID(String commentID) {
-        this.commentID = commentID;
-    }
-
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
     }
 
     @Override
@@ -155,90 +99,55 @@ public class SubmissionParcelable implements Parcelable {
         dest.writeString(domain);
         dest.writeString(linkFlair);
         dest.writeString(link);
+        dest.writeString(author);
 
         dest.writeInt(isNSFW);
         dest.writeInt(isStickied);
         dest.writeInt(isSelfPost);
     }
 
-    public String getTitle() {
-        return title;
+    public String getLink() {
+        return link;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getTitle() {
+        return title;
     }
 
     public String getScore() {
         return score;
     }
 
-    public void setScore(String score) {
-        this.score = score;
-    }
-
     public String getComments() {
         return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
     }
 
     public String getSelfText() {
         return selfText;
     }
 
-    public void setSelfText(String selfText) {
-        this.selfText = selfText;
-    }
-
     public String getSubmissionID() {
         return submissionID;
-    }
-
-    public void setSubmissionID(String submissionID) {
-        this.submissionID = submissionID;
     }
 
     public String getSubreddit() {
         return subreddit;
     }
 
-    public void setSubreddit(String subreddit) {
-        this.subreddit = subreddit;
-    }
-
     public String getAuthor() {
         return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getTimeCreated() {
         return timeCreated;
     }
 
-    public void setTimeCreated(String timeCreated) {
-        this.timeCreated = timeCreated;
-    }
-
     public String getDomain() {
         return domain;
     }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
     public String getLinkFlair() {
         return linkFlair;
-    }
-
-    public void setLinkFlair(String linkFlair) {
-        this.linkFlair = linkFlair;
     }
 
     public boolean isNSFW() {

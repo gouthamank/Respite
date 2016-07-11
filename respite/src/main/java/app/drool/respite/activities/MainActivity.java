@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 builder.setPositiveButton(R.string.dialog_customsubreddit_positive, null);
-                AlertDialog dialog = builder.create();
+                final AlertDialog dialog = builder.create();
                 dialog.show();
 
                 dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -159,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             Intent subredditIntent = new Intent(MainActivity.this, SubmissionsActivity.class);
                             subredditIntent.putExtra("subreddit", input.getText().toString());
+                            dialog.dismiss();
                             startActivity(subredditIntent);
                         }
                     }
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 builder.setPositiveButton(R.string.dialog_customuser_positive, null);
 
-                AlertDialog dialog = builder.create();
+                final AlertDialog dialog = builder.create();
                 dialog.show();
 
                 dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -194,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             Intent userIntent = new Intent(MainActivity.this, UserActivity.class);
                             userIntent.putExtra("username", input.getText().toString());
+                            dialog.dismiss();
                             startActivity(userIntent);
                         }
                     }
