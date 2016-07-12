@@ -42,12 +42,12 @@ import app.drool.respite.utils.Utilities;
 
 public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAdapter.SubmissionHolder> {
 
-    private static final int ENDLESS_SCROLL_THRESHOLD = 10;
     private LinkedList<Submission> submissions = null;
     private Context mContext = null;
-    private EndlessScrollListener endlessScrollListener;
     private RedditClient mRedditClient = null;
     private LinkedList<Integer> votes = null;
+    private boolean isAuthorClickable = true;
+    private boolean isSubredditClickable = true;
 
     public SubmissionListAdapter(Context mContext, RedditClient mRedditClient) {
         this.mContext = mContext;
@@ -107,10 +107,6 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
             notifyItemInserted(latestIndex);
             latestIndex++;
         }
-    }
-
-    public void setEndlessScrollListener(EndlessScrollListener listener) {
-        this.endlessScrollListener = listener;
     }
 
     @Override
@@ -185,22 +181,22 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
             }
         });
 
-        holder.author.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinkHandler.analyse(mContext, "/u/" + submissionParcelable.getAuthor());
-            }
-        });
+        if (isAuthorClickable) {
+            holder.author.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinkHandler.analyse(mContext, "/u/" + submissionParcelable.getAuthor());
+                }
+            });
+        }
 
-        holder.subreddit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinkHandler.analyse(mContext, "/r/" + submissionParcelable.getSubreddit());
-            }
-        });
-        if (position == getItemCount() - ENDLESS_SCROLL_THRESHOLD) {
-            if (endlessScrollListener != null)
-                endlessScrollListener.onLoadMore(position);
+        if (isSubredditClickable) {
+            holder.subreddit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinkHandler.analyse(mContext, "/r/" + submissionParcelable.getSubreddit());
+                }
+            });
         }
 
         holder.upvote.setOnClickListener(new View.OnClickListener() {
@@ -297,8 +293,12 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         }.execute(s);
     }
 
-    public interface EndlessScrollListener {
-        void onLoadMore(int position);
+    public void disableAuthorClickable() {
+        this.isAuthorClickable = false;
+    }
+
+    public void disableSubredditClickable() {
+        this.isSubredditClickable = false;
     }
 
     static class SubmissionHolder extends RecyclerView.ViewHolder {
@@ -330,6 +330,7 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
             this.view = v;
         }
     }
+
 }
 
 

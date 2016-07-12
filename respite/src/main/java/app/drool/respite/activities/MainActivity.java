@@ -46,9 +46,8 @@ public class MainActivity extends AppCompatActivity {
         ((Respite) getApplication()).refreshCredentials(this);
 
         if (AuthenticationManager.get().checkAuthState() == AuthenticationState.NONE) {
+            finish();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        } else {
-            loadSubscriptions();
         }
     }
 
@@ -66,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         mLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         mRedditClient = ((Respite) getApplication()).getRedditClient();
 
+        if (AuthenticationManager.get().checkAuthState() != AuthenticationState.NONE) {
+            loadSubscriptions();
+        }
         setUpClickListeners();
     }
 

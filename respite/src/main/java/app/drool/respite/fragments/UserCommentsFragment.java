@@ -22,12 +22,13 @@ import net.dean.jraw.paginators.UserContributionPaginator;
 import app.drool.respite.R;
 import app.drool.respite.Respite;
 import app.drool.respite.adapters.CommentContributionListAdapter;
+import app.drool.respite.impl.EndlessRecyclerViewScrollListener;
 
 /**
  * Created by drool on 6/30/16.
  */
 
-public class UserCommentsFragment extends Fragment implements CommentContributionListAdapter.EndlessScrollListener {
+public class UserCommentsFragment extends Fragment {
     private static final String TAG = "UserComments.java";
     private String username = null;
     private RedditClient mRedditClient = null;
@@ -68,13 +69,18 @@ public class UserCommentsFragment extends Fragment implements CommentContributio
         progressBar = (ProgressBar) view.findViewById(R.id.fragment_user_submitted_progressbar);
         commentList = (RecyclerView) view.findViewById(R.id.fragment_user_submitted_list);
 
-        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         commentList.setLayoutManager(layoutManager);
         progressBar.setVisibility(View.VISIBLE);
         commentList.setVisibility(View.GONE);
 
         commentList.setAdapter(mAdapter);
-
+        commentList.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                startDownloadTask();
+            }
+        });
         return view;
     }
 
@@ -105,11 +111,6 @@ public class UserCommentsFragment extends Fragment implements CommentContributio
         for(Contribution c : contributions) {
             mAdapter.addComments(new Comment(c.getDataNode()));
         }
-    }
-
-    @Override
-    public void onLoadMore(int position) {
-        startDownloadTask();
     }
 
 }

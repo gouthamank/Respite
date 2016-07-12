@@ -25,10 +25,8 @@ import app.drool.respite.utils.Utilities;
 
 public class CommentContributionListAdapter extends RecyclerView.Adapter<CommentContributionListAdapter.CommentHolder> {
 
-    private static final int ENDLESS_SCROLL_THRESHOLD = 10;
     private LinkedList<Comment> comments = null;
     private Context mContext = null;
-    private CommentContributionListAdapter.EndlessScrollListener endlessScrollListener;
 
     public CommentContributionListAdapter(Context mContext) {
         this.mContext = mContext;
@@ -50,6 +48,7 @@ public class CommentContributionListAdapter extends RecyclerView.Adapter<Comment
         this.comments.clear();
         notifyDataSetChanged();
     }
+
     public void addComments(Comment c) {
         this.comments.add(c);
         notifyItemInserted(this.comments.size() - 1);
@@ -63,10 +62,6 @@ public class CommentContributionListAdapter extends RecyclerView.Adapter<Comment
             notifyItemInserted(latestIndex);
             latestIndex++;
         }
-    }
-
-    public void setEndlessScrollListener(CommentContributionListAdapter.EndlessScrollListener listener) {
-        this.endlessScrollListener = listener;
     }
 
     @Override
@@ -131,19 +126,11 @@ public class CommentContributionListAdapter extends RecyclerView.Adapter<Comment
         } else
             holder.timeEdited.setVisibility(View.GONE);
 
-        if (position == getItemCount() - ENDLESS_SCROLL_THRESHOLD) {
-            if (endlessScrollListener != null)
-                endlessScrollListener.onLoadMore(position);
-        }
     }
 
     @Override
     public int getItemCount() {
         return comments.size();
-    }
-
-    public interface EndlessScrollListener {
-        void onLoadMore(int position);
     }
 
     static class CommentHolder extends RecyclerView.ViewHolder {

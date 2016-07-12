@@ -1,5 +1,6 @@
 package app.drool.respite.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,9 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         final URL authorizationURL = helper.getAuthorizationUrl(Respite.CREDENTIALS, true, true, scopes);
         final WebView webView = (WebView) findViewById(R.id.webview);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
         assert webView != null;
         webView.loadUrl(authorizationURL.toExternalForm());
         webView.setWebViewClient(new WebViewClient() {
@@ -53,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (url.contains("code=")) {
                     onUserChallenge(url, Respite.CREDENTIALS);
                 } else if (url.contains("error=")) {
-                    Toast.makeText(LoginActivity.this, "Respite cannot work without user permissions", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, R.string.loginactivity_failure_userdeclined, Toast.LENGTH_LONG).show();
                     webView.loadUrl(authorizationURL.toExternalForm());
                 }
             }
@@ -62,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        finish();
     }
 
     @Override
@@ -87,8 +85,13 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(String s) {
+                if (s == null) {
+                    Toast.makeText(getApplicationContext(), R.string.loginactivity_failure_token, Toast.LENGTH_LONG).show();
+                    finish();
+                }
                 super.onPostExecute(s);
-                LoginActivity.this.finish();
+                finish();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
         }.execute();
     }

@@ -22,12 +22,13 @@ import net.dean.jraw.paginators.TimePeriod;
 import app.drool.respite.R;
 import app.drool.respite.Respite;
 import app.drool.respite.adapters.SubmissionListAdapter;
+import app.drool.respite.impl.EndlessRecyclerViewScrollListener;
 
 /**
  * Created by drool on 7/3/16.
  */
 
-public class SearchActivity extends AppCompatActivity implements SubmissionListAdapter.EndlessScrollListener {
+public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SearchActivity.java";
 
     private SubmissionSearchPaginator.SearchSort currentSort = null;
@@ -60,6 +61,12 @@ public class SearchActivity extends AppCompatActivity implements SubmissionListA
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mList.setLayoutManager(layoutManager);
         mList.setAdapter(mAdapter);
+        mList.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                loadNextPage();
+            }
+        });
 
         setUpMenuBar();
         refreshPage();
@@ -179,11 +186,6 @@ public class SearchActivity extends AppCompatActivity implements SubmissionListA
         mPaginator.setSearchSorting(currentSort);
         mPaginator.setTimePeriod(currentTimePeriod);
 
-        loadNextPage();
-    }
-
-    @Override
-    public void onLoadMore(int position) {
         loadNextPage();
     }
 }

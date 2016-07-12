@@ -117,5 +117,15 @@ public class WebViewActivity extends AppCompatActivity {
         webView.clearCache(true);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        webView.onPause();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        webView.onResume();
+    }
 }

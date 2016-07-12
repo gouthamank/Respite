@@ -26,12 +26,13 @@ import net.dean.jraw.paginators.TimePeriod;
 import app.drool.respite.R;
 import app.drool.respite.Respite;
 import app.drool.respite.adapters.SubmissionListAdapter;
+import app.drool.respite.impl.EndlessRecyclerViewScrollListener;
 
 /**
  * Created by drool on 6/15/16.
  */
 
-public class SubmissionsActivity extends AppCompatActivity implements SubmissionListAdapter.EndlessScrollListener {
+public class SubmissionsActivity extends AppCompatActivity {
     private SubmissionListAdapter mAdapter = null;
     private ProgressBar progressBar = null;
     private SubredditPaginator paginator = null;
@@ -44,20 +45,26 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
         final RecyclerView submissionList = (RecyclerView) findViewById(R.id.submissions_list);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         assert submissionList != null;
         submissionList.setLayoutManager(mLayoutManager);
         mAdapter = new SubmissionListAdapter(this, ((Respite) getApplication()).getRedditClient());
         submissionList.setAdapter(mAdapter);
-        mAdapter.setEndlessScrollListener(this);
-
+        submissionList.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                loadNextPage();
+            }
+        });
+        
         if (getIntent().getExtras() == null)
             setUpPaginator(null);
-        else
+        else {
+            mAdapter.disableSubredditClickable();
             setUpPaginator(getIntent().getExtras().getString("subreddit"));
+        }
 
         setUpMenuBar();
-
         progressBar.setVisibility(ProgressBar.VISIBLE);
         loadNextPage();
     }
@@ -267,10 +274,5 @@ public class SubmissionsActivity extends AppCompatActivity implements Submission
             }
         });
         builder.create().show();
-    }
-
-    @Override
-    public void onLoadMore(int position) {
-        loadNextPage();
     }
 }

@@ -22,12 +22,13 @@ import net.dean.jraw.paginators.UserContributionPaginator;
 import app.drool.respite.R;
 import app.drool.respite.Respite;
 import app.drool.respite.adapters.SubmissionListAdapter;
+import app.drool.respite.impl.EndlessRecyclerViewScrollListener;
 
 /**
  * Created by drool on 6/20/16.
  */
 
-public class UserSubmittedFragment extends Fragment implements SubmissionListAdapter.EndlessScrollListener {
+public class UserSubmittedFragment extends Fragment {
     private static final String TAG = "UserSubmitted.java";
     private String username = null;
     private RedditClient mRedditClient = null;
@@ -57,6 +58,7 @@ public class UserSubmittedFragment extends Fragment implements SubmissionListAda
         if (mAdapter == null)
             mAdapter = new SubmissionListAdapter(getContext(), mRedditClient);
 
+        mAdapter.disableAuthorClickable();
         startDownloadTask();
     }
 
@@ -68,14 +70,18 @@ public class UserSubmittedFragment extends Fragment implements SubmissionListAda
         progressBar = (ProgressBar) view.findViewById(R.id.fragment_user_submitted_progressbar);
         submittedList = (RecyclerView) view.findViewById(R.id.fragment_user_submitted_list);
 
-        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         submittedList.setLayoutManager(layoutManager);
         progressBar.setVisibility(View.VISIBLE);
         submittedList.setVisibility(View.GONE);
 
         submittedList.setAdapter(mAdapter);
-        mAdapter.setEndlessScrollListener(this);
-
+        submittedList.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                startDownloadTask();
+            }
+        });
         return view;
     }
 
@@ -106,10 +112,5 @@ public class UserSubmittedFragment extends Fragment implements SubmissionListAda
         for(Contribution c : contributions){
             mAdapter.addSubmissions(new Submission(c.getDataNode()));
         }
-    }
-
-    @Override
-    public void onLoadMore(int position) {
-        startDownloadTask();
     }
 }

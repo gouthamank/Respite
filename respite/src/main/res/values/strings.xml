@@ -11,6 +11,9 @@
     <string name="mainactivity.networkerror">Could not load subscriptions</string>
     <string name="mainactivity.subscribers">%1$s subscribers</string>
 
+    <string name="loginactivity.failure.userdeclined">Respite cannot work without user permissions</string>
+    <string name="loginactivity.failure.token">Error obtaining token from Reddit</string>
+
     <string name="useractivity.networkerror">Error retrieving user details</string>
 
     <string name="searchactivity.networkerror">Error retrieving search results</string>
