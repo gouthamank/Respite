@@ -3,6 +3,7 @@
     <string-array name="comment_context_menu">
         <item>Upvote</item>
         <item>Downvote</item>
+        <item>Reply</item>
         <item>Copy to clipboard</item>
         <item>Copy permalink</item>
     </string-array>

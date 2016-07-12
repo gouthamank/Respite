@@ -44,6 +44,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int TYPE_COMMENT = 2;
 
     private LoadAllCommentsListener loadAllCommentsListener = null;
+    private ReplyToCommentListener replyToCommentListener = null;
     private ArrayList<CommentNode> commentNodes = null;
     private ArrayList<VoteDirection> votes = null;
     private SubmissionParcelable submission = null;
@@ -233,7 +234,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setAdapter(new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, options), new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) { // Up, Down, CopyContent, CopyPerma
+                        public void onClick(DialogInterface dialog, int which) { // Up, Down, Reply, CopyContent, CopyPerma
                             switch (which) {
                                 case 0:
 
@@ -247,6 +248,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                         votes.add(currentVotePosition, VoteDirection.UPVOTE);
                                     }
                                     notifyItemChanged(commentHolder.getAdapterPosition());
+
                                     break;
 
                                 case 1:
@@ -264,19 +266,23 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     break;
 
                                 case 2:
-
-                                    String commentBody = Utilities.getHTMLFromMarkdown(comment.data("body_html")).toString();
-                                    ClipData bodyData = ClipData.newPlainText("commentBody", commentBody);
-                                    ((ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(bodyData);
-                                    Toast.makeText(mContext, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+                                    replyToCommentListener.startReplyToComment(comment);
                                     break;
 
                                 case 3:
 
+                                    String commentBody = Utilities.getHTMLFromMarkdown(comment.data("body_html")).toString();
+                                    ClipData bodyData = ClipData.newPlainText("Respite.commentBody", commentBody);
+                                    ((ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(bodyData);
+                                    Toast.makeText(mContext, R.string.clipboard_copy_success, Toast.LENGTH_SHORT).show();
+                                    break;
+
+                                case 4:
+
                                     String permalink = "https://www.reddit.com" + Utilities.replaceHTMLTags(submission.getPermalink() + comment.getId());
-                                    ClipData linkData = ClipData.newPlainText("commentPermalink", permalink);
+                                    ClipData linkData = ClipData.newPlainText("Respite.commentPermalink", permalink);
                                     ((ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(linkData);
-                                    Toast.makeText(mContext, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, R.string.clipboard_copy_success, Toast.LENGTH_SHORT).show();
                                     break;
 
                             }
@@ -338,7 +344,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             else if (votes.get(currentVotePosition) == VoteDirection.DOWNVOTE)
                 commentHolder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textDownvoted));
             else
-                commentHolder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textNotvoted));
+                commentHolder.score.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryText));
 
             if (comment.getTimesGilded() > 0) {
                 commentHolder.gildedCount.setText(mContext.getString(R.string.comment_gilded_count, comment.getTimesGilded()));
@@ -356,10 +362,10 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ViewGroup.LayoutParams params = commentHolder.commentIndent.getLayoutParams();
             params.width = Utilities.getPixelsFromDPs(mContext, depth * 5);
             commentHolder.commentIndent.setLayoutParams(params);
-            if (depth == 0)
+            if (depth % 2 == 0)
                 commentHolder.commentMarker.setVisibility(View.GONE);
             else
-                commentHolder.commentIndent.setVisibility(View.VISIBLE);
+                commentHolder.commentMarker.setVisibility(View.VISIBLE);
         }
     }
 
@@ -377,10 +383,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return TYPE_COMMENT;
         }
         return TYPE_COMMENT;
-    }
-
-    public void setLoadAllCommentsListener(LoadAllCommentsListener l) {
-        this.loadAllCommentsListener = l;
     }
 
     private void voteComment(Comment c, final VoteDirection direction) {
@@ -402,10 +404,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     Toast.makeText(mContext, R.string.submissionsactivity_voteerror, Toast.LENGTH_LONG).show();
             }
         }.execute(c);
-    }
-
-    public interface LoadAllCommentsListener {
-        void onLoadAllComments();
     }
 
     static class HeaderHolder extends RecyclerView.ViewHolder {
@@ -463,4 +461,18 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.view = v;
         }
     }
+
+    public interface LoadAllCommentsListener {
+        void onLoadAllComments();
+    }
+
+    public interface ReplyToCommentListener {
+        void startReplyToComment(Comment c);
+    }
+
+    public void setLoadAllCommentsListener(LoadAllCommentsListener l) {
+        this.loadAllCommentsListener = l;
+    }
+
+    public void setReplyToCommentListener(ReplyToCommentListener l) { this.replyToCommentListener = l; }
 }

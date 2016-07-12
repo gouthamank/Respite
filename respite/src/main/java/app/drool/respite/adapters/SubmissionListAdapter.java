@@ -138,11 +138,11 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         holder.title.setText(submissionParcelable.getTitle());
 
         holder.score.setText(submissionParcelable.getScore());
-        if(votes.get(position) == VoteDirection.UPVOTE.getValue())
+        if (votes.get(position) == VoteDirection.UPVOTE.getValue())
             holder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textUpvoted));
-        if(votes.get(position) == VoteDirection.DOWNVOTE.getValue())
+        if (votes.get(position) == VoteDirection.DOWNVOTE.getValue())
             holder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textDownvoted));
-        if(votes.get(position) == VoteDirection.NO_VOTE.getValue())
+        if (votes.get(position) == VoteDirection.NO_VOTE.getValue())
             holder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textNotvoted));
 
         holder.comments.setText(submissionParcelable.getComments());
@@ -206,13 +206,13 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         holder.upvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(votes.get(holder.getAdapterPosition()) == VoteDirection.UPVOTE.getValue()) {
+                if (votes.get(holder.getAdapterPosition()) == VoteDirection.UPVOTE.getValue()) {
                     votes.remove(holder.getAdapterPosition());
-                    removeVoteSubmission(submission);
+                    voteSubmission(submission, VoteDirection.NO_VOTE);
                     votes.add(holder.getAdapterPosition(), 0);
                 } else {
                     votes.remove(holder.getAdapterPosition());
-                    upvoteSubmission(submission);
+                    voteSubmission(submission, VoteDirection.UPVOTE);
                     votes.add(holder.getAdapterPosition(), 1);
                 }
                 notifyItemChanged(holder.getAdapterPosition());
@@ -222,13 +222,13 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         holder.downvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(votes.get(holder.getAdapterPosition()) == VoteDirection.DOWNVOTE.getValue()) {
+                if (votes.get(holder.getAdapterPosition()) == VoteDirection.DOWNVOTE.getValue()) {
                     votes.remove(holder.getAdapterPosition());
-                    removeVoteSubmission(submission);
+                    voteSubmission(submission, VoteDirection.NO_VOTE);
                     votes.add(holder.getAdapterPosition(), 0);
                 } else {
                     votes.remove(holder.getAdapterPosition());
-                    downvoteSubmission(submission);
+                    voteSubmission(submission, VoteDirection.DOWNVOTE);
                     votes.add(holder.getAdapterPosition(), -1);
                 }
                 notifyItemChanged(holder.getAdapterPosition());
@@ -246,16 +246,15 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         preview.setBackgroundResource(android.R.color.transparent);
         Picasso.with(mContext).load(thumbnailURL).networkPolicy(NetworkPolicy.OFFLINE)  //Trying Picasso
                 .into(preview, new Callback() {
-                            @Override
-                            public void onSuccess() {
+                    @Override
+                    public void onSuccess() {
+                    }
 
-                            }
-
-                            @Override
-                            public void onError() {
-                                Picasso.with(mContext).load(thumbnailURL).into(preview);
-                            }
-                        });
+                    @Override
+                    public void onError() {
+                        Picasso.with(mContext).load(thumbnailURL).into(preview);
+                    }
+                });
 
         /*
         if (CacheWrapper.hasPreview(mContext.getCacheDir(), submissionID)) {
@@ -277,13 +276,13 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         } */
     }
 
-    private void upvoteSubmission(Submission s) {
+    private void voteSubmission(Submission s, final VoteDirection direction) {
         new AsyncTask<Submission, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Submission... params) {
                 Submission s = params[0];
                 try {
-                    (new AccountManager(mRedditClient)).vote(s, VoteDirection.UPVOTE);
+                    (new AccountManager(mRedditClient)).vote(s, direction);
                     return true;
                 } catch (Exception e) {
                     return false;
@@ -292,49 +291,7 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
 
             @Override
             protected void onPostExecute(Boolean success) {
-                if(!success)
-                    Toast.makeText(mContext, R.string.submissionsactivity_voteerror, Toast.LENGTH_LONG).show();
-            }
-        }.execute(s);
-    }
-
-    private void downvoteSubmission(Submission s) {
-        new AsyncTask<Submission, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Submission... params) {
-                Submission s = params[0];
-                try {
-                    (new AccountManager(mRedditClient)).vote(s, VoteDirection.DOWNVOTE);
-                    return true;
-                } catch (Exception e) {
-                    return false;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Boolean success) {
-                if(!success)
-                    Toast.makeText(mContext, R.string.submissionsactivity_voteerror, Toast.LENGTH_LONG).show();
-            }
-        }.execute(s);
-    }
-
-    private void removeVoteSubmission(Submission s) {
-        new AsyncTask<Submission, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Submission... params) {
-                Submission s = params[0];
-                try {
-                    (new AccountManager(mRedditClient)).vote(s, VoteDirection.NO_VOTE);
-                    return true;
-                } catch (Exception e) {
-                    return false;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Boolean success) {
-                if(!success)
+                if (!success)
                     Toast.makeText(mContext, R.string.submissionsactivity_voteerror, Toast.LENGTH_LONG).show();
             }
         }.execute(s);

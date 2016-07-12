@@ -3,6 +3,11 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_comments_reply"
+        android:icon="@drawable/ic_reply_white"
+        android:title="@string/menu.reply"
+        app:showAsAction="ifRoom" />
+    <item
         android:icon="@drawable/ic_navigation_sort"
         android:title="@string/menu.sort"
         app:showAsAction="ifRoom">

@@ -95,7 +95,7 @@ public class WebViewActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {
-                    Toast.makeText(this, "Could not launch external browser", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.menu_webview_openexternal_error, Toast.LENGTH_LONG).show();
                 }
                 break;
 

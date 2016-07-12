@@ -39,6 +39,8 @@
         </activity>
         <activity android:name=".activities.ImageViewActivity"
             android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activities.ReplyActivity"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
