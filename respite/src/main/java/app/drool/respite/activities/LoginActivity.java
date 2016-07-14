@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
                     onUserChallenge(url, Respite.CREDENTIALS);
                 } else if (url.contains("error=")) {
                     Toast.makeText(LoginActivity.this, R.string.loginactivity_failure_userdeclined, Toast.LENGTH_LONG).show();
-                    webView.loadUrl(authorizationURL.toExternalForm());
                 }
             }
         });

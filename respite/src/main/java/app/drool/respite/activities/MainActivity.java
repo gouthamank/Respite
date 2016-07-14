@@ -48,10 +48,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!getSharedPreferences("Respite.users", Context.MODE_PRIVATE).getBoolean("loggedIn", false)) {
-            finish();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        }
+        if (Utilities.isNetworkAvailable(MainActivity.this))
+            ((Respite) getApplication()).refreshCredentials(this);
     }
 
     @Override
@@ -68,11 +66,12 @@ public class MainActivity extends AppCompatActivity {
         mLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         mRedditClient = ((Respite) getApplication()).getRedditClient();
 
-        if (AuthenticationManager.get().checkAuthState() == AuthenticationState.READY) {
-            loadSubscriptions();
-        }
         setUpClickListeners();
-        connectToReddit();
+        if (!getSharedPreferences("Respite.users", Context.MODE_PRIVATE).getBoolean("loggedIn", false)) {
+            finish();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        } else
+            connectToReddit();
     }
 
     @Override
@@ -108,27 +107,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void connectToReddit() {
-        ((Respite) getApplication()).refreshCredentials(this);
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                while (AuthenticationManager.get().checkAuthState() != AuthenticationState.READY) {
-                    try {
-                        wait(1000);
-                    } catch (InterruptedException e) {
+        if (Utilities.isNetworkAvailable(MainActivity.this)) {
+            ((Respite) getApplication()).refreshCredentials(this);
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    while (AuthenticationManager.get().checkAuthState() != AuthenticationState.READY) {
+                        try {
+                            wait(1000);
+                        } catch (Exception e) {
+                        }
                     }
+                    return null;
                 }
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
 
-                enableButtons();
-                loadSubscriptions();
-            }
-        }.execute();
+                    enableButtons();
+                    loadSubscriptions();
+                }
+            }.execute();
+        } else
+            Toast.makeText(MainActivity.this, R.string.no_network, Toast.LENGTH_SHORT).show();
     }
 
     private void enableButtons() {
