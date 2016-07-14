@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.laurencedawson.activetextview.ActiveTextView;
+import com.wefika.flowlayout.FlowLayout;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.managers.AccountManager;
@@ -51,7 +52,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private RedditClient mRedditClient = null;
     private String threadOP = null;
     private Context mContext = null;
-    private boolean isShown = false; // single comment notice
+    private boolean isSingleCommentNoticeShown = false; // single comment notice
 
     public CommentListAdapter(Context c, RedditClient mRedditClient) {
         mContext = c;
@@ -92,7 +93,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void setShouldShowSingleCommentNotice(boolean shouldShow) {
-        isShown = shouldShow;
+        isSingleCommentNoticeShown = shouldShow;
     }
 
     @Override
@@ -125,15 +126,13 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 headerHolder.score.setText("");
                 headerHolder.comments.setText("");
                 headerHolder.title.setText("");
-                headerHolder.author.setText("");
-                headerHolder.domain.setText("");
-                headerHolder.linkFlair.setText("");
-                headerHolder.subreddit.setText("");
-                headerHolder.timeCreated.setText("");
                 headerHolder.headerLinkLayout.setVisibility(View.GONE);
                 headerHolder.selfText.setVisibility(View.GONE);
+                headerHolder.headerDescription.setVisibility(View.INVISIBLE);
                 headerHolder.progressBar.setVisibility(View.VISIBLE);
             } else {
+                headerHolder.headerDescription.setVisibility(View.VISIBLE);
+
                 headerHolder.author.setText(submission.getAuthor());
                 if (submission.getAuthor() != null) {
                     final String authorURL = "/u/" + submission.getAuthor();
@@ -145,6 +144,13 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         }
                     });
                 }
+                headerHolder.author.setTextColor(ContextCompat.getColor(mContext, R.color.distinguishedOP));
+                if (submission.getDistinguishedStatus().contentEquals(DistinguishedStatus.MODERATOR.name()))
+                    headerHolder.author.setTextColor(ContextCompat.getColor(mContext, R.color.distinguishedMod));
+                else if (submission.getDistinguishedStatus().contentEquals(DistinguishedStatus.ADMIN.name()) ||
+                        submission.getDistinguishedStatus().contentEquals(DistinguishedStatus.SPECIAL.name()))
+                    headerHolder.author.setTextColor(ContextCompat.getColor(mContext, R.color.distinguishedAdmin));
+
                 headerHolder.subreddit.setText(submission.getSubreddit());
                 if (submission.getSubreddit() != null) {
                     headerHolder.subreddit.setOnClickListener(new View.OnClickListener() {
@@ -155,22 +161,37 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         }
                     });
                 }
-                headerHolder.linkFlair.setText(submission.getLinkFlair());
-                if (submission.getLinkFlair() == null)
-                    headerHolder.linkFlair.setVisibility(View.GONE);
-                else
-                    headerHolder.linkFlair.setVisibility(View.VISIBLE);
 
+                headerHolder.timeCreated.setText(submission.getTimeCreated());
+
+                headerHolder.domain.setText(submission.getDomain());
+
+                headerHolder.flairTag.setText(submission.getLinkFlair());
+                if (submission.getLinkFlair() == null)
+                    headerHolder.flairTag.setVisibility(View.GONE);
+                else
+                    headerHolder.flairTag.setVisibility(View.VISIBLE);
+                
                 if (submission.isNSFW())
-                    headerHolder.title.setTextColor(ContextCompat.getColor(mContext, R.color.textTitleNSFW_Dark));
+                    headerHolder.nsfwTag.setVisibility(View.VISIBLE);
+                else
+                    headerHolder.nsfwTag.setVisibility(View.GONE);
+                
                 if (submission.isStickied())
-                    headerHolder.title.setTextColor(ContextCompat.getColor(mContext, R.color.textTitleStickied));
+                    headerHolder.stickyTag.setVisibility(View.VISIBLE);
+                else
+                    headerHolder.stickyTag.setVisibility(View.GONE);
+
+                headerHolder.title.setText(Utilities.replaceHTMLTags(submission.getTitle()));
+                headerHolder.comments.setText(submission.getComments());
 
                 headerHolder.score.setText(submission.getScore());
-                headerHolder.comments.setText(submission.getComments());
-                headerHolder.title.setText(Utilities.replaceHTMLTags(submission.getTitle()));
-                headerHolder.domain.setText(submission.getDomain());
-                headerHolder.timeCreated.setText(submission.getTimeCreated());
+                if(submission.getVote().contentEquals(VoteDirection.UPVOTE.name()))
+                    headerHolder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textUpvoted));
+                else if(submission.getVote().contentEquals(VoteDirection.DOWNVOTE.name()))
+                    headerHolder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textDownvoted));
+                else if(submission.getVote().contentEquals(VoteDirection.NO_VOTE.name()))
+                    headerHolder.score.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryText));
 
                 if (submission.getSelfText() != null) {
                     headerHolder.headerLinkLayout.setVisibility(View.GONE);
@@ -218,11 +239,12 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         } else if (holder instanceof CommentHolder) {
             final CommentHolder commentHolder = (CommentHolder) holder;
-            final CommentNode node = isShown ? commentNodes.get(position - 2) : commentNodes.get(position - 1);
-            final int currentVotePosition = isShown ? position - 2 : position - 1;
+            final int currentVotePosition = isSingleCommentNoticeShown ? position - 2 : position - 1;
+            final CommentNode node = commentNodes.get(currentVotePosition);
             final Comment comment = node.getComment();
 
-            commentHolder.view.setOnLongClickListener(new View.OnLongClickListener() {
+            commentHolder.commentLayout.setHapticFeedbackEnabled(false);
+            commentHolder.commentLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     String[] options = mContext.getResources().getStringArray(R.array.comment_context_menu);
@@ -234,7 +256,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setAdapter(new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, options), new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) { // Up, Down, Reply, CopyContent, CopyPerma
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Up, Down, Reply, CopyContent, CopyPerma
                             switch (which) {
                                 case 0:
 
@@ -294,25 +317,26 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             });
 
             commentHolder.body.setText(Utilities.getHTMLFromMarkdown(comment.data("body_html")));
-            commentHolder.body.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return false;
-                }
-            });
             commentHolder.body.setLinkClickedListener(new ActiveTextView.OnLinkClickedListener() {
                 @Override
                 public void onClick(String url) {
                     LinkHandler.analyse(mContext, url);
                 }
             });
+            commentHolder.body.setLongPressedLinkListener(new ActiveTextView.OnLongPressedLinkListener() {
+                @Override
+                public void onLongPressed() {
+                    // do nothing
+                }
+            }, true);
 
             commentHolder.author.setText(comment.getAuthor());
             if (threadOP != null && comment.getAuthor().contentEquals(threadOP))
                 commentHolder.author.setTextColor(ContextCompat.getColor(mContext, R.color.distinguishedOP));
             else if (comment.getDistinguishedStatus() == DistinguishedStatus.MODERATOR)
                 commentHolder.author.setTextColor(ContextCompat.getColor(mContext, R.color.distinguishedMod));
-            else if (comment.getDistinguishedStatus() == DistinguishedStatus.ADMIN)
+            else if (comment.getDistinguishedStatus() == DistinguishedStatus.ADMIN 
+                    || comment.getDistinguishedStatus() == DistinguishedStatus.SPECIAL)
                 commentHolder.author.setTextColor(ContextCompat.getColor(mContext, R.color.distinguishedAdmin));
             else
                 commentHolder.author.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryText));
@@ -378,7 +402,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemViewType(int position) {
         if (position == 0)
             return TYPE_HEADER;
-        else if (isShown) {
+        else if (isSingleCommentNoticeShown) {
             if (position == 1) return TYPE_NOTICE;
             return TYPE_COMMENT;
         }
@@ -406,10 +430,27 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }.execute(c);
     }
 
+    public void setLoadAllCommentsListener(LoadAllCommentsListener l) {
+        this.loadAllCommentsListener = l;
+    }
+
+    public void setReplyToCommentListener(ReplyToCommentListener l) {
+        this.replyToCommentListener = l;
+    }
+
+    public interface LoadAllCommentsListener {
+        void onLoadAllComments();
+    }
+
+    public interface ReplyToCommentListener {
+        void startReplyToComment(Comment c);
+    }
+
     static class HeaderHolder extends RecyclerView.ViewHolder {
+        FlowLayout headerDescription;
         View headerLinkLayout;
         ActiveTextView selfText;
-        TextView author, subreddit, timeCreated, linkFlair, domain, link;
+        TextView author, subreddit, timeCreated, flairTag, nsfwTag, stickyTag, domain, link;
         TextView title, comments, score;
         ProgressBar progressBar;
 
@@ -417,11 +458,13 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             super(v);
             this.headerLinkLayout = v.findViewById(R.id.comments_header_link_layout);
             this.selfText = (ActiveTextView) v.findViewById(R.id.comments_header_selftext);
-
+            this.headerDescription = (FlowLayout) v.findViewById(R.id.comments_header_description);
             this.author = (TextView) v.findViewById(R.id.comments_header_author);
             this.subreddit = (TextView) v.findViewById(R.id.comments_header_subreddit);
             this.timeCreated = (TextView) v.findViewById(R.id.comments_header_timecreated);
-            this.linkFlair = (TextView) v.findViewById(R.id.comments_header_link_flair);
+            this.flairTag = (TextView) v.findViewById(R.id.comments_header_flair_tag);
+            this.nsfwTag = (TextView) v.findViewById(R.id.comments_header_nsfw_tag);
+            this.stickyTag = (TextView) v.findViewById(R.id.comments_header_sticky_tag);
             this.domain = (TextView) v.findViewById(R.id.comments_header_domain);
             this.link = (TextView) v.findViewById(R.id.comments_header_link);
             this.title = (TextView) v.findViewById(R.id.comments_header_title);
@@ -444,7 +487,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView author, timeCreated, timeEdited, flair, gildedCount, score;
         ActiveTextView body;
         View commentIndent, commentMarker;
-
+        LinearLayout commentLayout;
         LinearLayout view;
 
         CommentHolder(LinearLayout v) {
@@ -458,21 +501,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.body = (ActiveTextView) v.findViewById(R.id.list_item_comment_body);
             this.commentIndent = v.findViewById(R.id.list_item_comment_indent);
             this.commentMarker = v.findViewById(R.id.list_item_comment_marker);
+            this.commentLayout = (LinearLayout) v.findViewById(R.id.list_item_comment_layout);
             this.view = v;
         }
     }
-
-    public interface LoadAllCommentsListener {
-        void onLoadAllComments();
-    }
-
-    public interface ReplyToCommentListener {
-        void startReplyToComment(Comment c);
-    }
-
-    public void setLoadAllCommentsListener(LoadAllCommentsListener l) {
-        this.loadAllCommentsListener = l;
-    }
-
-    public void setReplyToCommentListener(ReplyToCommentListener l) { this.replyToCommentListener = l; }
 }

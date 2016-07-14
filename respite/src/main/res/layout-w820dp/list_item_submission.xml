@@ -107,7 +107,7 @@
                         android:textSize="12sp"/>
 
                     <TextView
-                        android:id="@+id/list_item_submission_link_flair"
+                        android:id="@+id/list_item_submission_flair_tag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="1dp"
@@ -117,9 +117,40 @@
                         android:paddingLeft="2dp"
                         android:paddingRight="2dp"
                         android:paddingStart="2dp"
-                        android:text="@string/placeholder.link.flair"
+                        android:text="@string/submission.flair.tag"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
                         android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/list_item_submission_nsfw_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/textTitleNSFW"
+                        android:fontFamily="sans-serif-condensed"
+                        android:paddingEnd="2dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:paddingStart="2dp"
+                        android:text="@string/submission.nsfw.tag"
+                        android:textColor="@color/cardview_light_background"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/list_item_submission_sticky_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/textTitleStickied"
+                        android:fontFamily="sans-serif-condensed"
+                        android:paddingEnd="2dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:paddingStart="2dp"
+                        android:text="@string/submission.sticky.tag"
+                        android:textColor="@color/cardview_light_background"
+                        android:textSize="12sp"/>
+
                 </com.wefika.flowlayout.FlowLayout>
 
                 <TextView

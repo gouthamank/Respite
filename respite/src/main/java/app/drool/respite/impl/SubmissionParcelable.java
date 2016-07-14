@@ -34,6 +34,8 @@ public class SubmissionParcelable implements Parcelable {
     private String subreddit;
     private String link;
     private String permalink;
+    private String distinguishedStatus;
+    private String vote;
     private String author, timeCreated, domain, linkFlair;
     private int isNSFW, isStickied, isSelfPost;
 
@@ -48,7 +50,8 @@ public class SubmissionParcelable implements Parcelable {
         this.subreddit = s.getSubredditName();
         this.link = s.getUrl();
         this.permalink = s.getPermalink();
-
+        this.distinguishedStatus = s.getDistinguishedStatus().name();
+        this.vote = s.getVote().name();
         this.timeCreated = Utilities.getReadableCreationTime(s.getCreated());
         this.domain = s.getDomain();
         this.linkFlair = s.getSubmissionFlair().getText();
@@ -67,6 +70,8 @@ public class SubmissionParcelable implements Parcelable {
         this.timeCreated = in.readString();
         this.domain = in.readString();
         this.linkFlair = in.readString();
+        this.distinguishedStatus = in.readString();
+        this.vote = in.readString();
         this.link = in.readString();
         this.author = in.readString();
         this.permalink = in.readString();
@@ -91,6 +96,8 @@ public class SubmissionParcelable implements Parcelable {
         dest.writeString(timeCreated);
         dest.writeString(domain);
         dest.writeString(linkFlair);
+        dest.writeString(distinguishedStatus);
+        dest.writeString(vote);
         dest.writeString(link);
         dest.writeString(author);
         dest.writeString(permalink);
@@ -98,6 +105,14 @@ public class SubmissionParcelable implements Parcelable {
         dest.writeInt(isNSFW);
         dest.writeInt(isStickied);
         dest.writeInt(isSelfPost);
+    }
+
+    public String getVote() {
+        return vote;
+    }
+
+    public String getDistinguishedStatus() {
+        return distinguishedStatus;
     }
 
     public String getLink() {

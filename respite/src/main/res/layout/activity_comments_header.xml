@@ -27,9 +27,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:textStyle="bold"
                 android:text="@string/placeholder.author"
-                android:textAppearance="@style/RespiteSmallText.Inverse"/>
+                android:textAppearance="@style/RespiteSmallText.Inverse"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -82,16 +82,44 @@
                 />
 
             <TextView
-                android:id="@+id/comments_header_link_flair"
+                android:id="@+id/comments_header_flair_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:background="@color/linkFlairBackground.Dark"
                 android:paddingEnd="2dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
                 android:paddingStart="2dp"
                 android:text="@string/placeholder.link.flair"
                 android:textAppearance="@style/RespiteLinkFlair.Inverse"
                 />
+
+            <TextView
+                android:id="@+id/comments_header_nsfw_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:background="@color/textTitleNSFW"
+                android:paddingEnd="2dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingStart="2dp"
+                android:text="@string/submission.nsfw.tag"
+                android:textAppearance="@style/RespiteLinkFlair.Inverse"/>
+
+            <TextView
+                android:id="@+id/comments_header_sticky_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:background="@color/textTitleStickied"
+                android:paddingEnd="2dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingStart="2dp"
+                android:text="@string/submission.sticky.tag"
+                android:textAppearance="@style/RespiteLinkFlair.Inverse"/>
         </com.wefika.flowlayout.FlowLayout>
 
         <TextView
@@ -122,6 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:text="@string/placeholder.comments"
                 android:textAppearance="@style/RespiteSmallText.Inverse"/>
 
@@ -131,8 +160,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:text="@string/placeholder.score"
-                android:textAppearance="@style/RespiteSmallText.Inverse"/>
+                android:textAppearance="@style/RespiteSmallText.Inverse"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
         </RelativeLayout>
 
     </RelativeLayout>
@@ -151,9 +183,9 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_gravity="center"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:contentDescription="@string/submission.preview.accessibility"
             android:padding="8dp"
             android:src="@drawable/ic_open_browser_light"/>
@@ -166,12 +198,12 @@
 
         <TextView
             android:id="@+id/comments_header_link"
-            android:padding="8dp"
-            android:layout_gravity="center"
-            android:text="@string/placeholder.link"
-            android:textAppearance="@style/RespiteLinkText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="@string/placeholder.link"
+            android:textAppearance="@style/RespiteLinkText"/>
     </LinearLayout>
 
     <View
@@ -181,10 +213,10 @@
 
     <ProgressBar
         android:id="@+id/comments_header_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:indeterminate="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:indeterminate="true"/>
 
 </LinearLayout>

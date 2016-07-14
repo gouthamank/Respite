@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,10 +127,10 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         holder.timeCreated.setText(submissionParcelable.getTimeCreated());
         holder.domain.setText(submissionParcelable.getDomain());
         if (submissionParcelable.getLinkFlair() != null) {
-            holder.linkFlair.setVisibility(TextView.VISIBLE);
-            holder.linkFlair.setText(submissionParcelable.getLinkFlair());
+            holder.flairTag.setVisibility(TextView.VISIBLE);
+            holder.flairTag.setText(submissionParcelable.getLinkFlair());
         } else
-            holder.linkFlair.setVisibility(TextView.GONE);
+            holder.flairTag.setVisibility(TextView.GONE);
         holder.author.setText(submissionParcelable.getAuthor());
         holder.title.setText(submissionParcelable.getTitle());
 
@@ -139,16 +140,19 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
         if (votes.get(position) == VoteDirection.DOWNVOTE.getValue())
             holder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textDownvoted));
         if (votes.get(position) == VoteDirection.NO_VOTE.getValue())
-            holder.score.setTextColor(ContextCompat.getColor(mContext, R.color.textNotvoted));
+            holder.score.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryText));
 
         holder.comments.setText(submissionParcelable.getComments());
 
         if (submissionParcelable.isNSFW())
-            holder.title.setTextColor(ContextCompat.getColor(mContext, R.color.textTitleNSFW));
-        else if (submissionParcelable.isStickied())
-            holder.title.setTextColor(ContextCompat.getColor(mContext, R.color.textTitleStickied));
+            holder.nsfwTag.setVisibility(View.VISIBLE);
         else
-            holder.title.setTextColor(ContextCompat.getColor(mContext, R.color.textTitleRegular));
+            holder.nsfwTag.setVisibility(View.GONE);
+
+        if (submissionParcelable.isStickied())
+            holder.stickyTag.setVisibility(View.VISIBLE);
+        else
+            holder.stickyTag.setVisibility(View.GONE);
 
         Thumbnails thumbnails = submission.getThumbnails();
         String thumbnailURL = null;
@@ -172,7 +176,7 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
             }
         });
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
+        holder.title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent commentsIntent = new Intent(mContext, CommentsActivity.class);
@@ -181,6 +185,14 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
             }
         });
 
+        holder.comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent commentsIntent = new Intent(mContext, CommentsActivity.class);
+                commentsIntent.putExtra("top", submissionParcelable);
+                mContext.startActivity(commentsIntent);
+            }
+        });
         if (isAuthorClickable) {
             holder.author.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -302,7 +314,8 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
     }
 
     static class SubmissionHolder extends RecyclerView.ViewHolder {
-        TextView author, subreddit, timeCreated, domain, linkFlair;
+        TextView author, subreddit, timeCreated, domain, flairTag, nsfwTag, stickyTag;
+        CardView cardView;
         TextView title;
         TextView comments;
         TextView score;
@@ -314,11 +327,14 @@ public class SubmissionListAdapter extends RecyclerView.Adapter<SubmissionListAd
 
         SubmissionHolder(RelativeLayout v) {
             super(v);
+            this.cardView = (CardView) v.findViewById(R.id.list_item_submission_cardview);
             this.author = (TextView) v.findViewById(R.id.list_item_submission_author);
             this.subreddit = (TextView) v.findViewById(R.id.list_item_submission_subreddit);
             this.timeCreated = (TextView) v.findViewById(R.id.list_item_submission_timecreated);
             this.domain = (TextView) v.findViewById(R.id.list_item_submission_domain);
-            this.linkFlair = (TextView) v.findViewById(R.id.list_item_submission_link_flair);
+            this.flairTag = (TextView) v.findViewById(R.id.list_item_submission_flair_tag);
+            this.nsfwTag = (TextView) v.findViewById(R.id.list_item_submission_nsfw_tag);
+            this.stickyTag = (TextView) v.findViewById(R.id.list_item_submission_sticky_tag);
 
             this.title = (TextView) v.findViewById(R.id.list_item_submission_title);
             this.comments = (TextView) v.findViewById(R.id.list_item_submission_comments);

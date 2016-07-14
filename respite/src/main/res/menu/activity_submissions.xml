@@ -110,7 +110,7 @@
         android:id="@+id/menu_submissions_refresh"
         android:icon="@drawable/ic_navigation_refresh"
         android:title="@string/menu.refresh"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/menu_submissions_search"

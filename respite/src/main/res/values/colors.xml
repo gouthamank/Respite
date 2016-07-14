@@ -24,8 +24,8 @@
 
     <color name="textTitleStickied">#388e3c</color>
     <color name="textTitleRegular">#000000</color>
-    <color name="linkFlairBackground.Dark">#788c96</color>
-    <color name="linkFlairBackground.Light">#ffffffff</color>
+    <color name="linkFlairBackground.Dark">@color/cardview_dark_background</color>
+    <color name="linkFlairBackground.Light">@color/cardview_light_background</color>
     <color name="linkText">@color/m_material_blue_grey_800</color>
     <color name="gildedCountText">#ffe100</color>
 

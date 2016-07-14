@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +35,7 @@ import app.drool.respite.impl.EndlessRecyclerViewScrollListener;
 
 public class SubmissionsActivity extends AppCompatActivity {
     private SubmissionListAdapter mAdapter = null;
+    private SwipeRefreshLayout listContainer = null;
     private ProgressBar progressBar = null;
     private SubredditPaginator paginator = null;
 
@@ -42,8 +44,9 @@ public class SubmissionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submissions);
 
-        final RecyclerView submissionList = (RecyclerView) findViewById(R.id.submissions_list);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        final RecyclerView submissionList = (RecyclerView) findViewById(R.id.activity_submissions_list);
+        listContainer = (SwipeRefreshLayout) findViewById(R.id.activity_submissions_list_container);
+        progressBar = (ProgressBar) findViewById(R.id.activity_submissions_progressbar);
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         assert submissionList != null;
@@ -56,7 +59,13 @@ public class SubmissionsActivity extends AppCompatActivity {
                 loadNextPage();
             }
         });
-        
+        listContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshPage(false);
+            }
+        });
+
         if (getIntent().getExtras() == null)
             setUpPaginator(null);
         else {
@@ -174,8 +183,13 @@ public class SubmissionsActivity extends AppCompatActivity {
     }
 
     private void refreshPage() {
+        refreshPage(true);
+    }
+
+    private void refreshPage(boolean shouldShowProgressBar) {
         mAdapter.clearSubmissions();
-        progressBar.setVisibility(ProgressBar.VISIBLE);
+        if (shouldShowProgressBar)
+            progressBar.setVisibility(ProgressBar.VISIBLE);
         setUpMenuBar();
 
         paginator.reset();
@@ -238,6 +252,7 @@ public class SubmissionsActivity extends AppCompatActivity {
                         progressBar.setVisibility(ProgressBar.GONE);
 
                     mAdapter.addSubmissions(submissions);
+                    listContainer.setRefreshing(false);
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.submissionsactivity_networkerror, Toast.LENGTH_LONG).show();
                 }

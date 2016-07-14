@@ -69,6 +69,10 @@
     <string name="placeholder.user.bool">yes</string>
     <string name="placeholder.user.bool2">no</string>
 
+    <string name="submission.nsfw.tag">NSFW</string>
+    <string name="submission.sticky.tag">Sticky</string>
+    <string name="submission.flair.tag">Spoilers All</string>
+
     <string name="submission.preview.accessibility">Post Thumbnail</string>
     <plurals name="submission_comments">
         <item quantity="one">%1$d comment</item>

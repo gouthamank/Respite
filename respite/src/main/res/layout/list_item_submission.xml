@@ -9,10 +9,11 @@
                 android:minHeight="50dp">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/list_item_submission_cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardElevation="2dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
@@ -107,19 +108,44 @@
                         android:textSize="12sp"/>
 
                     <TextView
-                        android:id="@+id/list_item_submission_link_flair"
+                        android:id="@+id/list_item_submission_flair_tag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="1dp"
-                        android:background="@color/cardview_dark_background"
-                        android:fontFamily="sans-serif-condensed"
+                        android:background="@color/linkFlairBackground.Dark"
                         android:paddingEnd="2dp"
                         android:paddingLeft="2dp"
                         android:paddingRight="2dp"
                         android:paddingStart="2dp"
-                        android:text="@string/placeholder.link.flair"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                        android:textSize="12sp"/>
+                        android:text="@string/submission.flair.tag"
+                        android:textAppearance="@style/RespiteLinkFlair.Inverse"/>
+
+                    <TextView
+                        android:id="@+id/list_item_submission_nsfw_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/textTitleNSFW"
+                        android:paddingEnd="2dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:paddingStart="2dp"
+                        android:text="@string/submission.nsfw.tag"
+                        android:textAppearance="@style/RespiteLinkFlair.Inverse"/>
+
+                    <TextView
+                        android:id="@+id/list_item_submission_sticky_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/textTitleStickied"
+                        android:paddingEnd="2dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:paddingStart="2dp"
+                        android:text="@string/submission.sticky.tag"
+                        android:textAppearance="@style/RespiteLinkFlair.Inverse"/>
+
                 </com.wefika.flowlayout.FlowLayout>
 
                 <TextView
@@ -162,10 +188,10 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:fontFamily="sans-serif"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingStart="@dimen/activity_horizontal_margin"
-                    android:paddingEnd="@dimen/activity_horizontal_margin"
                     android:text="@string/placeholder.score"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textSize="14sp"
@@ -180,8 +206,7 @@
                     android:layout_toStartOf="@id/list_item_submission_score"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:scaleX="0.8"
-                    android:scaleY="0.8"
+                    android:padding="4dp"
                     android:src="@drawable/ic_vote_down"/>
 
                 <ImageView
@@ -192,8 +217,7 @@
                     android:layout_toStartOf="@id/list_item_submission_downvote"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:scaleX="0.8"
-                    android:scaleY="0.8"
+                    android:padding="4dp"
                     android:src="@drawable/ic_vote_up"/>
             </RelativeLayout>
 

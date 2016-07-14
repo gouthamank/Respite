@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +39,7 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
 
     private static final String TAG = "CommentsActivity.java";
     private CommentListAdapter mAdapter = null;
-
+    private SwipeRefreshLayout listContainer = null;
     private RedditClient mRedditClient = null;
     private RecyclerView commentList = null;
     private ACTIVITY_MODES currentMode = null;
@@ -52,11 +53,18 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-        commentList = (RecyclerView) findViewById(R.id.activity_comments_commentlist);
+        commentList = (RecyclerView) findViewById(R.id.activity_comments_list);
+        listContainer = (SwipeRefreshLayout) findViewById(R.id.activity_comments_list_container);
         mAdapter = new CommentListAdapter(CommentsActivity.this, ((Respite) getApplication()).getRedditClient());
         LinearLayoutManager layoutManager = new LinearLayoutManager(CommentsActivity.this);
         commentList.setLayoutManager(layoutManager);
         commentList.setAdapter(mAdapter);
+        listContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshPage();
+            }
+        });
         mAdapter.setLoadAllCommentsListener(this);
         mAdapter.setReplyToCommentListener(this);
 
@@ -218,6 +226,7 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
                     } else {
                         mAdapter.addComments(rootComments);
                     }
+                    listContainer.setRefreshing(false);
                 }
             }
         }.execute();
