@@ -1,5 +1,6 @@
 package app.drool.respite.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -33,6 +34,7 @@ import java.util.List;
 import app.drool.respite.R;
 import app.drool.respite.Respite;
 import app.drool.respite.handlers.LinkHandler;
+import app.drool.respite.utils.Utilities;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,11 +48,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (AuthenticationManager.get().checkAuthState() == AuthenticationState.NONE) {
+        if (!getSharedPreferences("Respite.users", Context.MODE_PRIVATE).getBoolean("loggedIn", false)) {
             finish();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
-        ((Respite) getApplication()).refreshCredentials(this);
     }
 
     @Override
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             loadSubscriptions();
         }
         setUpClickListeners();
+        connectToReddit();
     }
 
     @Override
@@ -100,58 +102,93 @@ public class MainActivity extends AppCompatActivity {
         int baseChildren = 9 - 1; // start from 0
         int totalChildren = mLayout.getChildCount() - 1; // *
 
-        for(; totalChildren > baseChildren ; totalChildren--) {
+        for (; totalChildren > baseChildren; totalChildren--) {
             mLayout.removeViewAt(totalChildren);
         }
     }
 
-    private void loadSubscriptions() {
-        new AsyncTask<Void, Void, List<Subreddit>>() {
+    private void connectToReddit() {
+        ((Respite) getApplication()).refreshCredentials(this);
+        new AsyncTask<Void, Void, Void>() {
             @Override
-            protected List<Subreddit> doInBackground(Void... params) {
-                try {
-                    return (new UserSubredditsPaginator(mRedditClient, "subscriber")).accumulateMergedAll();
-                } catch (NetworkException e) {
-                    Log.d(TAG, "doInBackground: " + e.getMessage());
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(List<Subreddit> subreddits) {
-                if (subreddits == null)
-                    Toast.makeText(getApplicationContext(), R.string.mainactivity_networkerror, Toast.LENGTH_LONG).show();
-                else {
-                    progressBar.setVisibility(View.GONE);
-                    boolean shouldSkipDivider = true;
-                    for (Subreddit s : subreddits) {
-                        RelativeLayout v = (RelativeLayout) getLayoutInflater().inflate(R.layout.list_item_subscription, null, false);
-                        final TextView title = (TextView) v.findViewById(R.id.list_item_subscription_title);
-                        final TextView count = (TextView) v.findViewById(R.id.list_item_subscription_count);
-                        LinearLayout innerLayout = (LinearLayout) v.findViewById(R.id.list_item_subscription_layout);
-                        title.setText(s.getDisplayName());
-                        if(s.isNsfw())
-                            title.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.textTitleNSFW));
-                        count.setText(getString(R.string.mainactivity_subscribers, NumberFormat.getIntegerInstance().format(s.getSubscriberCount())));
-                        innerLayout.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                LinkHandler.analyse(MainActivity.this, "/r/" + title.getText().toString().toLowerCase());
-                            }
-                        });
-
-                        if (shouldSkipDivider)
-                            shouldSkipDivider = false;
-                        else {
-                            RelativeLayout divider = (RelativeLayout) getLayoutInflater().inflate(R.layout.list_item_divider, null, false);
-                            mLayout.addView(divider);
-                        }
-
-                        mLayout.addView(v);
+            protected Void doInBackground(Void... params) {
+                while (AuthenticationManager.get().checkAuthState() != AuthenticationState.READY) {
+                    try {
+                        wait(1000);
+                    } catch (InterruptedException e) {
                     }
                 }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+                enableButtons();
+                loadSubscriptions();
             }
         }.execute();
+    }
+
+    private void enableButtons() {
+        frontPageButton.setEnabled(true);
+        subredditButton.setEnabled(true);
+        userButton.setEnabled(true);
+        allButton.setEnabled(true);
+    }
+
+    private void loadSubscriptions() {
+        if (Utilities.isNetworkAvailable(MainActivity.this)) {
+            new AsyncTask<Void, Void, List<Subreddit>>() {
+                @Override
+                protected List<Subreddit> doInBackground(Void... params) {
+                    try {
+                        return (new UserSubredditsPaginator(mRedditClient, "subscriber")).accumulateMergedAll();
+                    } catch (NetworkException e) {
+                        Log.d(TAG, "doInBackground: " + e.getMessage());
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(List<Subreddit> subreddits) {
+                    if (subreddits == null)
+                        Toast.makeText(getApplicationContext(), R.string.mainactivity_networkerror, Toast.LENGTH_LONG).show();
+                    else {
+                        progressBar.setVisibility(View.GONE);
+                        boolean shouldSkipDivider = true;
+                        for (Subreddit s : subreddits) {
+                            RelativeLayout v = (RelativeLayout) getLayoutInflater().inflate(R.layout.list_item_subscription, null, false);
+                            final TextView title = (TextView) v.findViewById(R.id.list_item_subscription_title);
+                            final TextView count = (TextView) v.findViewById(R.id.list_item_subscription_count);
+                            LinearLayout innerLayout = (LinearLayout) v.findViewById(R.id.list_item_subscription_layout);
+                            title.setText(s.getDisplayName());
+                            if (s.isNsfw())
+                                title.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.textTitleNSFW));
+                            count.setText(getString(R.string.mainactivity_subscribers, NumberFormat.getIntegerInstance().format(s.getSubscriberCount())));
+                            innerLayout.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    LinkHandler.analyse(MainActivity.this, "/r/" + title.getText().toString().toLowerCase());
+                                }
+                            });
+
+                            if (shouldSkipDivider)
+                                shouldSkipDivider = false;
+                            else {
+                                RelativeLayout divider = (RelativeLayout) getLayoutInflater().inflate(R.layout.list_item_divider, null, false);
+                                mLayout.addView(divider);
+                            }
+
+                            mLayout.addView(v);
+                        }
+                    }
+                }
+            }.execute();
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setUpClickListeners() {

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Respite</string>
     <string name="clipboard.copy.success">Copied to clipboard</string>
+    <string name="no.network">Could not reach Reddit</string>
+
     <string name="mainactivity.login">Log in</string>
     <string name="mainactivity.loggedin">Logged in</string>
     <string name="mainactivity.frontpage">Front Page</string>

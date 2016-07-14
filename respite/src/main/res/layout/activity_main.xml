@@ -17,6 +17,7 @@
             android:id="@+id/activity_main_frontpage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -33,6 +34,7 @@
             android:id="@+id/activity_main_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -48,6 +50,7 @@
         <TextView
             android:id="@+id/activity_main_customsubreddit"
             android:layout_width="match_parent"
+            android:enabled="false"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
@@ -64,6 +67,7 @@
         <TextView
             android:id="@+id/activity_main_customuser"
             android:layout_width="match_parent"
+            android:enabled="false"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"

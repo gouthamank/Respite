@@ -29,6 +29,7 @@ import app.drool.respite.R;
 import app.drool.respite.Respite;
 import app.drool.respite.adapters.CommentListAdapter;
 import app.drool.respite.impl.SubmissionParcelable;
+import app.drool.respite.utils.Utilities;
 
 /**
  * Created by drool on 6/18/16.
@@ -97,7 +98,8 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
     @Override
     protected void onResume() {
         super.onResume();
-        ((Respite) getApplication()).refreshCredentials(this);
+        if (Utilities.isNetworkAvailable(CommentsActivity.this))
+            ((Respite) getApplication()).refreshCredentials(this);
     }
 
     @Override
@@ -167,27 +169,30 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
     }
 
     private void replyToContribution(String markdown, final Contribution c) {
-        new AsyncTask<String, Void, String>(){
-            @Override
-            protected String doInBackground(String... params) {
-                String markdown = params[0];
-                try {
-                    return (new AccountManager(mRedditClient)).reply(c, markdown);
-                } catch (ApiException e) {
-                    Log.d(TAG, "doInBackground: " + e.getReason());
-                    Toast.makeText(getApplicationContext(), R.string.commentsactivity_reply_apirerror, Toast.LENGTH_LONG).show();
-                } catch (NetworkException e) {
-                    Toast.makeText(getApplicationContext(), R.string.commentsactivity_reply_networkerror, Toast.LENGTH_LONG).show();
+        if (Utilities.isNetworkAvailable(CommentsActivity.this)) {
+            new AsyncTask<String, Void, String>() {
+                @Override
+                protected String doInBackground(String... params) {
+                    String markdown = params[0];
+                    try {
+                        return (new AccountManager(mRedditClient)).reply(c, markdown);
+                    } catch (ApiException e) {
+                        Log.d(TAG, "doInBackground: " + e.getReason());
+                        Toast.makeText(getApplicationContext(), R.string.commentsactivity_reply_apirerror, Toast.LENGTH_LONG).show();
+                    } catch (NetworkException e) {
+                        Toast.makeText(getApplicationContext(), R.string.commentsactivity_reply_networkerror, Toast.LENGTH_LONG).show();
+                    }
+                    return null;
                 }
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(String newID) {
-                Toast.makeText(getApplicationContext(), R.string.commentsactivity_reply_success, Toast.LENGTH_LONG).show();
-                refreshPage();
-            }
-        }.execute(markdown);
+                @Override
+                protected void onPostExecute(String newID) {
+                    Toast.makeText(getApplicationContext(), R.string.commentsactivity_reply_success, Toast.LENGTH_LONG).show();
+                    refreshPage();
+                }
+            }.execute(markdown);
+        } else
+            Toast.makeText(getApplicationContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
     }
 
     private void loadComments(final String submissionID) {
@@ -195,40 +200,43 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
     }
 
     private void loadComments(final String submissionID, final String commentID) {
-        new AsyncTask<Void, Void, Submission>() {
-            @Override
-            protected Submission doInBackground(Void... params) {
-                SubmissionRequest.Builder request = new SubmissionRequest.Builder(submissionID);
-                request.sort(currentSort);
-                try {
-                    return mRedditClient.getSubmission(request.build());
-                } catch (NetworkException e) {
-                    return null;
+        if (Utilities.isNetworkAvailable(CommentsActivity.this)) {
+            new AsyncTask<Void, Void, Submission>() {
+                @Override
+                protected Submission doInBackground(Void... params) {
+                    SubmissionRequest.Builder request = new SubmissionRequest.Builder(submissionID);
+                    request.sort(currentSort);
+                    try {
+                        return mRedditClient.getSubmission(request.build());
+                    } catch (NetworkException e) {
+                        return null;
+                    }
                 }
-            }
 
-            @Override
-            protected void onPostExecute(Submission submission) {
-                if (submission == null) {
-                    Toast.makeText(getApplicationContext(), R.string.commentsactivity_networkerror, Toast.LENGTH_LONG).show();
-                } else {
-                    CommentsActivity.this.submission = submission;
-                    mAdapter.addSubmission(submission);
-                    setUpMenuBar(submission.getTitle());
-                    CommentNode rootComments = submission.getComments();
-                    if(rootComments.getImmediateSize() == 0) {
-                        Toast.makeText(getApplicationContext(), R.string.commentsactivity_nocomments, Toast.LENGTH_LONG).show();
-                    }
-                    if (commentID != null && rootComments.findChild("t1_" + commentID).isPresent()) {
-                        mAdapter.setShouldShowSingleCommentNotice(true);
-                        mAdapter.addComments(rootComments.findChild("t1_" + commentID).get());
+                @Override
+                protected void onPostExecute(Submission submission) {
+                    if (submission == null) {
+                        Toast.makeText(getApplicationContext(), R.string.commentsactivity_networkerror, Toast.LENGTH_LONG).show();
                     } else {
-                        mAdapter.addComments(rootComments);
+                        CommentsActivity.this.submission = submission;
+                        mAdapter.addSubmission(submission);
+                        setUpMenuBar(submission.getTitle());
+                        CommentNode rootComments = submission.getComments();
+                        if (rootComments.getImmediateSize() == 0) {
+                            Toast.makeText(getApplicationContext(), R.string.commentsactivity_nocomments, Toast.LENGTH_LONG).show();
+                        }
+                        if (commentID != null && rootComments.findChild("t1_" + commentID).isPresent()) {
+                            mAdapter.setShouldShowSingleCommentNotice(true);
+                            mAdapter.addComments(rootComments.findChild("t1_" + commentID).get());
+                        } else {
+                            mAdapter.addComments(rootComments);
+                        }
+                        listContainer.setRefreshing(false);
                     }
-                    listContainer.setRefreshing(false);
                 }
-            }
-        }.execute();
+            }.execute();
+        } else
+            Toast.makeText(getApplicationContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
     }
 
     private void updatePaginator(CommentSort sort) {

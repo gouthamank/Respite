@@ -26,6 +26,7 @@ public class Respite extends Application {
     public static final String[] scopes = {"identity", "read", "history", "mysubreddits", "vote", "submit"};
 
     public static final Credentials CREDENTIALS = Credentials.installedApp("hWSUKXYvIc1shQ", "https://github.com/gouthamank/respite");
+//    public static final Credentials CREDENTIALS = Credentials.installedApp("hWSUKXYvIc1shQ", "https://www.blank.org/");
     private static final UserAgent USERAGENT = UserAgent.of("android", "app.drool.respite", "v0.1", "_drool");
     private static final String sharedPreferencesName = "app.drool.respite.sharedprefs";
     private static final String TAG = "Respite.java";

@@ -3,6 +3,8 @@ package app.drool.respite.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.Html;
 import android.text.Spanned;
 import android.widget.ImageView;
@@ -98,5 +100,16 @@ public class Utilities {
         String two = one.substring(16, one.length() - 11).replace("<p>", "").replace("</p>", "<br><br>");
         Spanned three = Html.fromHtml(two);
         return three;
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            isAvailable = true;
+        }
+        return isAvailable;
     }
 }

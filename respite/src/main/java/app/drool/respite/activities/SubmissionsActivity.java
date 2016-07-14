@@ -29,6 +29,7 @@ import app.drool.respite.R;
 import app.drool.respite.Respite;
 import app.drool.respite.adapters.SubmissionListAdapter;
 import app.drool.respite.impl.EndlessRecyclerViewScrollListener;
+import app.drool.respite.utils.Utilities;
 
 /**
  * Created by drool on 6/15/16.
@@ -92,7 +93,7 @@ public class SubmissionsActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (paginator.getSubreddit() != null)
+        if (paginator.getSubreddit() != null && !paginator.getSubreddit().contentEquals("all"))
             menu.findItem(R.id.menu_submissions_submit).setEnabled(true);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -205,7 +206,8 @@ public class SubmissionsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ((Respite) getApplication()).refreshCredentials(this);
+        if (Utilities.isNetworkAvailable(SubmissionsActivity.this))
+            ((Respite) getApplication()).refreshCredentials(this);
     }
 
     private void refreshPage() {
@@ -260,31 +262,34 @@ public class SubmissionsActivity extends AppCompatActivity {
     }
 
     private void loadNextPage() {
-        new AsyncTask<Void, Void, Listing<Submission>>() {
-            @Override
-            protected Listing<Submission> doInBackground(Void... params) {
-                try {
-                    return paginator.next();
-                } catch (NetworkException e) {
-                    return null;
+        if (Utilities.isNetworkAvailable(SubmissionsActivity.this)) {
+            new AsyncTask<Void, Void, Listing<Submission>>() {
+                @Override
+                protected Listing<Submission> doInBackground(Void... params) {
+                    try {
+                        return paginator.next();
+                    } catch (NetworkException e) {
+                        return null;
+                    }
                 }
-            }
 
-            @Override
-            protected void onPostExecute(Listing<Submission> submissions) {
-                super.onPostExecute(submissions);
-                if (submissions != null) {
-                    if (progressBar.getVisibility() == ProgressBar.VISIBLE)
-                        progressBar.setVisibility(ProgressBar.GONE);
+                @Override
+                protected void onPostExecute(Listing<Submission> submissions) {
+                    super.onPostExecute(submissions);
+                    if (submissions != null) {
+                        if (progressBar.getVisibility() == ProgressBar.VISIBLE)
+                            progressBar.setVisibility(ProgressBar.GONE);
 
-                    mAdapter.addSubmissions(submissions);
-                    listContainer.setRefreshing(false);
-                    invalidateOptionsMenu();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.submissionsactivity_networkerror, Toast.LENGTH_LONG).show();
+                        mAdapter.addSubmissions(submissions);
+                        listContainer.setRefreshing(false);
+                        invalidateOptionsMenu();
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.submissionsactivity_networkerror, Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        }.execute();
+            }.execute();
+        } else
+            Toast.makeText(getApplicationContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
     }
 
     private void openSearchDialog() {

@@ -6,5 +6,5 @@
         android:title="@string/menu.webview.openexternal"
         app:showAsAction="ifRoom"
         android:id="@+id/menu_imageview_openexternal"
-        android:icon="@drawable/ic_open_browser_light"/>
+        android:icon="@drawable/ic_open_browser"/>
 </menu>

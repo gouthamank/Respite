@@ -26,6 +26,7 @@ import java.net.URL;
 import app.drool.respite.R;
 import app.drool.respite.Respite;
 import app.drool.respite.impl.SubmissionParcelable;
+import app.drool.respite.utils.Utilities;
 
 /**
  * Created by drool on 7/14/16.
@@ -39,6 +40,13 @@ public class SubmitActivity extends AppCompatActivity {
     private Button submit, discard;
     private TextInputLayout linkLayout, textLayout, titleLayout;
     private TextInputEditText title, link, text;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Utilities.isNetworkAvailable(SubmitActivity.this))
+            ((Respite) getApplication()).refreshCredentials(SubmitActivity.this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,41 +135,44 @@ public class SubmitActivity extends AppCompatActivity {
     }
 
     private void submitPost(final AccountManager.SubmissionBuilder builder) {
-        new AsyncTask<Void, Void, Submission>() {
-            @Override
-            protected Submission doInBackground(Void... params) {
-                AccountManager manager = new AccountManager(mRedditClient);
-                try {
-                    return manager.submit(builder);
-                } catch (ApiException e) {
-                    Log.d(TAG, "doInBackground: " + e.getMessage());
-                    return null;
-                } catch (NetworkException e) {
-                    Log.d(TAG, "doInBackground: " + e.getMessage());
-                    Toast.makeText(getApplicationContext(), R.string.submitactivity_networkerror, Toast.LENGTH_LONG).show();
-                    return new Submission(null);
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Submission submission) {
-                if (submission == null) {
-                    Toast.makeText(getApplicationContext(), R.string.submitactivity_apierror, Toast.LENGTH_LONG).show();
-                    return;
+        if (Utilities.isNetworkAvailable(SubmitActivity.this)) {
+            new AsyncTask<Void, Void, Submission>() {
+                @Override
+                protected Submission doInBackground(Void... params) {
+                    AccountManager manager = new AccountManager(mRedditClient);
+                    try {
+                        return manager.submit(builder);
+                    } catch (ApiException e) {
+                        Log.d(TAG, "doInBackground: " + e.getMessage());
+                        return null;
+                    } catch (NetworkException e) {
+                        Log.d(TAG, "doInBackground: " + e.getMessage());
+                        Toast.makeText(getApplicationContext(), R.string.submitactivity_networkerror, Toast.LENGTH_LONG).show();
+                        return new Submission(null);
+                    }
                 }
 
-                if (submission.getAuthor() == null) {
-                    Toast.makeText(getApplicationContext(), R.string.submitactivity_networkerror, Toast.LENGTH_LONG).show();
-                    return;
-                }
+                @Override
+                protected void onPostExecute(Submission submission) {
+                    if (submission == null) {
+                        Toast.makeText(getApplicationContext(), R.string.submitactivity_apierror, Toast.LENGTH_LONG).show();
+                        return;
+                    }
 
-                SubmissionParcelable top = new SubmissionParcelable(SubmitActivity.this, submission);
-                Intent commentsActivity = new Intent(SubmitActivity.this, CommentsActivity.class);
-                commentsActivity.putExtra("top", top);
-                startActivity(commentsActivity);
-                finish();
-            }
-        }.execute();
+                    if (submission.getAuthor() == null) {
+                        Toast.makeText(getApplicationContext(), R.string.submitactivity_networkerror, Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    SubmissionParcelable top = new SubmissionParcelable(SubmitActivity.this, submission);
+                    Intent commentsActivity = new Intent(SubmitActivity.this, CommentsActivity.class);
+                    commentsActivity.putExtra("top", top);
+                    startActivity(commentsActivity);
+                    finish();
+                }
+            }.execute();
+        } else
+            Toast.makeText(getApplicationContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
     }
 
     private void bindViews() {

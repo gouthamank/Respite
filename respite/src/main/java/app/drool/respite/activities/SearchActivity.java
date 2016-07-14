@@ -23,6 +23,7 @@ import app.drool.respite.R;
 import app.drool.respite.Respite;
 import app.drool.respite.adapters.SubmissionListAdapter;
 import app.drool.respite.impl.EndlessRecyclerViewScrollListener;
+import app.drool.respite.utils.Utilities;
 
 /**
  * Created by drool on 7/3/16.
@@ -127,31 +128,35 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ((Respite) getApplication()).refreshCredentials(this);
+        if (Utilities.isNetworkAvailable(SearchActivity.this))
+            ((Respite) getApplication()).refreshCredentials(this);
     }
 
     private void loadNextPage() {
-        new AsyncTask<Void, Void, Listing<Submission>>() {
-            @Override
-            protected Listing<Submission> doInBackground(Void... params) {
-                try {
-                    return mPaginator.next();
-                } catch (NetworkException e) {
-                    return null;
+        if (Utilities.isNetworkAvailable(SearchActivity.this)) {
+            new AsyncTask<Void, Void, Listing<Submission>>() {
+                @Override
+                protected Listing<Submission> doInBackground(Void... params) {
+                    try {
+                        return mPaginator.next();
+                    } catch (NetworkException e) {
+                        return null;
+                    }
                 }
-            }
 
-            @Override
-            protected void onPostExecute(Listing<Submission> results) {
-                progressBar.setVisibility(View.GONE);
-                if(results == null)
-                    Toast.makeText(getApplicationContext(), R.string.searchactivity_networkerror, Toast.LENGTH_LONG).show();
-                else {
-                    mList.setVisibility(View.VISIBLE);
-                    mAdapter.addSubmissions(results);
+                @Override
+                protected void onPostExecute(Listing<Submission> results) {
+                    progressBar.setVisibility(View.GONE);
+                    if (results == null)
+                        Toast.makeText(getApplicationContext(), R.string.searchactivity_networkerror, Toast.LENGTH_LONG).show();
+                    else {
+                        mList.setVisibility(View.VISIBLE);
+                        mAdapter.addSubmissions(results);
+                    }
                 }
-            }
-        }.execute();
+            }.execute();
+        } else
+            Toast.makeText(getApplicationContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
     }
 
     private void setUpMenuBar() {

@@ -1,5 +1,6 @@
 package app.drool.respite.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -87,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), R.string.loginactivity_failure_token, Toast.LENGTH_LONG).show();
                     finish();
                 }
+                getSharedPreferences("Respite.users", Context.MODE_PRIVATE).edit().putBoolean("loggedIn", true).apply();
                 super.onPostExecute(s);
                 finish();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
