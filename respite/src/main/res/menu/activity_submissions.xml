@@ -106,15 +106,48 @@
             </group>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/menu_submissions_search"
+        android:icon="@drawable/ic_action_search"
+        android:title="@string/menu.search"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/menu_submissions_refresh"
         android:icon="@drawable/ic_navigation_refresh"
         android:title="@string/menu.refresh"
         app:showAsAction="never"/>
 
+
     <item
-        android:id="@+id/menu_submissions_search"
-        android:title="@string/menu.search"
+        android:id="@+id/menu_submissions_submit"
+        android:icon="@drawable/ic_content_create"
+        android:enabled="false"
+        android:title="@string/menu.submit"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/menu_submissions_submit_link"
+                android:title="@string/menu.submit.link"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/menu_submissions_submit_self"
+                android:title="@string/menu.submit.self"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_submissions_subscribe"
+        android:title="@string/menu.subscribe"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_submissions_unsubscribe"
+        android:title="@string/menu.unsubscribe"
+        android:visible="false"
         app:showAsAction="never" />
 
 </menu>

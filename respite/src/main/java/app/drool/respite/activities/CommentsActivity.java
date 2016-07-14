@@ -41,7 +41,6 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
     private CommentListAdapter mAdapter = null;
     private SwipeRefreshLayout listContainer = null;
     private RedditClient mRedditClient = null;
-    private RecyclerView commentList = null;
     private ACTIVITY_MODES currentMode = null;
     private String submissionID = null;
     private String commentID = null;
@@ -53,7 +52,7 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-        commentList = (RecyclerView) findViewById(R.id.activity_comments_list);
+        RecyclerView commentList = (RecyclerView) findViewById(R.id.activity_comments_list);
         listContainer = (SwipeRefreshLayout) findViewById(R.id.activity_comments_list_container);
         mAdapter = new CommentListAdapter(CommentsActivity.this, ((Respite) getApplication()).getRedditClient());
         LinearLayoutManager layoutManager = new LinearLayoutManager(CommentsActivity.this);
@@ -263,13 +262,13 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
     }
 
 
-    public void startReplyToSubmission() {
+    private void startReplyToSubmission() {
         Intent replyIntent = new Intent(CommentsActivity.this, ReplyActivity.class);
         replyIntent.putExtra("postRequest", true);
         startActivityForResult(replyIntent, ReplyActivity.REPLY_REQUEST);
     }
 
-    // Implementation from within list adapter
+    // Implementation of interface from within list adapter
     @Override
     public void startReplyToComment(Comment c) {
         commentInContext = c;

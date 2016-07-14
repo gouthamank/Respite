@@ -10,6 +10,9 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -43,12 +46,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ((Respite) getApplication()).refreshCredentials(this);
-
         if (AuthenticationManager.get().checkAuthState() == AuthenticationState.NONE) {
             finish();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
+        ((Respite) getApplication()).refreshCredentials(this);
     }
 
     @Override
@@ -65,10 +67,42 @@ public class MainActivity extends AppCompatActivity {
         mLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         mRedditClient = ((Respite) getApplication()).getRedditClient();
 
-        if (AuthenticationManager.get().checkAuthState() != AuthenticationState.NONE) {
+        if (AuthenticationManager.get().checkAuthState() == AuthenticationState.READY) {
             loadSubscriptions();
         }
         setUpClickListeners();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_main_refresh:
+
+                if (AuthenticationManager.get().checkAuthState() != AuthenticationState.NONE) {
+                    clearSubscriptions();
+                    progressBar.setVisibility(View.VISIBLE);
+                    loadSubscriptions();
+                }
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void clearSubscriptions() {
+        int baseChildren = 9 - 1; // start from 0
+        int totalChildren = mLayout.getChildCount() - 1; // *
+
+        for(; totalChildren > baseChildren ; totalChildren--) {
+            mLayout.removeViewAt(totalChildren);
+        }
     }
 
     private void loadSubscriptions() {
@@ -78,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     return (new UserSubredditsPaginator(mRedditClient, "subscriber")).accumulateMergedAll();
                 } catch (NetworkException e) {
+                    Log.d(TAG, "doInBackground: " + e.getMessage());
                     return null;
                 }
             }

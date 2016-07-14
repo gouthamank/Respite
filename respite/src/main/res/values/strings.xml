@@ -22,6 +22,19 @@
     <string name="submissionsactivity.networkerror">Error retrieving posts</string>
     <string name="submissionsactivity.voteerror">Could not cast vote</string>
 
+    <string name="submitactivity.submit">Submit</string>
+    <string name="submitactivity.confirm">Are you sure?</string>
+    <string name="submitactivity.discard">Discard</string>
+    <string name="submitactivity.title.hint">Title</string>
+    <string name="submitactivity.title.error">Enter a title</string>
+    <string name="submitactivity.url.hint">Link</string>
+    <string name="submitactivity.url.error.invalid">Enter a valid link</string>
+    <string name="submitactivity.url.error.missing">Enter a link</string>
+    <string name="submitactivity.text.hint">Text (optional)</string>
+    <string name="submitactivity.networkerror">Could not connect to Reddit</string>
+    <string name="submitactivity.submitting">Submitting post</string>
+    <string name="submitactivity.apierror">API Error. Check if you are allowed to post here</string>
+
     <string name="replyactivity.submit">Submit</string>
     <string name="replyactivity.confirm">Are you sure?</string>
     <string name="replyactivity.discard">Discard</string>
@@ -88,8 +101,13 @@
     <string name="menu.webview.forward">Forward</string>
 
     <string name="menu.refresh">Refresh</string>
+    <string name="menu.submit">Submit</string>
+    <string name="menu.submit.link">Submit link</string>
+    <string name="menu.submit.self">Submit self post</string>
     <string name="menu.reply">Reply</string>
     <string name="menu.search">Search</string>
+    <string name="menu.subscribe">Subscribe</string>
+    <string name="menu.unsubscribe">Unsubscribe</string>
 
     <string name="menu.filter">Filter</string>
     <string name="menu.filter.time.all">All</string>

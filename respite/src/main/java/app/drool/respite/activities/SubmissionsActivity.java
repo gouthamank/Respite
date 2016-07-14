@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import net.dean.jraw.RedditClient;
 import net.dean.jraw.http.NetworkException;
 import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
@@ -34,10 +35,13 @@ import app.drool.respite.impl.EndlessRecyclerViewScrollListener;
  */
 
 public class SubmissionsActivity extends AppCompatActivity {
+    private static final String TAG = "SubmissionsActivity";
+
     private SubmissionListAdapter mAdapter = null;
     private SwipeRefreshLayout listContainer = null;
     private ProgressBar progressBar = null;
     private SubredditPaginator paginator = null;
+    private RedditClient mRedditClient = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class SubmissionsActivity extends AppCompatActivity {
         final RecyclerView submissionList = (RecyclerView) findViewById(R.id.activity_submissions_list);
         listContainer = (SwipeRefreshLayout) findViewById(R.id.activity_submissions_list_container);
         progressBar = (ProgressBar) findViewById(R.id.activity_submissions_progressbar);
+        mRedditClient = ((Respite) getApplication()).getRedditClient();
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         assert submissionList != null;
@@ -83,6 +88,13 @@ public class SubmissionsActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_submissions, menu);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (paginator.getSubreddit() != null)
+            menu.findItem(R.id.menu_submissions_submit).setEnabled(true);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -171,6 +183,20 @@ public class SubmissionsActivity extends AppCompatActivity {
                 openSearchDialog();
                 return true;
 
+            case R.id.menu_submissions_submit_link:
+                Intent submitLinkIntent = new Intent(SubmissionsActivity.this, SubmitActivity.class);
+                submitLinkIntent.putExtra("subreddit", paginator.getSubreddit());
+                submitLinkIntent.putExtra("mode", "link");
+                startActivity(submitLinkIntent);
+                return true;
+
+            case R.id.menu_submissions_submit_self:
+                Intent submitSelfIntent = new Intent(SubmissionsActivity.this, SubmitActivity.class);
+                submitSelfIntent.putExtra("subreddit", paginator.getSubreddit());
+                submitSelfIntent.putExtra("mode", "self");
+                startActivity(submitSelfIntent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -198,7 +224,7 @@ public class SubmissionsActivity extends AppCompatActivity {
 
     private void setUpPaginator(String subreddit) {
         if (paginator == null) {
-            paginator = new SubredditPaginator(((Respite) getApplication()).getRedditClient());
+            paginator = new SubredditPaginator(mRedditClient);
             if (subreddit != null)
                 paginator.setSubreddit(subreddit);
         }
@@ -253,6 +279,7 @@ public class SubmissionsActivity extends AppCompatActivity {
 
                     mAdapter.addSubmissions(submissions);
                     listContainer.setRefreshing(false);
+                    invalidateOptionsMenu();
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.submissionsactivity_networkerror, Toast.LENGTH_LONG).show();
                 }
