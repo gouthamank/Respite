@@ -54,11 +54,11 @@
     <string name="actionbar.title.user">/u/%1$s</string>
 
     <string name="fragment.user.about.name">Username</string>
-    <string name="fragment.user.about.linkkarma">Link Karma</string>
-    <string name="fragment.user.about.commentkarma">Comment Karma</string>
-    <string name="fragment.user.about.age">Created</string>
-    <string name="fragment.user.about.isfriends">Friends?</string>
-    <string name="fragment.user.about.ismod">Mod?</string>
+    <string name="fragment.user.about.linkkarma">LINK KARMA</string>
+    <string name="fragment.user.about.commentkarma">COMMENT KARMA</string>
+    <string name="fragment.user.about.age">CREATED</string>
+    <string name="fragment.user.about.isfriends">FRIENDS?</string>
+    <string name="fragment.user.about.ismod">MOD?</string>
     <string name="fragment.user.about.true">yes</string>
     <string name="fragment.user.about.false">no</string>
 

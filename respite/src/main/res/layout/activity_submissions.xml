@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+    >
+
 
     <ProgressBar
         android:id="@+id/activity_submissions_progressbar"
@@ -12,6 +14,10 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/activity_submissions_list_container"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,7 +25,7 @@
             android:id="@+id/activity_submissions_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
+            android:scrollbars="none"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

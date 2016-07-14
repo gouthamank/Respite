@@ -17,9 +17,10 @@
 
         <View
             android:id="@+id/list_item_comment_marker"
-            android:layout_width="1dp"
+            android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"/>
+            android:background="@color/colorAccent" />
+            <!--android:background="@android:color/darker_gray"/>-->
 
         <LinearLayout
             android:id="@+id/list_item_comment_layout"
@@ -50,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
-                    android:background="@color/cardview_dark_background"
+                    android:background="@color/m_accent_material_dark"
                     android:paddingEnd="2dp"
                     android:paddingLeft="2dp"
                     android:paddingRight="2dp"
@@ -123,6 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/placeholder.title"
+                android:textSize="13sp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
         </LinearLayout>
 

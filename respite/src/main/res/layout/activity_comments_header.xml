@@ -1,215 +1,257 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginEnd="@dimen/activity_horizontal_margin"
+              android:layout_marginLeft="@dimen/activity_horizontal_margin"
+              android:layout_marginRight="@dimen/activity_horizontal_margin"
+              android:layout_marginStart="@dimen/activity_horizontal_margin"
               android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/comments_header_layout"
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryLight"
-        android:paddingBottom="8dp"
-        android:paddingEnd="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingStart="8dp"
-        android:paddingTop="8dp"
-        >
+        app:cardElevation="2dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        card_view:cardCornerRadius="4dp">
 
-        <com.wefika.flowlayout.FlowLayout
-            android:id="@+id/comments_header_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/comments_header_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:text="@string/placeholder.author"
-                android:textAppearance="@style/RespiteSmallText.Inverse"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:text="@string/placeholder.separator"
-                android:textAppearance="@style/RespiteSmallText.Inverse"/>
-
-            <TextView
-                android:id="@+id/comments_header_subreddit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:text="@string/placeholder.subreddit"
-                android:textAppearance="@style/RespiteSmallText.Inverse"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:text="@string/placeholder.separator"
-                android:textAppearance="@style/RespiteSmallText.Inverse"
-                />
-
-            <TextView
-                android:id="@+id/comments_header_timecreated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:text="@string/placeholder.timecreated"
-                android:textAppearance="@style/RespiteSmallText.Inverse"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:text="@string/placeholder.separator"
-                android:textAppearance="@style/RespiteSmallText.Inverse"
-                />
-
-            <TextView
-                android:id="@+id/comments_header_domain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:text="@string/placeholder.link.domain"
-                android:textAppearance="@style/RespiteSmallText.Inverse"
-                />
-
-            <TextView
-                android:id="@+id/comments_header_flair_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/linkFlairBackground.Dark"
-                android:paddingEnd="2dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:paddingStart="2dp"
-                android:text="@string/placeholder.link.flair"
-                android:textAppearance="@style/RespiteLinkFlair.Inverse"
-                />
-
-            <TextView
-                android:id="@+id/comments_header_nsfw_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/textTitleNSFW"
-                android:paddingEnd="2dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:paddingStart="2dp"
-                android:text="@string/submission.nsfw.tag"
-                android:textAppearance="@style/RespiteLinkFlair.Inverse"/>
-
-            <TextView
-                android:id="@+id/comments_header_sticky_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:background="@color/textTitleStickied"
-                android:paddingEnd="2dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:paddingStart="2dp"
-                android:text="@string/submission.sticky.tag"
-                android:textAppearance="@style/RespiteLinkFlair.Inverse"/>
-        </com.wefika.flowlayout.FlowLayout>
-
-        <TextView
-            android:id="@+id/comments_header_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/comments_header_description"
-            android:layout_marginTop="4dp"
-            android:text="@string/placeholder.title"
-            android:textAllCaps="false"
-            android:textColor="@color/primaryText"
-            android:textSize="16sp"/>
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/comments_header_title"
-            android:layout_marginTop="4dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/comments_header_comments"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/comments_header_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="@string/placeholder.comments"
-                android:textAppearance="@style/RespiteSmallText.Inverse"/>
+                android:background="@color/colorPrimaryLight"
+                android:paddingBottom="8dp"
+                android:paddingEnd="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                >
 
-            <TextView
-                android:id="@+id/comments_header_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="@string/placeholder.score"
-                android:textAppearance="@style/RespiteSmallText.Inverse"
-                android:textStyle="bold"
-                android:textSize="14sp"/>
-        </RelativeLayout>
+                <com.wefika.flowlayout.FlowLayout
+                    android:id="@+id/comments_header_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/comments_header_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:text="@string/placeholder.author"
+                        android:textAppearance="@style/RespiteSmallText.Inverse"
+                        android:textStyle="bold"/>
 
-    <com.laurencedawson.activetextview.ActiveTextView
-        android:id="@+id/comments_header_selftext"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:text="@string/placeholder.separator"
+                        android:textAppearance="@style/RespiteSmallText.Inverse"/>
+
+                    <TextView
+                        android:id="@+id/comments_header_subreddit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:text="@string/placeholder.subreddit"
+                        android:textAppearance="@style/RespiteSmallText.Inverse"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:text="@string/placeholder.separator"
+                        android:textAppearance="@style/RespiteSmallText.Inverse"
+                        />
+
+                    <TextView
+                        android:id="@+id/comments_header_timecreated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:text="@string/placeholder.timecreated"
+                        android:textAppearance="@style/RespiteSmallText.Inverse"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:text="@string/placeholder.separator"
+                        android:textAppearance="@style/RespiteSmallText.Inverse"
+                        />
+
+                    <TextView
+                        android:id="@+id/comments_header_domain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:text="@string/placeholder.link.domain"
+                        android:textAppearance="@style/RespiteSmallText.Inverse"
+                        />
+
+                    <TextView
+                        android:id="@+id/comments_header_flair_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/m_accent_material_dark"
+                        android:paddingEnd="2dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:paddingStart="2dp"
+                        android:text="@string/placeholder.link.flair"
+                        android:textAppearance="@style/RespiteLinkFlair.Inverse"
+                        android:textColor="@color/cardview_light_background"
+                        />
+
+                    <TextView
+                        android:id="@+id/comments_header_nsfw_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/textTitleNSFW"
+                        android:paddingEnd="2dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:paddingStart="2dp"
+                        android:text="@string/submission.nsfw.tag"
+                        android:textAppearance="@style/RespiteLinkFlair.Inverse"/>
+
+                    <TextView
+                        android:id="@+id/comments_header_sticky_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/textTitleStickied"
+                        android:paddingEnd="2dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:paddingStart="2dp"
+                        android:text="@string/submission.sticky.tag"
+                        android:textAppearance="@style/RespiteLinkFlair.Inverse"/>
+                </com.wefika.flowlayout.FlowLayout>
+
+                <TextView
+                    android:id="@+id/comments_header_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/comments_header_description"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/placeholder.title"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primaryText"
+                    android:textSize="16sp"/>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/comments_header_title"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/comments_header_comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="@string/placeholder.comments"
+                        android:textAppearance="@style/RespiteSmallText.Inverse"/>
+
+                    <TextView
+                        android:id="@+id/comments_header_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/placeholder.score"
+                        android:textAppearance="@style/RespiteSmallText.Inverse"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/placeholder.title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardElevation="2dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        card_view:cardCornerRadius="4dp">
 
-    <LinearLayout
-        android:id="@+id/comments_header_link_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/submission.preview.accessibility"
-            android:padding="8dp"
-            android:src="@drawable/ic_open_browser_light"/>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:background="@color/commentIndent"
-            android:padding="8dp"/>
-
-        <TextView
-            android:id="@+id/comments_header_link"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="8dp"
-            android:text="@string/placeholder.link"
-            android:textAppearance="@style/RespiteLinkText"/>
-    </LinearLayout>
+            android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/commentSeparator"/>
+            <com.laurencedawson.activetextview.ActiveTextView
+                android:id="@+id/comments_header_selftext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="8dp"
+                android:text="@string/placeholder.title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="13sp"/>
+
+            <LinearLayout
+                android:id="@+id/comments_header_link_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/submission.preview.accessibility"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_open_browser_light"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="50dp"
+                    android:background="@color/commentIndent"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:id="@+id/comments_header_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-light"
+                    android:padding="8dp"
+                    android:text="@string/placeholder.link"
+                    android:textAppearance="@style/RespiteLinkText"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
     <ProgressBar
         android:id="@+id/comments_header_progressbar"

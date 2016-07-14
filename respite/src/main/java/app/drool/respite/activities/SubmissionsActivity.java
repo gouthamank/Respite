@@ -199,7 +199,8 @@ public class SubmissionsActivity extends AppCompatActivity {
                 return true;
 
             default:
-                return super.onOptionsItemSelected(item);
+                finish();
+                return true;
         }
     }
 

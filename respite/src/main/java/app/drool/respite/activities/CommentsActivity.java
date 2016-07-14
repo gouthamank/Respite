@@ -138,7 +138,7 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
                 break;
 
             default:
-                return super.onOptionsItemSelected(item);
+                finish();
         }
 
         return true;

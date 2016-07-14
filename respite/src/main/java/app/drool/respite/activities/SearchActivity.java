@@ -120,7 +120,7 @@ public class SearchActivity extends AppCompatActivity {
                 break;
 
             default:
-                return super.onOptionsItemSelected(item);
+                finish();
         }
         return true;
     }
