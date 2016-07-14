@@ -48,10 +48,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!getSharedPreferences("Respite.users", Context.MODE_PRIVATE).getBoolean("loggedIn", false)) {
-            finish();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        }
+        if (Utilities.isNetworkAvailable(MainActivity.this))
+            ((Respite) getApplication()).refreshCredentials(this);
     }
 
     @Override
@@ -68,11 +66,12 @@ public class MainActivity extends AppCompatActivity {
         mLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         mRedditClient = ((Respite) getApplication()).getRedditClient();
 
-        if (AuthenticationManager.get().checkAuthState() == AuthenticationState.READY) {
-            loadSubscriptions();
-        }
         setUpClickListeners();
-        connectToReddit();
+        if (!getSharedPreferences("Respite.users", Context.MODE_PRIVATE).getBoolean("loggedIn", false)) {
+            finish();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        } else
+            connectToReddit();
     }
 
     @Override
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 while (AuthenticationManager.get().checkAuthState() != AuthenticationState.READY) {
                     try {
                         wait(1000);
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                     }
                 }
                 return null;
