@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,6 +66,9 @@ public class CommentsActivity extends AppCompatActivity implements CommentListAd
                 refreshPage();
             }
         });
+        listContainer.setColorSchemeColors(ContextCompat.getColor(CommentsActivity.this, R.color.colorAccent),
+                ContextCompat.getColor(CommentsActivity.this, R.color.colorPrimary));
+
         mAdapter.setLoadAllCommentsListener(this);
         mAdapter.setReplyToCommentListener(this);
 

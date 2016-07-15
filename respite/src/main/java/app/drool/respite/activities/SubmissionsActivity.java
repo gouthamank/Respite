@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -71,6 +72,8 @@ public class SubmissionsActivity extends AppCompatActivity {
                 refreshPage(false);
             }
         });
+        listContainer.setColorSchemeColors(ContextCompat.getColor(SubmissionsActivity.this, R.color.colorAccent),
+                ContextCompat.getColor(SubmissionsActivity.this, R.color.colorPrimary));
 
         if (getIntent().getExtras() == null)
             setUpPaginator(null);
@@ -198,9 +201,12 @@ public class SubmissionsActivity extends AppCompatActivity {
                 startActivity(submitSelfIntent);
                 return true;
 
-            default:
+            case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

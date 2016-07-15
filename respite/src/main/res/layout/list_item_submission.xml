@@ -12,7 +12,7 @@
         android:id="@+id/list_item_submission_cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="2dp"
+        app:cardElevation="1dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
         card_view:cardCornerRadius="4dp">
@@ -157,13 +157,13 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/placeholder.title"
                     android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textSize="16sp"/>
+                    android:textSize="14sp"/>
 
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.1dp"
+                android:layout_height="0dp"
                 android:layout_marginTop="8dp"
                 android:background="@color/commentIndent"/>
 

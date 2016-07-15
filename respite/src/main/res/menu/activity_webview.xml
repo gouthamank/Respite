@@ -3,12 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_webview_back"
-        android:enabled="true"
-        android:icon="@drawable/abc_ic_ab_back_mtrl_am_alpha"
-        android:title="@string/menu.webview.back"
-        app:showAsAction="always"/>
-    <item
         android:id="@+id/menu_webview_openexternal"
         android:icon="@drawable/ic_open_browser"
         app:showAsAction="always"

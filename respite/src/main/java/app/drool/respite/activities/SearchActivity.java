@@ -119,8 +119,12 @@ public class SearchActivity extends AppCompatActivity {
                 refreshPage();
                 break;
 
-            default:
+            case android.R.id.home:
                 finish();
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
         return true;
     }

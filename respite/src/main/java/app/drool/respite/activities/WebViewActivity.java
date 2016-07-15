@@ -99,11 +99,6 @@ public class WebViewActivity extends AppCompatActivity {
                 }
                 break;
 
-            case R.id.menu_webview_back:
-                webView.goBack();
-                invalidateOptionsMenu();
-                break;
-
             default:
                 return super.onOptionsItemSelected(item);
         }

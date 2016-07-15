@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -107,6 +108,8 @@ public class FrontPageActivity extends AppCompatActivity
                 refreshPage(false);
             }
         });
+        listContainer.setColorSchemeColors(ContextCompat.getColor(FrontPageActivity.this, R.color.colorAccent),
+                ContextCompat.getColor(FrontPageActivity.this, R.color.colorPrimary));
         setUpPaginator(null);
 
         setUpMenuBar();
