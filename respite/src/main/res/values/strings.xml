@@ -13,10 +13,25 @@
     <string name="mainactivity.networkerror">Could not load subscriptions</string>
     <string name="mainactivity.subscribers">%1$s subscribers</string>
 
+    <string name="frontpageactivity.login">Log in</string>
+    <string name="frontpageactivity.logout">LOGOUT</string>
+    <string name="frontpageactivity.loggedin">Logged in as %1$s</string>
+    <string name="frontpageactivity.notloggedin">Not logged in</string>
+    <string name="frontpageactivity.frontpage">Front Page</string>
+    <string name="frontpageactivity.all">/r/all</string>
+    <string name="frontpageactivity.customsubreddit">Enter subreddit</string>
+    <string name="frontpageactivity.customuser">Enter username</string>
+    <string name="frontpageactivity.subscriptions">Subscriptions</string>
+    <string name="frontpageactivity.networkerror">Could not load subscriptions</string>
+    <string name="frontpageactivity.subscribers">%1$s subscribers</string>
+
+    <string name="loginactivity.welcome">Please login to Reddit</string>
     <string name="loginactivity.failure.userdeclined">Respite cannot work without user permissions</string>
     <string name="loginactivity.failure.token">Error obtaining token from Reddit</string>
 
     <string name="useractivity.networkerror">Error retrieving user details</string>
+
+    <string name="replyactivity.emptycomment">Comment can\'t be empty</string>
 
     <string name="searchactivity.networkerror">Error retrieving search results</string>
     <string name="searchactivity.menubar.title">\"%1$s\"</string>
@@ -151,6 +166,8 @@
     <string name="dialog.customuser.positive">Okay</string>
     <string name="dialog.customuser.negative">Cancel</string>
 
+    <string name="dialog.connecting.string">Connecting to Reddit</string>
+
     <string name="dialog.search.hint">Enter search term</string>
     <string name="dialog.search.prefix">In /r/</string>
     <string name="dialog.search.scope.hint">all</string>
@@ -164,5 +181,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_front_page">FrontPageActivity</string>
 
 </resources>

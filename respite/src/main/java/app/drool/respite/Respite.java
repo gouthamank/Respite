@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.auth.AuthenticationManager;
@@ -74,7 +73,7 @@ public class Respite extends Application {
             case READY:
                 break;
             case NONE:
-                Toast.makeText(mcContext, "Please log in to Reddit", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "refreshCredentials: No credentials found");
                 break;
             case NEED_REFRESH:
                 new AsyncTask<Credentials, Void, Void>() {

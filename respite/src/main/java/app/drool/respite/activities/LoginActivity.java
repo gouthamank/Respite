@@ -37,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Toast.makeText(getApplicationContext(), R.string.loginactivity_welcome, Toast.LENGTH_LONG).show();
+
         final OAuthHelper helper = AuthenticationManager.get().getRedditClient().getOAuthHelper();
 
         final URL authorizationURL = helper.getAuthorizationUrl(Respite.CREDENTIALS, true, true, Respite.scopes);
@@ -87,10 +89,11 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), R.string.loginactivity_failure_token, Toast.LENGTH_LONG).show();
                     finish();
                 }
-                getSharedPreferences("Respite.users", Context.MODE_PRIVATE).edit().putBoolean("loggedIn", true).apply();
+                getSharedPreferences("Respite.users", Context.MODE_PRIVATE).edit().putBoolean("loggedIn", true)
+                                                                                  .putString("username", s).apply();
                 super.onPostExecute(s);
                 finish();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                startActivity(new Intent(LoginActivity.this, FrontPageActivity.class));
             }
         }.execute();
     }
