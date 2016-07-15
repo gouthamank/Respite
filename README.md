@@ -17,6 +17,5 @@ Please note that **anonymous browsing is not currently supported.** You will nee
 * `.gif` / `.gifv` client support
 * Multiple logins
 
-### Screenshots
 
 
