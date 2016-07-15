@@ -76,16 +76,6 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if (webView.canGoBack())
-            menu.findItem(R.id.menu_webview_back).setEnabled(true);
-        else
-            menu.findItem(R.id.menu_webview_back).setEnabled(false);
-
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_webview_openexternal:

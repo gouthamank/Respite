@@ -14,7 +14,7 @@
 
     <color name="m_material_blue_grey_800">#ff37474f</color>
     <!--<color name="m_accent_material_dark">#ff80cbc4</color>-->
-    <color name="m_accent_material_dark">@color/colorPrimaryLight</color>
+    <color name="m_accent_material_dark">@color/colorPrimary</color>
     <color name="m_text_material_dark">#ffffffff</color>
     <color name="textTitleNSFW">#b71c1c</color>
     <color name="textTitleNSFW.Dark">#ff5252</color>
