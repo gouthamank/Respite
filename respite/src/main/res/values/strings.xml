@@ -152,6 +152,11 @@
     <string name="menu.sort.time.year">Year</string>
     <string name="menu.sort.time.all">All</string>
 
+    <string name="dialog.loginactivity.text">Respite needs a Reddit account to work. Do you wish to log in or sign up?</string>
+    <string name="dialog.loginactivity.login">Log In</string>
+    <string name="dialog.loginactivity.signup">Sign Up</string>
+    <string name="dialog.loginactivity.cancel">Cancel</string>
+
     <string name="dialog.customsubreddit.hint">Enter subreddit</string>
     <string name="dialog.customsubreddit.prefix">/r/</string>
     <string name="dialog.customsubreddit.title">View subreddit</string>

@@ -1,14 +1,20 @@
 package app.drool.respite.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -32,19 +38,63 @@ import app.drool.respite.Respite;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
+    public static void clearCookies(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        } else {
+            CookieSyncManager cookieSyncManager = CookieSyncManager.createInstance(context);
+            cookieSyncManager.startSync();
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            cookieManager.removeSessionCookie();
+            cookieSyncManager.stopSync();
+            cookieSyncManager.sync();
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Toast.makeText(getApplicationContext(), R.string.loginactivity_welcome, Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setView(R.layout.dialog_login);
+        builder.setPositiveButton(R.string.dialog_loginactivity_login, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                doLogin();
+            }
+        });
 
+        builder.setNeutralButton(R.string.dialog_loginactivity_signup, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                doSignup();
+            }
+        });
+
+        builder.setNegativeButton(R.string.dialog_loginactivity_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        builder.setCancelable(false);
+        builder.create().show();
+
+    }
+
+    private void doLogin() {
         final OAuthHelper helper = AuthenticationManager.get().getRedditClient().getOAuthHelper();
 
         final URL authorizationURL = helper.getAuthorizationUrl(Respite.CREDENTIALS, true, true, Respite.scopes);
         final WebView webView = (WebView) findViewById(R.id.webview);
 
+        webView.clearCache(true);
         assert webView != null;
+        clearCookies(LoginActivity.this);
         webView.loadUrl(authorizationURL.toExternalForm());
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -56,6 +106,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void doSignup() {
+        Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+        viewIntent.setData(Uri.parse("https://www.reddit.com/register"));
+        finish();
+        startActivity(viewIntent);
     }
 
     @Override
@@ -90,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 }
                 getSharedPreferences("Respite.users", Context.MODE_PRIVATE).edit().putBoolean("loggedIn", true)
-                                                                                  .putString("username", s).apply();
+                        .putString("username", s).apply();
                 super.onPostExecute(s);
                 finish();
                 startActivity(new Intent(LoginActivity.this, FrontPageActivity.class));
