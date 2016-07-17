@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class ImageViewActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private SubsamplingScaleImageView scaleImageView;
+    private ImageButton openExternalButton;
     private OkHttpClient client;
     private Picasso picasso;
 
@@ -51,6 +53,7 @@ public class ImageViewActivity extends AppCompatActivity {
         client = new OkHttpClient();
         picasso = new Picasso.Builder(ImageViewActivity.this).downloader(new OkHttp3Downloader(client)).build();
         progressBar = (ProgressBar) findViewById(R.id.activity_imageview_progressbar); // Currently am not doing anything with this.
+        openExternalButton = (ImageButton) findViewById(R.id.activity_imageview_openexternal);
         scaleImageView = (SubsamplingScaleImageView) findViewById(R.id.activity_imageview_image);
         scaleImageView.setBackgroundResource(android.R.color.transparent);
         scaleImageView.setMinScale(1.0f);
@@ -72,6 +75,13 @@ public class ImageViewActivity extends AppCompatActivity {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
                 isSystemUIShown = (visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0;
+            }
+        });
+
+        openExternalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openInBrowser();
             }
         });
 
@@ -111,11 +121,22 @@ public class ImageViewActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE);
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         } else {
             decorView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        }
+    }
+
+    private void openInBrowser() {
+        try {
+            final Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+            finish();
+        } catch (Exception e) {
+            Toast.makeText(this, "Could not launch external browser", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -129,14 +150,7 @@ public class ImageViewActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_imageview_openexternal:
-                try {
-                    final Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
-                    startActivity(intent);
-                    finish();
-                } catch (Exception e) {
-                    Toast.makeText(this, "Could not launch external browser", Toast.LENGTH_LONG).show();
-                }
+                openInBrowser();
                 return true;
 
             default:

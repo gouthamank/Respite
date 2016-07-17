@@ -145,12 +145,13 @@ public class LoginActivity extends AppCompatActivity {
                 if (s == null) {
                     Toast.makeText(getApplicationContext(), R.string.loginactivity_failure_token, Toast.LENGTH_LONG).show();
                     finish();
+                } else {
+                    getSharedPreferences("Respite.users", Context.MODE_PRIVATE).edit().putBoolean("loggedIn", true)
+                            .putString("username", s).apply();
+                    super.onPostExecute(s);
+                    finish();
+                    startActivity(new Intent(LoginActivity.this, FrontPageActivity.class));
                 }
-                getSharedPreferences("Respite.users", Context.MODE_PRIVATE).edit().putBoolean("loggedIn", true)
-                        .putString("username", s).apply();
-                super.onPostExecute(s);
-                finish();
-                startActivity(new Intent(LoginActivity.this, FrontPageActivity.class));
             }
         }.execute();
     }
