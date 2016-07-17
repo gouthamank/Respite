@@ -85,7 +85,6 @@ public class ImageViewActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setTitle("");
         hideUI();
         loadImageByUrl(url);
 

@@ -42,6 +42,7 @@
         </activity>
         <activity
             android:name=".activities.ImageViewActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".activities.ReplyActivity"/>
         <activity android:name=".activities.SubmitActivity"/>
