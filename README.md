@@ -1,20 +1,13 @@
 # Respite
 
 
-A Reddit client for Android. Uses [JRAW](https://github.com/thatJavaNerd/JRAW), among other libraries.
+A Reddit client for Android. *Requires Android 4.1 Jellybean*. Uses [JRAW](https://github.com/thatJavaNerd/JRAW), among other libraries.
 
 
 Please note that **anonymous browsing is not currently supported.** You will need to log in to your Reddit account to use Respite.
 
 ### Screenshots
-
-![Front Page](https://raw.githubusercontent.com/gouthamank/respite/master/scrot/frontpage.png "Front Page")
-
-![Comments View](https://raw.githubusercontent.com/gouthamank/respite/master/scrot/comment_context.png "Comments  View")
-
-![User Details](https://raw.githubusercontent.com/gouthamank/respite/master/scrot/user_comments.png "User Details")
-
-![Subscriptions](https://raw.githubusercontent.com/gouthamank/respite/master/scrot/user_subscriptions.png "Easy Access Subscriptions")
+A few screenshots of Respite in action can be located in `scrot/`
 
 ### Future Feature Wishlist
 
