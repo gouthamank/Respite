@@ -10,7 +10,7 @@ Please note that **anonymous browsing is not currently supported.** You will nee
 
 ![Front Page](https://github.com/gouthamank/respite/tree/master/scrot/frontpage.png "Front Page")
 
-![Comments View](https://github.com/gouthamank/respite/tree/master/scrot/comment_context.png "Comments View")
+![Comments View](respite/scrot/comment_context.png "Comments View")
 
 ![User Details](https://github.com/gouthamank/respite/tree/master/scrot/user_comments.png "User Details")
 
