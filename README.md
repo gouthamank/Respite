@@ -8,10 +8,13 @@ Please note that **anonymous browsing is not currently supported.** You will nee
 
 ### Screenshots
 
-![alt text]("scrot/frontpage.png" "Front Page")
-![alt text]("scrot/comment_context.png" "Comments View")
-![alt text]("scrot/user_comments.png" "User Details")
-![alt text]("scrot/user_subscriptions.png" "Easy Access Subscriptions")
+![Front Page]("https://github.com/gouthamank/respite/tree/master/scrot/frontpage.png" "Front Page")
+
+![Comments View]("https://github.com/gouthamank/respite/tree/master/scrot/comment_context.png" "Comments View")
+
+![User Details]("https://github.com/gouthamank/respite/tree/master/scrot/user_comments.png" "User Details")
+
+![Subscriptions]("https://github.com/gouthamank/respite/tree/master/scrot/user_subscriptions.png" "Easy Access Subscriptions")
 
 ### Future Feature Wishlist
 
